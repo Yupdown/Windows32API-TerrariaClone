@@ -6,7 +6,7 @@ class CComponent;
 class CTexture;
 class CCollider;
 class CRigidBody;
-#include "CCollider.h"
+
 class CObject
 {
 protected:
