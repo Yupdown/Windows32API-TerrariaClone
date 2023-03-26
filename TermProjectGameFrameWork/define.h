@@ -12,7 +12,7 @@
 #define KEY_AWAY(key)			KEY_CHECK(key,KEY_STATE::AWAY)
 #define KEY_NONE(key)			KEY_CHECK(key,KEY_STATE::NONE)
 
-#define MOUSE_POS CKeyMgr::GetInst()->GetMousePos()
+#define MOUSE_POS (CCamera::GetInst()->GetRealPos(CKeyMgr::GetInst()->GetMousePos()))
 
 #define PI	3.1415926535
 
@@ -97,9 +97,7 @@ enum class COMPONENT_TYPE
 
 	END,
 };
-
-#define CAST(type,expr)		(static_cast<type>(expr))
-#define GET_COMP(type,Enum)		CAST(type,GetComponent(Enum))	
+	
 #define Mgr(type)	(type::GetInst())
 
 enum class SOUND_TYPE

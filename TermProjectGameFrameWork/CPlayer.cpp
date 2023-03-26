@@ -62,18 +62,20 @@ void CPlayer::update()
 	SetPos(vPos);
 	//CObject::component_update();
 	m_pPrevAnim = pAnim->GetCurAnim();
+	//StartDelayCoRoutine(this,&CPlayer::update, 1);
 }
 
 
 void CPlayer::render(HDC _dc)
 {
-	CObject::render(_dc);
+	//CObject::render(_dc);
 	//m_pTex->render(_dc, this, Vec2{0,260},Vec2{60.,65.});
 	CObject::component_render(_dc);
 }
 
 void CPlayer::OnCollision(CCollider* const _pOther)
 {
+
 }
 
 void CPlayer::OnCollisionEnter(CCollider* const _pOther)

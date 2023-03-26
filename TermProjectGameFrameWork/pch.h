@@ -41,6 +41,8 @@ using std::bitset;
 using std::map;
 using std::make_pair;
 using std::shared_ptr;
+using std::unordered_multimap;
+using std::multimap;
 #include <coroutine>
 #include <list>
 #include <fstream>

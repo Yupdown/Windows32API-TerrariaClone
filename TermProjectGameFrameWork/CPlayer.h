@@ -21,5 +21,8 @@ public:
     virtual void OnCollision(CCollider* const _pOther);
     virtual void OnCollisionEnter(CCollider* const _pOther);
     virtual void OnCollisionExit(CCollider* const _pOther);
+    void foo()
+    {}
+
 };
 

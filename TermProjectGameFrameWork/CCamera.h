@@ -23,7 +23,6 @@ class CCamera
 {
 	friend class Singleton;
 	CCamera();
-public:
 	~CCamera();
 private:
 	Vec2		m_vLookAt = {}; 
@@ -79,7 +78,7 @@ public:
 		m_dAccel = m_dSpeed / m_dTime;
 		SetMoveFlag(true);
 	}
-	void SetTarget(CObject* const _pTarget){ m_pTargetObj = _pTarget;	}
+	void SetTarget(CObject* const _pTarget) { m_pTargetObj = _pTarget;}
 	Vec2 GetRenderPos(Vec2 _vObjPos)const { return _vObjPos - m_vDiff; }
 	Vec2 GetRealPos(Vec2 _vRenderPos)const { return _vRenderPos + m_vDiff; }
 	void SetMoveFlag(bool _b = true) { m_bMoveFlag = _b; }

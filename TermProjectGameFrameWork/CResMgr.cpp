@@ -31,6 +31,7 @@ void CResMgr::init()
 	m_hBackBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x*2, Mgr(CCore)->GetResolution().y*2);
 	DeleteObject(SelectObject(m_hBackDC, m_hBackBit));
 	Clear();
+	SetStretchBltMode(m_hBackDC, HALFTONE);
 }
 
 CTexture* CResMgr::LoadTexture(wstring_view _strKey, wstring_view _strFilePath)
@@ -60,13 +61,11 @@ optional<CTexture*> CResMgr::FindTexture(wstring_view _strKey)
 
 void CResMgr::DoStrechBlt(HDC _dc,wstring_view _wstrFileName, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSlice)
 {
-	Clear();
 	if (_vSlice.IsZero())
 	{
 		_vSlice.x = m_mapTex[_wstrFileName.data()]->Width();
 		_vSlice.y = m_mapTex[_wstrFileName.data()]->Height();
 	}
-	SetStretchBltMode(m_hBackDC, HALFTONE);
 	POINT ptRes = Mgr(CCore)->GetResolution();
 	_vScale.x = _vScale.x < ptRes.x ? _vScale.x : ptRes.x;
 	_vScale.y = _vScale.y < ptRes.y ? _vScale.y : ptRes.y;
@@ -105,6 +104,8 @@ void CResMgr::DoStrechBlt(HDC _dc,wstring_view _wstrFileName, Vec2 _vLT, Vec2 _v
 		, Mgr(CCore)->GetResolution().x
 		, Mgr(CCore)->GetResolution().y
 		, RGB(255, 0, 255));*/
+	_vScale.x = min(_vScale.x, _vScale.x + _vLT.x);
+	_vScale.y = min(_vScale.y, _vScale.y + _vLT.y);
 	_vLT.x = max(_vLT.x, 0);
 	_vLT.y = max(_vLT.y, 0);
 	TransparentBlt(_dc

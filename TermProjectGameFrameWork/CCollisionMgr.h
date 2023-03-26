@@ -18,10 +18,9 @@ class CCollisionMgr
 {
 	friend class Singleton;
 	CCollisionMgr();
-public:
 	~CCollisionMgr();
 private:
-	unordered_map<CCollider*, CCollider*> m_mapCollison;
+	unordered_multimap<CCollider*, CCollider*> m_mapCollison;
 	unordered_map<ULONGLONG, bool> m_mapColPrev;
 private:
 	bool IsCollision(CCollider* const _pLeftCol, CCollider* const _pRightCol);

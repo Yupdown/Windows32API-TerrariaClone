@@ -9,6 +9,7 @@ class CRigidBody;
 
 class CObject
 {
+	friend void DeleteObj(CObject* const _pDeadObj);
 protected:
 	CObject(const CObject& _other);
 public:

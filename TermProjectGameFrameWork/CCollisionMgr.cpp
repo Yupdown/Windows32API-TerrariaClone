@@ -30,8 +30,6 @@ bool CCollisionMgr::IsCollision(CCollider* const _pLeftCol, CCollider* const _pR
 
 void CCollisionMgr::RegisterCollision(CObject* const _pLeft, CObject* const _pRight)
 {
-	//auto LeftCol = static_cast<CCollider*>(_pLeft->GetComponent(COMPONENT_TYPE::COLLIDER));
-	//auto RightCol = static_cast<CCollider*>(_pRight->GetComponent(COMPONENT_TYPE::COLLIDER));
 	auto LeftCol = _pLeft->GetComp<CCollider>();
 	auto RightCol = _pRight->GetComp<CCollider>();
 	COLLIDER_ID ID = {};
@@ -45,20 +43,32 @@ void CCollisionMgr::update()
 {
 	for (auto& [left, right] : m_mapCollison)
 	{
-		bool nowCollison = IsCollision(left, right);
+		const bool nowCollison = IsCollision(left, right);
 		COLLIDER_ID ID = {};
 		ID.Left_id = left->GetID();
 		ID.Right_id = right->GetID();
-		bool prevCol = m_mapColPrev[ID.ID];
+		const bool prevCol = m_mapColPrev[ID.ID];
 		if (nowCollison)
 		{
 			if (prevCol)
 			{
-				left->OnCollision(right);
-				right->OnCollision(left);
+				if (left->GetOwner()->IsDead() || right->GetOwner()->IsDead())
+				{
+					left->OnCollisionExit(right);
+					right->OnCollisionExit(left);
+				}
+				else
+				{
+					left->OnCollision(right);
+					right->OnCollision(left);
+				}
 			}
 			else
 			{
+				if (left->GetOwner()->IsDead() || right->GetOwner()->IsDead())
+				{
+					continue;
+				}
 				left->OnCollisionEnter(right);
 				right->OnCollisionEnter(left);
 			}
@@ -73,6 +83,9 @@ void CCollisionMgr::update()
 		}
 		m_mapColPrev[ID.ID] = nowCollison;
 	}
+	std::erase_if(m_mapCollison, [](const auto& col) {
+		return col.first->GetOwner()->IsDead() || col.second->GetOwner()->IsDead();
+		});
 }
 
 

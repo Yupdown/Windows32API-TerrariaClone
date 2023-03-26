@@ -41,15 +41,16 @@ class CKeyMgr
 {
 	friend class Singleton;
 	CKeyMgr();
-public:
 	~CKeyMgr();
 private:
 	vector<tKeyInfo>m_vecKey;			
-	Vec2			m_vCurMousePos = {};	
+	Vec2			m_vCurMousePos = {};
+	POINT			m_ptCurMousePos = {};
 public:
 	void init();
 	void update();
 public:
 	KEY_STATE GetKeyState(KEY _eKey) { return m_vecKey[(int)_eKey].eState; }
-	Vec2	GetMousePos()const { return m_vCurMousePos; }	
+	Vec2	GetMousePos()const { return m_vCurMousePos; }
+	POINT   GetMousePosPt()const { return m_ptCurMousePos; }
 };

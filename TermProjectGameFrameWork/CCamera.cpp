@@ -21,7 +21,6 @@ void CCamera::init()
 	m_vLookAt = m_vCurLookAt = m_vPrevLookAt = vPos / 2.;
 }
 
-
 void CCamera::update()
 {
 	if (m_pTargetObj)

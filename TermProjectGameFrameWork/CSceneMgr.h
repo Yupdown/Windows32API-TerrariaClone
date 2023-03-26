@@ -5,10 +5,9 @@ class CScene;
 class CSceneMgr
 	:public Singleton<CSceneMgr>
 {
+	friend CoRoutine ChangeScene(SCENE_TYPE _eNext);
 	friend class Singleton;
-	//friend CoRoutine ChangeScene(SCENE_TYPE _eNext);
 	CSceneMgr();
-public:
 	~CSceneMgr();
 private:	
 	array<unique_ptr<CScene>, (UINT)SCENE_TYPE::END>			m_arrScene ;

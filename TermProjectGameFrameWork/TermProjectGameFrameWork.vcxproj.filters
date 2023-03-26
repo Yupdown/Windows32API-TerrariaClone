@@ -109,6 +109,15 @@
     <Filter Include="Engine\03. Object\Monster">
       <UniqueIdentifier>{06547a9d-436b-4b60-8342-717fa1103fbb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\03. Object\Tile">
+      <UniqueIdentifier>{ff847272-3cc0-420d-b96c-bf234eb229bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default\CoRoutine">
+      <UniqueIdentifier>{e26f8aa9-8bba-44c3-b415-0f3e356280f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\02. Manager\EventMgr">
+      <UniqueIdentifier>{d28b997a-7d44-4b03-bc51-f8456f5f3322}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -201,6 +210,15 @@
     <ClInclude Include="CMonster.h">
       <Filter>Engine\03. Object\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>Engine\03. Object\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="CoRoutine.hpp">
+      <Filter>Default\CoRoutine</Filter>
+    </ClInclude>
+    <ClInclude Include="CEventMgr.h">
+      <Filter>Engine\02. Manager\EventMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TermProjectGameFrameWork.cpp">
@@ -274,6 +292,12 @@
     </ClCompile>
     <ClCompile Include="CMonster.cpp">
       <Filter>Engine\03. Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>Engine\03. Object\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="CEventMgr.cpp">
+      <Filter>Engine\02. Manager\EventMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

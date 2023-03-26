@@ -8,7 +8,6 @@ class CCore
 {
 	friend class Singleton;
 	CCore();
-public:
 	~CCore();
 private:
 	HWND m_hWnd{};			
@@ -34,10 +33,12 @@ public:
 	void progress();
 	void Clear();
 public:
-	HWND GetMainHwnd() { return m_hWnd; }	
-	POINT GetResolution()const { return m_ptResolution; }	
+	HWND GetMainHwnd()const { return m_hWnd; }	
+	POINT GetResolution()const { return m_ptResolution; }
+	Vec2 GetResolutionV()const { return Vec2{ m_ptResolution }; }
 	HDC GetMainDC()const { return m_hDC; }	
 	HMENU GetMenu()const { return m_hMenu; } 
 	HBRUSH ChangeBrush(BRUSH_TYPE _eType);
 	HPEN ChangePen(PEN_TYPE _eType);
+	HDC GetMemDC()const;
 };

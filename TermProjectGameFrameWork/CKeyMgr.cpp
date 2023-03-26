@@ -74,11 +74,9 @@ void CKeyMgr::update()
 				m_vecKey[i].bPrevPush = false;
 			}
 		}
-		POINT ptPos = {};
-		GetCursorPos(&ptPos);	
-		ScreenToClient(CCore::GetInst()->GetMainHwnd(), &ptPos);
-		m_vCurMousePos = ptPos;
-
+		GetCursorPos(&m_ptCurMousePos);	
+		ScreenToClient(CCore::GetInst()->GetMainHwnd(), &m_ptCurMousePos);
+		m_vCurMousePos = m_ptCurMousePos;
 	}
 	else
 	{

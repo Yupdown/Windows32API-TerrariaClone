@@ -5,7 +5,6 @@ class CPathMgr
 {
 	friend class Singleton;
 	CPathMgr();
-public:
 	~CPathMgr();
 private:
 	string m_strResPath;

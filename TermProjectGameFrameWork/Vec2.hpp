@@ -7,7 +7,7 @@ struct Vec2
 
 public:
 
-	bool IsZero()const
+	constexpr bool IsZero()const
 	{
 		if (x == 0. && y == 0.)
 		{
@@ -21,22 +21,22 @@ public:
 		return sqrt(x * x + y * y);
 	}
 
-	Vec2() = default;
+	constexpr Vec2() = default;
 
-	Vec2(double _x, double _y)
+	constexpr Vec2(double _x, double _y)
 		:x{ _x }, y{ _y }
 	{
 
 	}
 
-	Vec2(const POINT& p)
+	constexpr Vec2(const POINT& p)
 		:x{ double(p.x) },
 		y { double(p.y) }
 	{
 
 	}
 
-	Vec2 Normalize()
+	Vec2 Normalize()const
 	{
 		double dLen = length();
 		if (0. == dLen)
@@ -48,51 +48,67 @@ public:
 		return Vec2{ nx,ny };
 	}
 
-	Vec2 operator + (const Vec2 _other)const
+	constexpr Vec2 operator + (const Vec2& _other)const
 	{
 		return Vec2{ x + _other.x , y + _other.y };
 	}
 
-	Vec2& operator +=(const Vec2 _other)
+	constexpr Vec2& operator +=(const Vec2& _other)
 	{
 		(*this) = (*this) + _other;
 		return *this;
 	}
 
-	Vec2 operator - (const Vec2 _other)const
+	constexpr Vec2 operator - (const Vec2& _other)const
 	{
 		return Vec2{ x - _other.x , y - _other.y };
 	}
 
-	Vec2 operator * (const Vec2 _other)const
+	constexpr Vec2 operator * (const Vec2& _other)const
 	{
 		return Vec2{ x * _other.x , y * _other.y };
 	}
 
-	Vec2 operator * (double _i)const
+	constexpr Vec2 operator * (double _i)const
 	{
 		return Vec2{ x * (double)_i , y * (double)_i };
 	}
 
-	Vec2 operator / (double _d)const
+	constexpr Vec2 operator / (double _d)const
 	{
-		if (0. == _d)
-		{
-			return Vec2{ 0.,0. };
-		}
+		assert(_d != 0.);
 		return Vec2{ x / _d,y / _d };
 	}
 
-	Vec2& operator*=(double _d)
+	constexpr Vec2& operator*=(double _d)
 	{
 		(*this) = (*this) * _d;
 		return *this;
 	}
 
-	Vec2& operator-=(const Vec2& _v)
+	constexpr Vec2& operator-=(const Vec2& _v)
 	{
 		(*this) = (*this) - _v;
 		return *this;
 	}
 	
+public:
+	constexpr bool operator <(const Vec2& _v)const
+	{
+		if (y == _v.y)
+		{
+			return x < _v.x;
+		}
+		else
+		{
+			return y < _v.y;
+		}
+	}
+	operator POINT()const
+	{
+		POINT temp{};
+		temp.x = std::lround(x);
+		temp.y = std::lround(y);
+		return temp;
+	}
 };
