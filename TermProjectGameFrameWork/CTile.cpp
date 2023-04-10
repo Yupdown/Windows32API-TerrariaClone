@@ -18,7 +18,7 @@ void CTile::SetTileTex(wstring_view _strFileName)
 	m_pTileTex = Mgr(CResMgr)->GetTexture(_strFileName);
 }
 
-void CTile::render(HDC _dc)
+void CTile::render(HDC _dc)const
 {
 	m_pTileTex->render(_dc, this, m_vBitPos, m_vSliceSize);
 }

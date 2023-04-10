@@ -49,7 +49,7 @@ CTexture* CResMgr::LoadTexture(wstring_view _strKey, wstring_view _strFilePath)
 	return pTex;
 }
 
-optional<CTexture*> CResMgr::FindTexture(wstring_view _strKey)
+optional<CTexture*> CResMgr::FindTexture(wstring_view _strKey)const
 {
 	auto iter = m_mapTex.find(_strKey.data());
 	if (iter == m_mapTex.end())
@@ -59,55 +59,36 @@ optional<CTexture*> CResMgr::FindTexture(wstring_view _strKey)
 	return static_cast<CTexture*>(iter->second.get());
 }
 
-void CResMgr::DoStrechBlt(HDC _dc,wstring_view _wstrFileName, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSlice)
+void CResMgr::DoStrechBlt(HDC _dc,wstring_view _wstrFileName, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSlice)const
 {
 	if (_vSlice.IsZero())
 	{
-		_vSlice.x = m_mapTex[_wstrFileName.data()]->Width();
-		_vSlice.y = m_mapTex[_wstrFileName.data()]->Height();
+		_vSlice.x = m_mapTex.find(_wstrFileName.data())->second->Width();
+		_vSlice.y = m_mapTex.find(_wstrFileName.data())->second->Height();
 	}
+
 	POINT ptRes = Mgr(CCore)->GetResolution();
+
 	_vScale.x = _vScale.x < ptRes.x ? _vScale.x : ptRes.x;
 	_vScale.y = _vScale.y < ptRes.y ? _vScale.y : ptRes.y;
 
-	///*StretchBlt(m_hBackDC
-	//	, static_cast<int>(_vLT.x)
-	//	, static_cast<int>(_vLT.y)
-	//	, static_cast<int>(_vScale.x)
-	//	, static_cast<int>(_vScale.y)
-	//	, m_mapTex[_wstrFileName.data()]->GetDC()
-	//	, static_cast<int>(_vBitPos.x)
-	//	, static_cast<int>(_vBitPos.y)
-	//	, static_cast<int>(_vSlice.x)
-	//	, static_cast<int>(_vSlice.y)
-	//	, SRCCOPY);*/
 	StretchBlt(m_hBackDC
-		, std::lround(_vLT.x)
-		, std::lround(_vLT.y)
-		, std::lround(_vScale.x)
-		, std::lround(_vScale.y)
-		, m_mapTex[_wstrFileName.data()]->GetDC()
-		, std::lround(_vBitPos.x)
-		, std::lround(_vBitPos.y)
-		, std::lround(_vSlice.x)
-		, std::lround(_vSlice.y)
+		,  static_cast<int>(_vLT.x)
+		,  static_cast<int>(_vLT.y)
+		,  static_cast<int>(_vScale.x)
+		,  static_cast<int>(_vScale.y)
+		, m_mapTex.find(_wstrFileName.data())->second->GetDC()
+		,  static_cast<int>(_vBitPos.x)
+		,  static_cast<int>(_vBitPos.y)
+		,  static_cast<int>(_vSlice.x)
+		,  static_cast<int>(_vSlice.y)
 		, SRCCOPY);
 
-	/*TransparentBlt(_dc
-		, 0
-		, 0
-		, Mgr(CCore)->GetResolution().x
-		, Mgr(CCore)->GetResolution().y
-		, m_hBackDC
-		, 0
-		, 0
-		, Mgr(CCore)->GetResolution().x
-		, Mgr(CCore)->GetResolution().y
-		, RGB(255, 0, 255));*/
 	_vScale.x = min(_vScale.x, _vScale.x + _vLT.x);
 	_vScale.y = min(_vScale.y, _vScale.y + _vLT.y);
 	_vLT.x = max(_vLT.x, 0);
 	_vLT.y = max(_vLT.y, 0);
+
 	TransparentBlt(_dc
 		, static_cast<int>(_vLT.x)
 		, static_cast<int>(_vLT.y)
@@ -139,12 +120,12 @@ CTexture* CResMgr::CreateTexture(wstring_view _strKey, UINT _iWidth, UINT _iHeig
 	return pTex;
 }
 
-CTexture* CResMgr::GetTexture(wstring_view _strFileName)
+CTexture* CResMgr::GetTexture(wstring_view _strFileName)const
 {
 	return FindTexture(_strFileName).value_or(nullptr);
 }
 
-void CResMgr::renderTex(HDC _dc, CTexture* const _pTex, CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)
+void CResMgr::renderTex(HDC _dc,const CTexture* const _pTex,const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const
 {
 	Vec2 vLtPos = {};
 	vLtPos = _pObj->GetPos() - _pObj->GetScale() / 2.;
@@ -155,7 +136,7 @@ void CResMgr::renderTex(HDC _dc, CTexture* const _pTex, CObject* const _pObj, Ve
 	DoStrechBlt(_dc, _pTex->GetKey(), vLtPos, _pObj->GetScale(),_vBitPos,_vSlice);
 }
 
-void CResMgr::renderTex(HDC _dc, CTexture* const _pTex, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSlice)
+void CResMgr::renderTex(HDC _dc,const CTexture* const _pTex, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSlice)const
 {
 	DoStrechBlt(_dc, _pTex->GetKey(), _vLT, _vScale,_vBitPos,_vSlice);
 }

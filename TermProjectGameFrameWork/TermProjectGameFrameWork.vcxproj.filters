@@ -118,6 +118,9 @@
     <Filter Include="Engine\02. Manager\EventMgr">
       <UniqueIdentifier>{d28b997a-7d44-4b03-bc51-f8456f5f3322}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Scene\Scene_Tool">
+      <UniqueIdentifier>{2f591532-e24f-493d-8500-c043a110583e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -219,6 +222,9 @@
     <ClInclude Include="CEventMgr.h">
       <Filter>Engine\02. Manager\EventMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Tool.h">
+      <Filter>Engine\04. Scene\Scene_Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TermProjectGameFrameWork.cpp">
@@ -298,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="CEventMgr.cpp">
       <Filter>Engine\02. Manager\EventMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Tool.cpp">
+      <Filter>Engine\04. Scene\Scene_Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

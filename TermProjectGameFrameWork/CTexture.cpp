@@ -23,12 +23,12 @@ void CTexture::Load(wstring_view _strFilePath)
 	assert(m_hBit);
 }
 
-void CTexture::render(HDC _dc, CObject* const _pObj, Vec2 _vBitPos , Vec2 _vSlice )
+void CTexture::render(HDC _dc, const CObject* const _pObj, Vec2 _vBitPos , Vec2 _vSlice )const
 {
 	Mgr(CResMgr)->renderTex(_dc, this, _pObj,_vBitPos,_vSlice);
 }
 
-void CTexture::render(HDC _dc, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos , Vec2 _vSlice )
+void CTexture::render(HDC _dc, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos , Vec2 _vSlice )const
 {
 	if (_vScale.IsZero())
 	{

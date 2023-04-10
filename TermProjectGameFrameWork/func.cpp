@@ -54,3 +54,20 @@ void ChangeAIState(AI* const _pAI, MON_STATE _eNextState)
 {
 
 }
+
+CoRoutine DelayCoRoutine(CObject* const _pObj,function<void(void)> _fp, double _dDelayTime)
+{
+	double dAccTime = 0.;
+	while (dAccTime < _dDelayTime)
+	{
+		dAccTime += DT;
+		co_await std::suspend_always{};
+	}
+	_fp();
+	co_return;
+}
+
+void StartDelayCoRoutine(CObject* const _pObj, function<void(void)>&& _fp, double _dDelayTime)
+{
+	StartCoRoutine(_pObj, DelayCoRoutine(_pObj, std::move(_fp), _dDelayTime));
+}

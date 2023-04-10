@@ -21,7 +21,7 @@ enum class KEY
 	SPACE,
 	ENTER, 
 	TAB,
-	LBTN,	
+	LBTN,
 	RBTN,	
 	LSHIFT, 
 	CTRL, 

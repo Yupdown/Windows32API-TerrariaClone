@@ -3,6 +3,7 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "CScene_Start.h"
+#include "CScene_Tool.h"
 
 CSceneMgr::CSceneMgr()
 {
@@ -16,12 +17,14 @@ CSceneMgr::~CSceneMgr()
 void CSceneMgr::init()
 {
 	// Scene »ý¼º
-	m_arrScene[(UINT)SCENE_TYPE::START] = make_unique<CScene_Start>();
-	m_arrScene[(UINT)SCENE_TYPE::START]->SetName(L"Start Scene");
+	m_arrScene[etoi(SCENE_TYPE::START)] = make_unique<CScene_Start>();
+	m_arrScene[etoi(SCENE_TYPE::START)]->SetName(L"Start Scene");
 
+	m_arrScene[etoi(SCENE_TYPE::TOOL)] = make_unique<CScene_Tool>();
+	m_arrScene[etoi(SCENE_TYPE::TOOL)]->SetName(L"Tool Scene");
 
-	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START].get();
-
+	//m_pCurScene = m_arrScene[etoi(SCENE_TYPE::TOOL)].get();
+	m_pCurScene = m_arrScene[etoi(SCENE_TYPE::START)].get();
 
 	m_pCurScene->Enter();
 }

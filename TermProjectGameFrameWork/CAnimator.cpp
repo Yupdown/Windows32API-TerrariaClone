@@ -55,7 +55,7 @@ void CAnimator::component_update()
 	}
 }
 
-void CAnimator::component_render(HDC _dc)
+void CAnimator::component_render(HDC _dc)const
 {
 	if (m_pCurAnim)
 	{

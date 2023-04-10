@@ -14,7 +14,7 @@ void StartCoRoutine(CObject* const _pObj,CoRoutine&& _co);
 
 void StartCoEvent(CoRoutine&& _co);
 
-template <typename T>
+template <typename T> requires std::is_base_of<CObject, T>::value
 CoRoutine DelayCoRoutine(T* const _pObj, void(T::* _objFp)(void), double _dDelayTime)
 {
 	double dAccTime = 0.;
@@ -27,28 +27,17 @@ CoRoutine DelayCoRoutine(T* const _pObj, void(T::* _objFp)(void), double _dDelay
 	co_return;
 }
 
-template<typename T>
+template<typename T> requires std::is_base_of<CObject, T>::value
 void StartDelayCoRoutine(T* const _pObj, void(T::* _objFp)(void), double _dDelayTime)
 {
 	StartCoRoutine(_pObj, DelayCoRoutine(_pObj, _objFp,_dDelayTime));
 }
 
-CoRoutine DelayCoRoutineLambda(CObject* const _pObj, function<void(void)>&& _fp, double _dDelayTime)
-{
-	double dAccTime = 0.;
-	while (dAccTime < _dDelayTime)
-	{
-		dAccTime += DT;
-		co_await std::suspend_always{};
-	}
-	_fp();
-	co_return;
-}
+CoRoutine DelayCoRoutine(CObject* const _pObj, function<void(void)> _fp, double _dDelayTime);
 
-void StartDelayCoRoutine(CObject* const _pObj, function<void(void)>&& _fp, double _dDelayTime)
-{
-	StartCoRoutine(_pObj, DelayCoRoutineLambda(_pObj, std::move(_fp), _dDelayTime));
-}
+
+void StartDelayCoRoutine(CObject* const _pObj, function<void(void)>&& _fp, double _dDelayTime);
+
 
 void CreateObj(CObject* const _pObj, GROUP_TYPE _eGroup);
 

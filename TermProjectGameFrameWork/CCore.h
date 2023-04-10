@@ -22,8 +22,8 @@ private:
 	HMENU			m_hMenu; 
 public:
 	void CreateBrushPen(); 
-	HBRUSH	GetBrush(BRUSH_TYPE _eType)const { return m_arrBrush[(UINT)_eType]; }
-	HPEN	GetPen(PEN_TYPE _eType)const { return m_arrPen[(UINT)_eType]; }
+	constexpr HBRUSH	GetBrush(BRUSH_TYPE _eType)const { return m_arrBrush[(UINT)_eType]; }
+	constexpr HPEN	GetPen(PEN_TYPE _eType)const { return m_arrPen[(UINT)_eType]; }
 public:
 	void DockMenu();
 	void DividMenu(); 
@@ -33,11 +33,11 @@ public:
 	void progress();
 	void Clear();
 public:
-	HWND GetMainHwnd()const { return m_hWnd; }	
-	POINT GetResolution()const { return m_ptResolution; }
-	Vec2 GetResolutionV()const { return Vec2{ m_ptResolution }; }
-	HDC GetMainDC()const { return m_hDC; }	
-	HMENU GetMenu()const { return m_hMenu; } 
+	constexpr HWND GetMainHwnd()const { return m_hWnd; }
+	constexpr POINT GetResolution()const { return m_ptResolution; }
+	constexpr Vec2 GetResolutionV()const { return Vec2{ m_ptResolution }; }
+	constexpr HDC GetMainDC()const { return m_hDC; }
+	constexpr HMENU GetMenu()const { return m_hMenu; }
 	HBRUSH ChangeBrush(BRUSH_TYPE _eType);
 	HPEN ChangePen(PEN_TYPE _eType);
 	HDC GetMemDC()const;

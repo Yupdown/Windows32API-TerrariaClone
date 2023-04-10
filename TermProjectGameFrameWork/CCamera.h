@@ -48,7 +48,7 @@ private:
 public:
 	void init();
 	//void render(HDC _dc);
-	Vec2	GetLookAt()const { return m_vCurLookAt; }
+	constexpr Vec2	GetLookAt()const { return m_vCurLookAt; }
 	void	FadeIn(float _fDuration)
 	{
 		tCamEffect ef = {};
@@ -78,10 +78,10 @@ public:
 		m_dAccel = m_dSpeed / m_dTime;
 		SetMoveFlag(true);
 	}
-	void SetTarget(CObject* const _pTarget) { m_pTargetObj = _pTarget;}
-	Vec2 GetRenderPos(Vec2 _vObjPos)const { return _vObjPos - m_vDiff; }
-	Vec2 GetRealPos(Vec2 _vRenderPos)const { return _vRenderPos + m_vDiff; }
-	void SetMoveFlag(bool _b = true) { m_bMoveFlag = _b; }
+	constexpr void SetTarget(CObject* const _pTarget) { m_pTargetObj = _pTarget;}
+	constexpr Vec2 GetRenderPos(Vec2 _vObjPos)const { return _vObjPos - m_vDiff; }
+	constexpr Vec2 GetRealPos(Vec2 _vRenderPos)const { return _vRenderPos + m_vDiff; }
+	constexpr void SetMoveFlag(bool _b = true) { m_bMoveFlag = _b; }
 public:
 	void update();
 

@@ -52,7 +52,7 @@ void CRigidBody::component_update()
 	m_vForce = Vec2{ 0.,0. };
 }
 
-void CRigidBody::component_render(HDC _dc)
+void CRigidBody::component_render(HDC _dc)const
 {
 	
 }

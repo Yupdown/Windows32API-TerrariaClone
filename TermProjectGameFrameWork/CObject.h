@@ -56,18 +56,18 @@ public:
 	//CComponent* GetComponent(COMPONENT_TYPE _eCompType)const { return m_arrComp[(UINT)_eCompType].get(); }
 	void AddComponent(COMPONENT_TYPE _eCompType, CComponent* const _pComp);
 	void CreateComponent(COMPONENT_TYPE _eCompType, Vec2 _vScale = {}, Vec2 _vPos = {});
-	void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
-	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
-	Vec2 GetPos()const { return m_vPos; }
-	Vec2 GetScale()const { return m_vScale; }
+	constexpr void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
+	constexpr void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
+	constexpr Vec2 GetPos()const { return m_vPos; }
+	constexpr Vec2 GetScale()const { return m_vScale; }
 public:
 	virtual void OnCollision(CCollider* const _pOther) {}	
 	virtual void OnCollisionEnter(CCollider* const _pOther) {}
 	virtual void OnCollisionExit(CCollider* const _pOther) {}
 public:
-	void component_render(HDC _dc);
+	void component_render(HDC _dc)const;
 	virtual void update();
-	virtual void render(HDC _dc);	
+	virtual void render(HDC _dc)const;
 	virtual void component_update();
 };
 

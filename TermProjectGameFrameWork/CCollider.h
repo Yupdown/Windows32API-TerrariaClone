@@ -20,21 +20,21 @@ private:
 	UINT			m_iID = {};		
 	int			m_iColCnt = {};
 public:
-	UINT GetID()const { return m_iID; }
+	constexpr UINT GetID()const { return m_iID; }
 	CCollider* Clone(CObject* const _pOwner)const override
 	{
 		CCollider* pNewComp = new CCollider{ *this };
 		pNewComp->SetOwner(_pOwner);
 		return pNewComp;
 	}
-	Vec2 GetFinalPos()const { return m_vFinalPos; } 
-	void SetOffsetPos(Vec2 _vPos) { m_vOffsetPos = _vPos; }
-	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
-	Vec2 GetOffsetPos()const { return m_vOffsetPos; }
-	Vec2 GetScale()const { return m_vScale; }
+	constexpr Vec2 GetFinalPos()const { return m_vFinalPos; }
+	constexpr void SetOffsetPos(Vec2 _vPos) { m_vOffsetPos = _vPos; }
+	constexpr void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
+	constexpr Vec2 GetOffsetPos()const { return m_vOffsetPos; }
+	constexpr Vec2 GetScale()const { return m_vScale; }
 public:
 	void component_update()override;
-	void component_render(HDC _dc)override;
+	void component_render(HDC _dc)const override;
 public:
 	void OnCollision(CCollider* const _pOther);	
 	void OnCollisionEnter(CCollider* const _pOther);

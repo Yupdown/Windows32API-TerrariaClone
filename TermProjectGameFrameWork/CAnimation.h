@@ -37,7 +37,7 @@ public:
 	bool	IsFinish()const { return m_bFinish; }
 	tAnimFrm& GetFrame(int _iIdx) { return m_vecFrm[_iIdx]; }
 	size_t GetMaxFrame()const { return m_vecFrm.size(); }
-	const wstring& GetName()const { return m_strName; }
+	constexpr const wstring& GetName()const { return m_strName; }
 public:
 	void update();
 	void render(HDC _dc,int _iDir);

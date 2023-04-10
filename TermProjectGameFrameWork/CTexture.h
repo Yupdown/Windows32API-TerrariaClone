@@ -21,7 +21,7 @@ public:
 	UINT	Width()const { return m_bitInfo.bmWidth; }	
 	UINT	Height()const { return m_bitInfo.bmHeight; } 
 	HDC		GetDC()const { return m_dc; }
-	void render(HDC _dc,CObject* const _pObj, Vec2 _vBitPos = {}, Vec2 _vSlice = {});
-	void render(HDC _dc, Vec2 _vLT = {}, Vec2 _vScale = {}, Vec2 _vBitPos = {}, Vec2 _vSlice = {});
+	void render(HDC _dc,const CObject* const _pObj, Vec2 _vBitPos = {}, Vec2 _vSlice = {})const;
+	void render(HDC _dc, Vec2 _vLT = {}, Vec2 _vScale = {}, Vec2 _vBitPos = {}, Vec2 _vSlice = {})const;
 };
 

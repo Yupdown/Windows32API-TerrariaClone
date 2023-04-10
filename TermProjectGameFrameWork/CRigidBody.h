@@ -51,7 +51,7 @@ public:
 	void SetForce(Vec2 _v) { m_vForce = _v; }
 public:
 	void component_update()override;
-	void component_render(HDC _dc)override;
+	void component_render(HDC _dc)const override;
 	void update_gravity();
 };
 

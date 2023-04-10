@@ -24,7 +24,7 @@ public:
 	optional<CAnimation*> FindAnimation(wstring_view _strName);
 	void Play(wstring_view _strName, bool _bRepeat);	
 	void component_update()override;
-	void component_render(HDC _dc)override;
+	void component_render(HDC _dc)const override;
 	void SetAnimRight() { m_iAnimDir = 0; }
 	void SetAnimLeft() { m_iAnimDir = 1; }
 	CAnimation* GetCurAnim()const { return m_pCurAnim; };

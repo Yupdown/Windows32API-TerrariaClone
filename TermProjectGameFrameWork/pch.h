@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <memory>
+#include <execution>
 using std::jthread;
 using std::thread;
 using std::vector;
@@ -48,6 +49,9 @@ using std::multimap;
 #include <fstream>
 #include <chrono>
 #include <filesystem>
+#include <concepts>
+#include <type_traits>
+#include <bitset>
 using std::wofstream;
 using std::wifstream;
 using std::list;

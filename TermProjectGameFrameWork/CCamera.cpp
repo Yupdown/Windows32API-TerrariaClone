@@ -36,14 +36,14 @@ void CCamera::update()
 		}
 	}
 
-	if (KEY_HOLD(KEY::UP))
-		m_vLookAt.y -= 500. * DT;
-	if (KEY_HOLD(KEY::DOWN))
-		m_vLookAt.y += 500. * DT;
-	if (KEY_HOLD(KEY::LEFT))
-		m_vLookAt.x -= 500. * DT;
-	if (KEY_HOLD(KEY::RIGHT))
-		m_vLookAt.x += 500. * DT;
+	/*if (KEY_HOLD(KEY::W))
+		m_vLookAt.y -= 50. * DT;
+	if (KEY_HOLD(KEY::S))
+		m_vLookAt.y += 50. * DT;
+	if (KEY_HOLD(KEY::A))
+		m_vLookAt.x -= 50. * DT;
+	if (KEY_HOLD(KEY::D))
+		m_vLookAt.x += 50. * DT;*/
 
 	
 	if (KEY_TAP(KEY::TAB) || ShakeFlag)

@@ -22,7 +22,7 @@ void CScene_Start::Enter()
 	p->SetPos(Vec2{ 100., 100. });
 	p->SetScale(Vec2{ 150., 150. });
 	AddObject(p, GROUP_TYPE::PLAYER);
-	//Mgr(CCamera)->SetTarget(p);
+	Mgr(CCamera)->SetTarget(p);
 	for (int i = 0; i < 100 ;++i)
 	{
 		for (int j = 0; j < 100; ++j)
@@ -31,14 +31,17 @@ void CScene_Start::Enter()
 		}
 	}
 	
-	//auto pMon = new CMonster;
+	for (int i = 0; i < 100; ++i) {
+		auto pMon = new CMonster;
+		AddObject(pMon, GROUP_TYPE::MONSTER);
+	}
+	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER);
+	//auto a = new CPlayer;
+//	pMon->SetPos(Vec2{ 150., 150. });
+//	pMon->SetScale(Vec2{ 100., 100. });
 	//AddObject(pMon, GROUP_TYPE::MONSTER);
-	/*auto a = new CPlayer;
-	a->SetPos(Vec2{ 150., 150. });
-	a->SetScale(Vec2{ 100., 100. });
-	AddObject(a, GROUP_TYPE::PLAYER);
 
-	Mgr(CCollisionMgr)->RegisterCollision(p, a);*/
+	//Mgr(CCollisionMgr)->RegisterCollision(p, a);
 	//Mgr(CCamera)->SetTarget(p);
 	//Mgr(CCollisionMgr)->RegisterCollision(p, pMon);
 }

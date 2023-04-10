@@ -22,7 +22,7 @@ public:
     void SetTileTex(wstring_view _strFileName);
     void SetTileBitPos(Vec2 _vBitPos) { m_vBitPos = _vBitPos; }
     void SetTileSliceSize(Vec2 _vSliceSize) { m_vSliceSize = _vSliceSize; }
-    void render(HDC _dc)override;
+    void render(HDC _dc)const override;
     void DeleteTile(HDC _dc);
 };
 

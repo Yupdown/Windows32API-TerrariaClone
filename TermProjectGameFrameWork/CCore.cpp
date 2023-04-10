@@ -75,7 +75,7 @@ int CCore::init(HWND _hwnd, POINT _ptResolution)
 
 	// 대신 툴씬이 사용할 메뉴바의 핸들을 가지고있는다.
 	// 로드메뉴 함수는 리소스 헤더를 알아야한다
-	//m_hMenu = LoadMenu(nullptr, MAKEINTRESOURCEW(IDC_CLIENT)); // 시작할때 썻던 메뉴아이디 복붙 // 소멸자에서 해제 필수임
+	m_hMenu = LoadMenu(nullptr, MAKEINTRESOURCEW(IDC_TERMPROJECTGAMEFRAMEWORK)); // 시작할때 썻던 메뉴아이디 복붙 // 소멸자에서 해제 필수임
 	// 대신 이제 툴씬 enter 할때 메뉴 만드는작업이 필요하다
 
 	m_hDC = GetDC(m_hWnd);	

@@ -35,21 +35,21 @@ void CObject::update()
 	m_vPrevPos = m_vPos;
 }
 
-void CObject::render(HDC _dc)
+void CObject::render(HDC _dc)const
 {
 	Vec2 vPos = GetPos();
 	Vec2 vScale = GetScale();
 	//SelectGDI gdi{ _dc,BRUSH_TYPE::HOLLOW };
 	vPos = CCamera::GetInst()->GetRenderPos(vPos);
-	/*Rectangle(_dc, (int)(vPos.x - vScale.x / 2.),
+	Rectangle(_dc, (int)(vPos.x - vScale.x / 2.),
 		(int)(vPos.y - vScale.y / 2.),
 		(int)(vPos.x + vScale.x / 2.),
-		(int)(vPos.y + vScale.y / 2.));*/
+		(int)(vPos.y + vScale.y / 2.));
 }
 
-void CObject::component_render(HDC _dc)
+void CObject::component_render(HDC _dc)const
 {
-	for (auto& component : m_arrComp)
+	for (const auto& component : m_arrComp)
 	{
 		if (component)
 		{

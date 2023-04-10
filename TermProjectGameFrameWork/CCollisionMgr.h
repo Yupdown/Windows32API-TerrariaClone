@@ -20,17 +20,21 @@ class CCollisionMgr
 	CCollisionMgr();
 	~CCollisionMgr();
 private:
-	unordered_multimap<CCollider*, CCollider*> m_mapCollison;
 	unordered_map<ULONGLONG, bool> m_mapColPrev;
+	std::bitset<etoi(GROUP_TYPE::END)> m_bitColTable[etoi(GROUP_TYPE::END)];
 private:
-	bool IsCollision(CCollider* const _pLeftCol, CCollider* const _pRightCol);
+	bool IsCollision(const CCollider* const _pLeftCol, const CCollider* const _pRightCol)const;
 public:
-	void RegisterCollision(CObject* const _pLeft, CObject* const _pRight);
 	void update();
+	void CollisionUpdateGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight);
+	void RegisterGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight);
 	void Reset()
 	{
-		m_mapCollison.clear();
 		m_mapColPrev.clear();
+		for (auto& bit : m_bitColTable)
+		{
+			bit.reset();
+		}
 	}
 };
 

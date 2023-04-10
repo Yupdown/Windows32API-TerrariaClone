@@ -2,22 +2,28 @@
 #include "CCollisionMgr.h"
 #include "CCollider.h"
 #include "CObject.h"
+#include "CSceneMgr.h"
+#include "CScene.h"
 
 CCollisionMgr::CCollisionMgr()
 {
+	for (auto& bit : m_bitColTable)
+	{
+		bit.reset();
+	}
 }
 
 CCollisionMgr::~CCollisionMgr()
 {
 }
 
-bool CCollisionMgr::IsCollision(CCollider* const _pLeftCol, CCollider* const _pRightCol)
+bool CCollisionMgr::IsCollision(const CCollider* const _pLeftCol, const CCollider* const _pRightCol)const
 {
-	Vec2 vLeftPos = _pLeftCol->GetFinalPos();
-	Vec2 vLeftScale = _pLeftCol->GetScale();
-
-	Vec2 vRightPos = _pRightCol->GetFinalPos();
-	Vec2 vRightScale = _pRightCol->GetScale();
+	const Vec2 vLeftPos = _pLeftCol->GetFinalPos();
+	const Vec2 vLeftScale = _pLeftCol->GetScale();
+	 
+	const Vec2 vRightPos = _pRightCol->GetFinalPos();
+	const Vec2 vRightScale = _pRightCol->GetScale();
 
 	if (abs(vLeftPos.x - vRightPos.x) <= (vLeftScale.x + vRightScale.x) / 2.
 		&& abs(vLeftPos.y - vRightPos.y) <= (vLeftScale.y + vRightScale.y) / 2.)
@@ -28,64 +34,107 @@ bool CCollisionMgr::IsCollision(CCollider* const _pLeftCol, CCollider* const _pR
 	return false;
 }
 
-void CCollisionMgr::RegisterCollision(CObject* const _pLeft, CObject* const _pRight)
-{
-	auto LeftCol = _pLeft->GetComp<CCollider>();
-	auto RightCol = _pRight->GetComp<CCollider>();
-	COLLIDER_ID ID = {};
-	ID.Left_id = LeftCol->GetID();
-	ID.Right_id = RightCol->GetID();
-	m_mapColPrev.insert(make_pair(ID.ID, false));
-	m_mapCollison.insert(make_pair(LeftCol, RightCol));
-}
 
 void CCollisionMgr::update()
 {
-	for (auto& [left, right] : m_mapCollison)
+	for (int iRow = 0; iRow < etoi(GROUP_TYPE::END); ++iRow)
 	{
-		const bool nowCollison = IsCollision(left, right);
-		COLLIDER_ID ID = {};
-		ID.Left_id = left->GetID();
-		ID.Right_id = right->GetID();
-		const bool prevCol = m_mapColPrev[ID.ID];
-		if (nowCollison)
+		for (int iCol = iRow; iCol < etoi(GROUP_TYPE::END); ++iCol)
 		{
-			if (prevCol)
+			if (m_bitColTable[iRow][iCol])
 			{
-				if (left->GetOwner()->IsDead() || right->GetOwner()->IsDead())
+				CollisionUpdateGroup(static_cast<GROUP_TYPE>(iRow), static_cast<GROUP_TYPE>(iCol));
+			}
+		}
+	}
+}
+
+void CCollisionMgr::RegisterGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
+{
+	int iRow = static_cast<int>(_eLeft);
+	int iCol = static_cast<int>(_eRight);
+
+	if (iRow > iCol)
+	{
+		std::swap(iRow, iCol);
+	}
+
+	m_bitColTable[iRow][iCol].flip();
+}
+
+void CCollisionMgr::CollisionUpdateGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
+{
+	auto pCurScene = Mgr(CSceneMgr)->GetCurScene();
+
+	auto& vecLeft = pCurScene->GetGroupObject(_eLeft);
+	auto& vecRight = pCurScene->GetGroupObject(_eRight);
+
+	for (size_t i = 0; i < vecLeft.size(); ++i)
+	{
+		if (nullptr == vecLeft[i]->GetComp<CCollider>())
+		{
+			continue;
+		}
+
+		for (size_t j = 0; j < vecRight.size(); ++j)
+		{
+			if (nullptr == vecRight[j]->GetComp<CCollider>()
+				|| vecLeft[i] == vecRight[j])
+			{
+				continue;
+			}
+
+			auto pLeftCol = vecLeft[i]->GetComp<CCollider>();
+			auto pRightCol = vecRight[j]->GetComp<CCollider>();
+
+			COLLIDER_ID ID;
+			ID.Left_id = pLeftCol->GetID();
+			ID.Right_id = pRightCol->GetID();
+
+			auto iter = m_mapColPrev.find(ID.ID);
+
+			if (m_mapColPrev.end() == iter)
+			{
+				iter = m_mapColPrev.insert(make_pair(ID.ID, false)).first;
+			}
+
+			if (IsCollision(pLeftCol, pRightCol))
+			{
+				if (iter->second)
 				{
-					left->OnCollisionExit(right);
-					right->OnCollisionExit(left);
+					if (vecLeft[i]->IsDead() || vecRight[j]->IsDead())
+					{
+						pLeftCol->OnCollisionExit(pRightCol);
+						pRightCol->OnCollisionExit(pLeftCol);
+					}
+					else
+					{
+						pLeftCol->OnCollision(pRightCol);
+						pRightCol->OnCollision(pLeftCol);
+					}
 				}
+
 				else
 				{
-					left->OnCollision(right);
-					right->OnCollision(left);
+					if (!vecLeft[i]->IsDead() && !vecRight[j]->IsDead())	
+					{												
+						pLeftCol->OnCollisionEnter(pRightCol);
+						pRightCol->OnCollisionEnter(pLeftCol);
+						iter->second = true;
+					}
 				}
 			}
 			else
 			{
-				if (left->GetOwner()->IsDead() || right->GetOwner()->IsDead())
+				if (iter->second)
 				{
-					continue;
+					pLeftCol->OnCollisionExit(pRightCol);
+					pRightCol->OnCollisionExit(pLeftCol);
+					iter->second = false;
 				}
-				left->OnCollisionEnter(right);
-				right->OnCollisionEnter(left);
 			}
 		}
-		else
-		{
-			if (prevCol)
-			{
-				left->OnCollisionExit(right);
-				right->OnCollisionExit(left);
-			}
-		}
-		m_mapColPrev[ID.ID] = nowCollison;
 	}
-	std::erase_if(m_mapCollison, [](const auto& col) {
-		return col.first->GetOwner()->IsDead() || col.second->GetOwner()->IsDead();
-		});
 }
 
 
