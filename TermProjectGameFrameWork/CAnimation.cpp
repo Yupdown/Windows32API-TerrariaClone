@@ -36,10 +36,10 @@ CAnimation::~CAnimation()
 
 void CAnimation::update()
 {
-	m_dAccTime += DT;
-	if (m_dAccTime > m_vecFrm[m_iCurFrm].dDuration)
+	m_fAccTime += DT;
+	if (m_fAccTime > m_vecFrm[m_iCurFrm].fDuration)
 	{
-		m_dAccTime = m_dAccTime - m_vecFrm[m_iCurFrm].dDuration;
+		m_fAccTime = m_fAccTime - m_vecFrm[m_iCurFrm].fDuration;
 		++m_iCurFrm;
 		if (m_vecFrm.size() <= m_iCurFrm)
 		{
@@ -60,7 +60,14 @@ void CAnimation::render(HDC _dc, int _iDir)
 	vPos += m_vecFrm[m_iCurFrm].vOffset;
 
 	//vPos = CCamera::GetInst()->GetRenderPos(vPos);
-	m_pTex->render(_dc, m_pAnimator->GetOwner(), m_vecFrm[m_iCurFrm].vLT + Vec2{ m_vecFrm[m_iCurFrm].vSlice.x *_iDir,0 }, m_vecFrm[m_iCurFrm].vSlice - Vec2{ m_vecFrm[m_iCurFrm].vSlice.x*2*_iDir, 0});
+	//Mgr(CResMgr)->renderImg(m_pAnimImg, pObj, m_vecFrm[m_iCurFrm].vLT, m_vecFrm[m_iCurFrm].vSlice);
+	//m_pTex->render(_dc, m_pAnimator->GetOwner(), m_vecFrm[m_iCurFrm].vLT , m_vecFrm[m_iCurFrm].vSlice);
+
+	Mgr(CResMgr)->renderImg(m_pAnimImg, m_pAnimator->GetOwner(), m_vecFrm[m_iCurFrm].vLT + Vec2{ m_vecFrm[m_iCurFrm].vSlice.x *_iDir,0 }, m_vecFrm[m_iCurFrm].vSlice - Vec2{ m_vecFrm[m_iCurFrm].vSlice.x*2*_iDir, 0});
+	
+	//m_pTex->render(_dc, m_pAnimator->GetOwner(), m_vecFrm[m_iCurFrm].vLT + Vec2{ m_vecFrm[m_iCurFrm].vSlice.x *_iDir,0 }, m_vecFrm[m_iCurFrm].vSlice - Vec2{ m_vecFrm[m_iCurFrm].vSlice.x*2*_iDir, 0});
+	
+	
 	/*TransparentBlt(_dc
 		, (int)(vPos.x - m_vecFrm[m_iCurFrm].vSlice.x / 2.)
 		, (int)(vPos.y - m_vecFrm[m_iCurFrm].vSlice.y / 2.)
@@ -96,16 +103,16 @@ void CAnimation::render(HDC _dc, int _iDir)
 
 }
 
-void CAnimation::Create(wstring_view _strFileName, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, double _dDuration, UINT _iFrameCount)
+void CAnimation::Create(wstring_view _strFileName, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT _iFrameCount)
 {
-	m_pTex = Mgr(CResMgr)->GetTexture(_strFileName);
-	assert(m_pTex);
+	m_pAnimImg = Mgr(CResMgr)->GetImg(_strFileName);
+	assert(m_pAnimImg);
 	tAnimFrm frm = {}; 
 	for (UINT i = 0; i < _iFrameCount; ++i)
 	{
-		frm.dDuration = _dDuration;	
+		frm.fDuration = _fDuration;	
 		frm.vSlice = _vSliceSize;
-		frm.vLT = _vLT + _vStep * static_cast<double>(i); 
+		frm.vLT = _vLT + _vStep * static_cast<float>(i); 
 		m_vecFrm.emplace_back(frm);
 	}
 }
@@ -124,10 +131,10 @@ void CAnimation::Save(wofstream& out)
 
 	// 2. 텍스쳐의 키값과 경로를 저장한다.
 	out << L"[Texture Name]" << '\n';
-	out << m_pTex->GetKey() << '\n' << '\n';
+	//out << m_pTex->GetKey() << '\n' << '\n';
 
 	out << L"[Texture Path]" << '\n';
-	out << m_pTex->GetPath() << '\n' << '\n';
+	//out << m_pTex->GetPath() << '\n' << '\n';
 
 	// 3. 프레임 개수
 	out << L"[Frame Count]" << '\n';
@@ -149,7 +156,7 @@ void CAnimation::Save(wofstream& out)
 		out << m_vecFrm[i].vOffset.x << ' ' << m_vecFrm[i].vOffset.y << '\n' << '\n';
 
 		out << L"[Duration]" << '\n';
-		out << m_vecFrm[i].dDuration << '\n';
+		out << m_vecFrm[i].fDuration << '\n';
 
 		out << '\n' << '\n';
 	}
@@ -224,7 +231,7 @@ bool CAnimation::Load(wifstream& in)
 		//getline(in, dummy); // duration
 		//in >> frmInfo.fDuration;
 		//while ('\n' == in.peek())in.get();
-		ReadMany(in, frmInfo.dDuration);
+		ReadMany(in, frmInfo.fDuration);
 	}
 	//while ('\n' == in.peek())in.get();
 	return true;

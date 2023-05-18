@@ -59,7 +59,7 @@ using std::list;
 using std::initializer_list;
 #pragma comment(lib,"Msimg32.lib")	
 using std::pair;
-
+#include <atlimage.h>
 #include "Singleton.hpp"
 #include "define.h"
 #include "Vec2.hpp"

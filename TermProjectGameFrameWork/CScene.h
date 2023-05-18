@@ -6,14 +6,18 @@ class CTexture;
 	
 class CScene
 {
+	static int g_iSceneID;
 public:
 	CScene();
 	virtual ~CScene();
 protected:
 	map<Vec2, unique_ptr<CTile>>			m_mapTile;
-	CTexture*							m_pBackGroundTex;
+	const CImage* m_pBackGroundImg = nullptr;
+	const CImage* m_pBackGroundImg2 = nullptr;
+	vector<CImage*> m_vecSceneLayer;
 private:
 	vector<unique_ptr<CObject>>			m_vecObj[(UINT)GROUP_TYPE::END]; // 오브젝트를 관리할 벡터를 그룹개수만큼
+	vector<unique_ptr<CObject>>			m_vecDeadObj;
 	wstring								m_strName;	
 	CObject*							m_pPlayer = {};
 public: 
@@ -37,7 +41,6 @@ public:
 	virtual void Exit() = 0;
 
 public:
-	void Clear();
 	void SetName(wstring_view _strName) { m_strName = _strName; }
 	const wstring& GetName() { return m_strName; }
 

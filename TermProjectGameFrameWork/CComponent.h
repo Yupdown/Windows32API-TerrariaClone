@@ -10,8 +10,8 @@ protected:
 protected:
 	CComponent() = default;
 	CComponent(const CComponent&) = default;
-	void SetOwner(CObject* const _pOwner) { m_pOwner = _pOwner; }
 public:
+	void SetOwner(CObject* const _pOwner) { m_pOwner = _pOwner; }
 	CObject* GetOwner()const { return m_pOwner; }
 	virtual CComponent* Clone(CObject* const _pOwner)const = 0;
 	virtual ~CComponent() = default;

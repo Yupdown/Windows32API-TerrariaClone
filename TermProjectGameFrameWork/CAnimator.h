@@ -20,7 +20,7 @@ private:
 	wifstream			m_fsIn;
 	wofstream			m_fsOut;
 public:
-	void CreateAnimation(wstring_view _strAnimName, wstring_view _strFileName, Vec2 _vLT, Vec2 _vSliceSize, double _dDuration, UINT _iFrameCount);
+	void CreateAnimation(wstring_view _strAnimName, wstring_view _strFileName, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep , float _fDuration, UINT _iFrameCount);
 	optional<CAnimation*> FindAnimation(wstring_view _strName);
 	void Play(wstring_view _strName, bool _bRepeat);	
 	void component_update()override;

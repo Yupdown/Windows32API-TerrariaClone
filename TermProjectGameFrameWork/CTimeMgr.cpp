@@ -11,7 +11,7 @@ CTimeMgr::~CTimeMgr()
 
 void CTimeMgr::init()
 {
-	m_DeltaTime = std::chrono::duration<double>(0.);
+	m_DeltaTime = std::chrono::duration<float>(0.f);
 	m_PrevTime = std::chrono::steady_clock::now();
 }
 

@@ -11,16 +11,15 @@ CAnimator::~CAnimator()
 {
 }
 
-void CAnimator::CreateAnimation(wstring_view _strName, wstring_view _strFileName, Vec2 _vLT, Vec2 _vSliceSize, double _dDuration, UINT _iFrameCount)
+void CAnimator::CreateAnimation(wstring_view _strName, wstring_view _strFileName, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT _iFrameCount)
 {
 	CAnimation* pAnim = FindAnimation(_strName).value_or(nullptr);
 	assert(!pAnim);
 	pAnim = new CAnimation;
 	pAnim->SetName(_strName);
 	pAnim->m_pAnimator = this;
-	Vec2 _vStep = Vec2{ _vSliceSize.x,0. };
-	_vSliceSize.x -= 2.;
-	pAnim->Create(_strFileName, _vLT, _vSliceSize, _vStep, _dDuration, _iFrameCount);
+	_vSliceSize.x -= 1;
+	pAnim->Create(_strFileName, _vLT, _vSliceSize, _vStep, _fDuration, _iFrameCount);
 	m_mapAnim.insert(make_pair(_strName, pAnim));
 }
 
@@ -80,5 +79,5 @@ CAnimator::CAnimator(const CAnimator& _other)
 		auto iter = m_mapAnim.insert(make_pair(name, new CAnimation{ *anim }));
 		iter.first->second->m_pAnimator = this;
 	}
-	m_pCurAnim = _other.m_pCurAnim;
+	//m_pCurAnim = _other.m_pCurAnim;
 }

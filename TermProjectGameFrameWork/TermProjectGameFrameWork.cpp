@@ -41,7 +41,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-	if (FAILED(CCore::GetInst()->init(g_hWnd, POINT{ 1280,668 })))        // 해상도
+	if (FAILED(CCore::GetInst()->init(g_hWnd, POINT{ 1400,800 })))        // 해상도
 	{
 		MessageBox(nullptr, L"게임 실행 실패", L"ERROR", MB_OK);
 	}

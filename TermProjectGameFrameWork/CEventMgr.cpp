@@ -17,11 +17,6 @@ void CEventMgr::init()
 
 void CEventMgr::update()
 {
-	for (const auto& eve : m_vecEvent)
-	{
-		eve();
-	}
-
 	for (auto iter = m_mapCoRoutine.begin(); iter != m_mapCoRoutine.end();)
 	{
 		if (iter->second.done() || iter->first->IsDead())
@@ -44,8 +39,16 @@ void CEventMgr::update()
 		else
 		{
 			iter->resume();
+			++iter;
 		}
 	}
 
+	for (const auto& eve : m_vecEvent)
+	{
+		eve();
+	}
+
 	m_vecEvent.clear();
+	m_vecDeadObj.clear();
+	
 }

@@ -20,22 +20,22 @@ void CTexture::Load(wstring_view _strFilePath)
 	HBITMAP hPrevBit = (HBITMAP)SelectObject(m_dc, m_hBit);
 	DeleteObject(hPrevBit);	
 	GetObject(m_hBit, sizeof(BITMAP), &m_bitInfo);
-	assert(m_hBit);
+	//assert(m_hBit);
 }
 
 void CTexture::render(HDC _dc, const CObject* const _pObj, Vec2 _vBitPos , Vec2 _vSlice )const
 {
-	Mgr(CResMgr)->renderTex(_dc, this, _pObj,_vBitPos,_vSlice);
+	//Mgr(CResMgr)->renderTex(_dc, this, _pObj,_vBitPos,_vSlice);
 }
 
 void CTexture::render(HDC _dc, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos , Vec2 _vSlice )const
 {
-	if (_vScale.IsZero())
+	/*if (_vScale.IsZero())
 	{
 		_vScale.x = Width();
 		_vScale.y = Height();
-	}
-	Mgr(CResMgr)->renderTex(_dc, this, _vLT,_vScale,_vBitPos,_vSlice);
+	}*/
+//	Mgr(CResMgr)->renderTex(_dc, this, _vLT,_vScale,_vBitPos,_vSlice);
 }
 
 

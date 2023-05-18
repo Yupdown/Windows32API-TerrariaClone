@@ -9,10 +9,10 @@ private:
 	~CTimeMgr();
 private:
 	std::chrono::steady_clock::time_point m_PrevTime;
-	std::chrono::duration<double> m_DeltaTime;
+	std::chrono::duration<float> m_DeltaTime;
 public:
 	void init();
 	void update();
-	double GetDT()const { return m_DeltaTime.count(); }
+	float GetDT()const { return m_DeltaTime.count(); }
 };
 

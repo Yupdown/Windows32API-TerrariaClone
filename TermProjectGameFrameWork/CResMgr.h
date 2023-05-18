@@ -11,19 +11,25 @@ class CResMgr
 	CResMgr();
 	~CResMgr();
 private:
-	unordered_map<wstring, unique_ptr<CTexture>>		m_mapTex;
+	unordered_map<wstring, unique_ptr<CImage>>		m_mapCImage;
 	HDC	 m_hBackDC;
 	HBITMAP m_hBackBit;
-private:
-	optional<CTexture*> FindTexture(wstring_view _strKey)const;
-	void DoStrechBlt(HDC _dc,wstring_view _wstrFileName, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos = {}, Vec2 _vSlice = {})const;
-	CTexture* LoadTexture(wstring_view _strKey, wstring_view _strRelativePath);
+
 public:
 	void Clear();
 	void init();
-	CTexture* GetTexture(wstring_view _strFileName)const;
-	CTexture* CreateTexture(wstring_view _strKey, UINT _iWidth, UINT _iHeight);
-	void renderTex(HDC _dc, const CTexture* const _pTex,const CObject* const _pObj, Vec2 _vBitPos = {}, Vec2 _vSlice = {})const;
-	void renderTex(HDC _dc, const CTexture* const _pTex, Vec2 _vLT , Vec2 _vScale, Vec2 _vBitPos = {}, Vec2 _vSlice = {})const;
+	CImage* GetImg(wstring_view _strFileName)const
+	{
+		auto iter = m_mapCImage.find(_strFileName.data());
+		if (m_mapCImage.end() == iter)
+		{
+			assert(0);
+		}
+		return iter->second.get();
+	}
+	CImage* CreateImg(wstring_view _strKey, UINT _iWidth, UINT _iHeight);
+	void renderImg(const CImage* const _pImg, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const;
+	void renderImg(const CImage* const _pImg, Vec2 _vLT, Vec2 _vScale)const;
+	HDC GetResMgrBackDC()const { return m_hBackDC; }
 };
 

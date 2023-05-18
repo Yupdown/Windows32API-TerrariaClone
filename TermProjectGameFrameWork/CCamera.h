@@ -28,23 +28,26 @@ private:
 	Vec2		m_vLookAt = {}; 
 	Vec2		m_vCurLookAt = {}; 
 	Vec2		m_vPrevLookAt = {};
+	Vec2		m_vResolution = {};
+	Vec2		m_vOriginMid = {};
 
 	CObject* m_pTargetObj = {}; 
 
 	Vec2		m_vDiff = {};		
 
-	double		m_dTime = { 1. };
-	double		m_dSpeed = { 3000. };
-	double		m_dAccTime = {};
-	double		m_dAccel = {};
+	float		m_fTime = { 1.f };
+	float		m_fSpeed = { 3000.f };
+	float		m_fAccTime = {};
+	float		m_fAccel = {};
 	CTexture* m_pVeilTex = {}; 
 
-	double		m_Speed = 1000.; 
-	double		m_dShakeAcc = 1.;
+	//float		m_fSpeed = 1000.; 
+	float		m_fShakeAcc = 1.;
 	UINT        Shake = 4;
 	bool		ShakeFlag = false;
 	bool        m_bMoveFlag = false;
 	list<tCamEffect>	m_listCamEffect; 
+	float m_fCamZoom = 1.f;
 public:
 	void init();
 	//void render(HDC _dc);
@@ -69,19 +72,28 @@ public:
 	}
 	void SetLookAt(Vec2 _vLook)
 	{
-		m_dSpeed = 3000.;
-		m_dAccTime = 0.;
+		m_fSpeed = 3000.f;
+		m_fAccTime = 0.f;
 		m_vLookAt = _vLook;
-		double dMoveDist = (m_vLookAt - m_vPrevLookAt).length();
-		m_dTime = 2. * dMoveDist / m_dSpeed;	
-		m_dAccTime = 0.;	
-		m_dAccel = m_dSpeed / m_dTime;
+		float fMoveDist = (m_vLookAt - m_vPrevLookAt).length();
+		m_fTime = 2.f * fMoveDist / m_fSpeed;	
+		m_fAccTime = 0.;	
+		m_fAccel = m_fSpeed / m_fTime;
 		SetMoveFlag(true);
 	}
 	constexpr void SetTarget(CObject* const _pTarget) { m_pTargetObj = _pTarget;}
 	constexpr Vec2 GetRenderPos(Vec2 _vObjPos)const { return _vObjPos - m_vDiff; }
 	constexpr Vec2 GetRealPos(Vec2 _vRenderPos)const { return _vRenderPos + m_vDiff; }
+	constexpr Vec2 GetCurDiff()const { return m_vDiff; }
 	constexpr void SetMoveFlag(bool _b = true) { m_bMoveFlag = _b; }
+	constexpr float GetCamZoom()const { return m_fCamZoom; }
+	void TransformRenderPos()const;
+	void TransformRenderPos(HDC _dc)const;
+	void ResetRenderPos()const;
+	void ResetRenderPos(HDC _dc)const;
+	pair<Vec2,Vec2> GetRenderPos(const CObject* const _pObj)const;
+	void SetNowLookAt(Vec2 _vLook) { m_vCurLookAt =m_vLookAt = _vLook; }
+	void renderBackGround(const CImage* const _pImg1, const CImage* const _pImg2,int _iXratio,int _iYratio)const;
 public:
 	void update();
 

@@ -25,12 +25,12 @@ void CRigidBody::Move()
 void CRigidBody::component_update()
 {
 	update_gravity();
-	m_vAccel = m_vForce / m_dMass;
+	m_vAccel = m_vForce / m_fMass;
 	m_vVelocity += m_vAccel * DT;
 	if (!m_vVelocity.IsZero())
 	{
 		Vec2 vFriction = m_vVelocity.Normalize();
-		vFriction *= m_dFriction * DT;
+		vFriction *= m_fFriction * DT;
 		if (m_vVelocity.length() <= vFriction.length())
 		{
 			m_vVelocity = Vec2{ 0.,0. };

@@ -8,7 +8,7 @@ class CTile :
     public CObject
 {
 private:
-    CTexture*   m_pTileTex = {};
+    const CImage* m_tileImg = {};
     Vec2        m_vBitPos = {};
     Vec2        m_vSliceSize = {};
 public:

@@ -7,6 +7,7 @@ class CTexture;
 class CCollider;
 class CRigidBody;
 
+
 class CObject
 {
 	friend void DeleteObj(CObject* const _pDeadObj);
@@ -18,9 +19,6 @@ public:
 	virtual ~CObject();
 	virtual void initObj() {};
 protected:
-	CTexture* m_pRTex = nullptr;
-	CTexture* m_pLTex = nullptr;
-	int					m_iDir = 1;	
 	int					m_iPrevDir = {};
 	Vec2				m_vPrevPos = {};
 	bool				m_bIsCamAffected = true;
@@ -53,7 +51,6 @@ public:
 			assert(false);
 		return static_cast<Comp*>(m_arrComp[idx].get());
 	}
-	//CComponent* GetComponent(COMPONENT_TYPE _eCompType)const { return m_arrComp[(UINT)_eCompType].get(); }
 	void AddComponent(COMPONENT_TYPE _eCompType, CComponent* const _pComp);
 	void CreateComponent(COMPONENT_TYPE _eCompType, Vec2 _vScale = {}, Vec2 _vPos = {});
 	constexpr void SetPos(Vec2 _vPos) { m_vPos = _vPos; }

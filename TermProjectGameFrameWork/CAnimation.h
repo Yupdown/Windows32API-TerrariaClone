@@ -8,7 +8,7 @@ struct tAnimFrm
 	Vec2	vLT = {}; 
 	Vec2	vSlice = {}; 
 	Vec2	vOffset = {};
-	double	dDuration = {};
+	float	fDuration = {};
 };
 
 
@@ -18,10 +18,10 @@ class CAnimation
 private:
 	wstring m_strName = {};
 	CAnimator* m_pAnimator = {}; 
-	CTexture* m_pTex = {}; 
+	const CImage* m_pAnimImg = {};
 	vector<tAnimFrm>	m_vecFrm;		
 	int					m_iCurFrm = {};
-	double				m_dAccTime = {};	
+	float				m_fAccTime = {};
 	bool				m_bFinish = false; 
 private:
 	void SetName(wstring_view _strName) { m_strName = _strName; } 
@@ -32,7 +32,7 @@ public:
 	{
 		m_bFinish = false; 
 		m_iCurFrm = _iFrameIdx; 
-		m_dAccTime = 0.; 
+		m_fAccTime = 0.f; 
 	}
 	bool	IsFinish()const { return m_bFinish; }
 	tAnimFrm& GetFrame(int _iIdx) { return m_vecFrm[_iIdx]; }
@@ -41,7 +41,7 @@ public:
 public:
 	void update();
 	void render(HDC _dc,int _iDir);
-	void Create(wstring_view _strFileName, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, double _dDuration, UINT _iFrameCount);
+	void Create(wstring_view _strFileName, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT _iFrameCount);
 public:
 	void Save(wofstream& out); 
 	bool Load(wifstream& in); 

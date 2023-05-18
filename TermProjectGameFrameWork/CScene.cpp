@@ -6,12 +6,13 @@
 #include "CResMgr.h"
 #include "CCore.h"
 #include "CCamera.h"
+#include "CEventMgr.h"
 
+int CScene::g_iSceneID;
 
 CScene::CScene()
 {
-	m_pBackGroundTex = Mgr(CResMgr)->CreateTexture(L"SceneBackGround", Mgr(CCore)->GetResolution().x * 10, Mgr(CCore)->GetResolution().y * 10);
-	Clear();
+	
 }
 
 CScene::~CScene()
@@ -26,7 +27,7 @@ void CScene::AddTile(wstring_view _strTileTexName, Vec2 _vPos, Vec2 _vScale, Vec
 	pTile->SetScale(_vScale);
 	pTile->SetTileBitPos(_vBitPos);
 	pTile->SetTileSliceSize(_vSlice);
-	pTile->render(m_pBackGroundTex->GetDC());
+	//pTile->render(m_pBackGroundTex->GetDC());
 	m_mapTile.insert(make_pair(_vPos, pTile));
 }
 
@@ -38,10 +39,10 @@ void CScene::AddChunkTile(wstring_view _strTileTexName,Vec2 _vLtPos,Vec2 _vScale
 		{
 			CTile* pTile = new CTile;
 			pTile->SetTileTex(_strTileTexName);
-			const double xScale = _vScale.x / static_cast<double>(_iCol);
-			const double yScale = _vScale.y / static_cast<double>(_iRow);
+			const float xScale = _vScale.x / static_cast<float>(_iCol);
+			const float yScale = _vScale.y / static_cast<float>(_iRow);
 			const Vec2 vScale = Vec2{ xScale,yScale };
-			const Vec2 vLtPos = Vec2{ _vLtPos.x + xScale *(double)j ,_vLtPos.y + yScale *(double)i};
+			const Vec2 vLtPos = Vec2{ _vLtPos.x + xScale *(float)j ,_vLtPos.y + yScale *(float)i};
 			pTile->SetPos(vLtPos+vScale/2);
 			pTile->SetScale(vScale);
 			// x ÇÑÄ­ 64 y ÇÑÄ­ 64
@@ -49,9 +50,9 @@ void CScene::AddChunkTile(wstring_view _strTileTexName,Vec2 _vLtPos,Vec2 _vScale
 			const UINT yBitPos = _iBitMapIdx / 8;
 			const UINT xBitPos = _iBitMapIdx % 8;
 			pTile->SetTileSliceSize(Vec2{ 64,64 });
-			Vec2 vBit = Vec2{ double(64 * xBitPos),double(64 * yBitPos) };
+			Vec2 vBit = Vec2{ float(64 * xBitPos),float(64 * yBitPos) };
 			pTile->SetTileBitPos(vBit);
-			pTile->render(m_pBackGroundTex->GetDC());
+		//	pTile->render(m_pBackGroundTex->GetDC());
 			m_mapTile.insert(make_pair(vLtPos + vScale / 2, pTile));
 		}
 	}
@@ -85,35 +86,39 @@ void CScene::component_update()const
 
 void CScene::render(HDC _dc)
 {
-	Vec2 vResolution = Mgr(CCore)->GetResolution();
-	Vec2 vCurLook = Mgr(CCamera)->GetLookAt() - vResolution / 2.;
+	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
+	Mgr(CCamera)->renderBackGround(m_pBackGroundImg, m_pBackGroundImg2,1,10);
+	Mgr(CCamera)->SetNowLookAt(Mgr(CCore)->GetResolutionV() / 2);
+	Mgr(CCamera)->TransformRenderPos();
+	m_pBackGroundImg2->BitBlt(_dc
+		, 0
+		, 0
+		, (int)vRes.x
+		, (int)vRes.y
+		, 0
+		, 0);
+	Mgr(CCamera)->ResetRenderPos();
+	Mgr(CCamera)->SetNowLookAt(GetPlayer()->GetPos());
 	
-
-	BitBlt(_dc
-		, 0
-		, 0
-		, Mgr(CCore)->GetResolution().x
-		, Mgr(CCore)->GetResolution().y
-		, m_pBackGroundTex->GetDC()
-		, static_cast<int>(vCurLook.x)
-		, static_cast<int>(vCurLook.y)
-		, SRCCOPY);
-
-	std::for_each(std::execution::par, begin(m_vecObj), end(m_vecObj), [](auto& vecObj) {
-		auto iter = std::remove_if(std::execution::par, vecObj.begin(), vecObj.end(), [](const auto& pObj) {
-			return pObj->IsDead();
-			});
-		vecObj.erase(iter, vecObj.end());
-		});
-
-	for (const auto& vecObj : m_vecObj)
+	for (auto& vecObj : m_vecObj)
 	{
-		for (const auto& pObj : vecObj)
+		const auto vecPtr = vecObj.data();
+		for (size_t i = 0; i < vecObj.size();)
 		{
-			pObj->render(_dc);
+			if (vecPtr[i]->IsDead())
+			{
+				//m_vecDeadObj.emplace_back(std::move(vecPtr[i]));
+				Mgr(CEventMgr)->AddDeadObj(vecPtr[i]);
+				vecPtr[i] = std::move(vecObj.back());
+				vecObj.pop_back();
+			}
+			else
+			{
+				vecPtr[i]->render(_dc);
+				++i;
+			}
 		}
 	}
-
 }
 
 void CScene::DeleteGroup(GROUP_TYPE _eTarget)
@@ -127,9 +132,4 @@ void CScene::Reset()
 	{
 		i.clear();
 	}
-}
-
-void CScene::Clear()
-{
-	PatBlt(m_pBackGroundTex->GetDC(), 0, 0, Mgr(CCore)->GetResolution().x * 10, Mgr(CCore)->GetResolution().y * 10, WHITENESS);
 }

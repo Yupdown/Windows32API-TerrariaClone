@@ -1,6 +1,6 @@
 #pragma once
 
-
+#define bit_abs_nonZ(x)  ((((x>>31) ^ x) - (x>>31))|1)
 #define fDT CTimeMgr::GetInst()->GetfDT()			
 #define DT	CTimeMgr::GetInst()->GetDT()			
 
@@ -14,7 +14,7 @@
 
 #define MOUSE_POS (CCamera::GetInst()->GetRealPos(CKeyMgr::GetInst()->GetMousePos()))
 
-#define PI	3.1415926535
+#define PI	3.1415926535f
 
 #define TILE_SIZE 64 // 타일 사이즈 픽셀 매크로
 

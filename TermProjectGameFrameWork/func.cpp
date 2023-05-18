@@ -5,6 +5,7 @@
 #include "CScene.h"
 #include "CEventMgr.h"
 #include "CTimeMgr.h"
+#include "CCore.h"
 
 int wrapAround(int x, int low, int high)
 {
@@ -46,7 +47,7 @@ void DeleteObj(CObject* const _pDeadObj)
 	{
 		return;
 	}
-
+	//Mgr(CEventMgr)->AddEvent(&CObject::SetDead, _pDeadObj);
 	Mgr(CEventMgr)->AddEvent([&_pDeadObj]() {_pDeadObj->SetDead(); });
 }
 
@@ -55,19 +56,26 @@ void ChangeAIState(AI* const _pAI, MON_STATE _eNextState)
 
 }
 
-CoRoutine DelayCoRoutine(CObject* const _pObj,function<void(void)> _fp, double _dDelayTime)
+XFORM operator*(const XFORM& lhs, const XFORM& rhs)
 {
-	double dAccTime = 0.;
-	while (dAccTime < _dDelayTime)
+	XFORM xform = {};
+	xform.eM11 = lhs.eM11 * rhs.eM11 + lhs.eM12 * rhs.eM21;
+	xform.eM12 = lhs.eM11 * rhs.eM12 + lhs.eM12 * rhs.eM22;
+	xform.eDx = lhs.eM11 * rhs.eDx + lhs.eM12 * rhs.eDy + lhs.eDx;
+	xform.eM21 = lhs.eM21 * rhs.eM11 + lhs.eM22 * rhs.eM21;
+	xform.eM22 = lhs.eM21 * rhs.eM12 + lhs.eM22 * rhs.eM22;
+	xform.eDy = lhs.eM21 * rhs.eDx + lhs.eM22 * rhs.eDy + lhs.eDy;
+	return xform;
+}
+
+CoRoutine DelayCoRoutine(function<void(void)> _fp, float _fDelayTime)
+{
+	float fAccTime = 0.f;
+	while (fAccTime < _fDelayTime)
 	{
-		dAccTime += DT;
+		fAccTime += DT;
 		co_await std::suspend_always{};
 	}
 	_fp();
 	co_return;
-}
-
-void StartDelayCoRoutine(CObject* const _pObj, function<void(void)>&& _fp, double _dDelayTime)
-{
-	StartCoRoutine(_pObj, DelayCoRoutine(_pObj, std::move(_fp), _dDelayTime));
 }

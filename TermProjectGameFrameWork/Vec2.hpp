@@ -2,49 +2,49 @@
 
 struct Vec2
 {
-	double x = {};
-	double y = {};
+	float x = {};
+	float y = {};
 
 public:
 
 	constexpr bool IsZero()const
 	{
-		if (x == 0. && y == 0.)
+		if (x == 0.f && y == 0.f)
 		{
 			return true;
 		}
 		return false;
 	}
 	
-	double length()const
+	float length()const
 	{
-		return sqrt(x * x + y * y);
+		return sqrtf(x * x + y * y);
 	}
 
 	constexpr Vec2() = default;
 
-	constexpr Vec2(double _x, double _y)
+	constexpr Vec2(float _x, float _y)
 		:x{ _x }, y{ _y }
 	{
 
 	}
 
 	constexpr Vec2(const POINT& p)
-		:x{ double(p.x) },
-		y { double(p.y) }
+		:x{ float(p.x) },
+		 y { float(p.y) }
 	{
 
 	}
 
 	Vec2 Normalize()const
 	{
-		double dLen = length();
-		if (0. == dLen)
+		float fLen = length();
+		if (0. == fLen)
 		{
-			return Vec2{ 0.,0. };
+			return Vec2{ 0.f,0.f };
 		}
-		const double nx = x / dLen;
-		const double ny = y / dLen;
+		const float nx = x / fLen;
+		const float ny = y / fLen;
 		return Vec2{ nx,ny };
 	}
 
@@ -69,20 +69,20 @@ public:
 		return Vec2{ x * _other.x , y * _other.y };
 	}
 
-	constexpr Vec2 operator * (double _i)const
+	constexpr Vec2 operator * (float _f)const
 	{
-		return Vec2{ x * (double)_i , y * (double)_i };
+		return Vec2{ x * _f , y * _f };
 	}
 
-	constexpr Vec2 operator / (double _d)const
+	constexpr Vec2 operator / (float _f)const
 	{
-		assert(_d != 0.);
-		return Vec2{ x / _d,y / _d };
+		assert(_f != 0.f);
+		return Vec2{ x / _f,y / _f };
 	}
 
-	constexpr Vec2& operator*=(double _d)
+	constexpr Vec2& operator*=(float _f)
 	{
-		(*this) = (*this) * _d;
+		(*this) = (*this) * _f;
 		return *this;
 	}
 

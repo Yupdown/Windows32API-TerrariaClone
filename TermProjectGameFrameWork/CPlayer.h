@@ -3,14 +3,19 @@
 
 class CTexture;
 class CAnimation;
+class CAnimator;
+
 class CPlayer :
     public CObject
 {
 private:
-    CTexture* m_pTex;
+    const CImage* m_playerImg = {};
     CAnimation* m_pPrevAnim = {};
+    unique_ptr<CAnimator> m_pAnimLeg;
+    mutable int m_iDegree = 0;
 public:
     CPlayer();
+    CPlayer(const CPlayer& other);
     void update()override;
     void render(HDC _dc)const override;
     CPlayer* Clone()const override

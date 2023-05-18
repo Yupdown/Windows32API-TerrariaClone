@@ -14,12 +14,15 @@ private:
 	POINT m_ptResolution{};
 	HDC m_hDC{};			
 
-	CTexture* m_pMemTex = {}; 
+	HDC m_hMemDC = {};
+	HBITMAP m_hBackBuffer = {};
 	
 	HBRUSH			m_arrBrush[(UINT)BRUSH_TYPE::END] = {};
 	HPEN			m_arrPen[(UINT)PEN_TYPE::END] = {};
 	
 	HMENU			m_hMenu; 
+	XFORM m_xform = {};
+	XFORM m_xform2 = {};
 public:
 	void CreateBrushPen(); 
 	constexpr HBRUSH	GetBrush(BRUSH_TYPE _eType)const { return m_arrBrush[(UINT)_eType]; }
@@ -40,5 +43,18 @@ public:
 	constexpr HMENU GetMenu()const { return m_hMenu; }
 	HBRUSH ChangeBrush(BRUSH_TYPE _eType);
 	HPEN ChangePen(PEN_TYPE _eType);
-	HDC GetMemDC()const;
+	HDC GetMemDC()const { return m_hMemDC; }
+	void RotateTransform(int _iDegree, Vec2 centerPt = {});
+	void ResetTransform();
+	void ScaleTransform(float _fScale);
+	void TranslateTransform(Vec2 vDist);
+	void YFlipTransform(Vec2 vCenter = {});
+	void XFlipTransform(Vec2 vCenter = {});
+
+	void RotateTransform(HDC dc, int _iDegree, Vec2 centerPt = {});
+	void ResetTransform(HDC dc);
+	void YFlipTransform(HDC dc, Vec2 vCenter = {});
+	void XFlipTransform(HDC dc, Vec2 vCenter = {});
+	void ScaleTransform(HDC dc, float _fScale);
+	void TranslateTransform(HDC dc, Vec2 vDist);
 };

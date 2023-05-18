@@ -36,13 +36,20 @@ void CCollider::component_update()
 
 void CCollider::component_render(HDC _dc)const
 {
-	Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(m_vFinalPos);
-	//Mgr(CCore)->ChangeBrush(BRUSH_TYPE::HOLLOW);
-	Rectangle(_dc
+	auto [vRenderPos, vScale] = Mgr(CCamera)->GetRenderPos(m_pOwner);
+
+	/*Rectangle(_dc
+		, (int)(vRenderPos.x )
+		, (int)(vRenderPos.y)
+		, (int)(vRenderPos.x + vScale.x )
+		, (int)(vRenderPos.y + vScale.y ));*/
+
+	//Mgr(CCamera)->ResetRenderPos();
+	/*Rectangle(_dc
 		, (int)(vRenderPos.x - m_vScale.x / 2.)
 		, (int)(vRenderPos.y - m_vScale.y / 2.)
 		, (int)(vRenderPos.x + m_vScale.x / 2.)
-		, (int)(vRenderPos.y + m_vScale.y / 2.));
+		, (int)(vRenderPos.y + m_vScale.y / 2.));*/
 		/*m_vScale = m_pOwner->GetScale();
 		Rectangle(_dc
 			, (int)(m_vFinalPos.x - m_vScale.x / 2.)
