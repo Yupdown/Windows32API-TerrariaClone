@@ -25,8 +25,8 @@ bool CCollisionMgr::IsCollision(const CCollider* const _pLeftCol, const CCollide
 	const Vec2 vRightPos = _pRightCol->GetFinalPos();
 	const Vec2 vRightScale = _pRightCol->GetScale();
 
-	if (abs(vLeftPos.x - vRightPos.x) <= (vLeftScale.x + vRightScale.x) / 2.
-		&& abs(vLeftPos.y - vRightPos.y) <= (vLeftScale.y + vRightScale.y) / 2.)
+	if (abs(vLeftPos.x - vRightPos.x) <= (vLeftScale.x + vRightScale.x) / 2.f
+		&& abs(vLeftPos.y - vRightPos.y) <= (vLeftScale.y + vRightScale.y) / 2.f)
 	{
 		return true;
 	}
