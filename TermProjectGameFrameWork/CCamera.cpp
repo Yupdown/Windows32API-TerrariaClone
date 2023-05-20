@@ -61,22 +61,55 @@ void CCamera::renderBackGround(const CImage* const _pImg1, const CImage* const _
 	_pImg1->BitBlt(hDC
 		, 0
 		, 0
-		, (int)m_vResolution.x
-		, (int)m_vResolution.y
+		, (int)m_vResolution.x 
+		, (int)m_vResolution.y * 10
 		, iLeft
 		, iTop
 		, SRCCOPY);
 
 	_pImg1->BitBlt(hDC
-		, iLeft + (int)m_vResolution.x
+		, iLeft + (int)m_vResolution.x 
 		, 0
-		, (int)m_vResolution.x
-		, (int)m_vResolution.y
+		, (int)m_vResolution.x  
+		, (int)m_vResolution.y * 10
 		, 0
 		, iTop
 		, SRCCOPY);
 
 	_pImg2->ReleaseDC();
+}
+
+void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fSpeed) const
+{
+	const int iBackWidth = (int)_vLayerScale.x;
+	const int iBackHeight = (int)_vLayerScale.y;
+	const int iLeft = ((int)(m_vDiff.x * _fSpeed) % iBackWidth + iBackWidth) % iBackWidth;
+	const int iTop = ((int)(m_vDiff.y) % iBackHeight + iBackHeight) % iBackHeight;
+	
+	
+	TransparentBlt(_hDest
+		, 0
+		, 0
+		, (int)m_vResolution.x
+		, (int)m_vResolution.y 
+		,_hSrc
+		, iLeft
+		, iTop
+		, (int)m_vResolution.x
+		, (int)m_vResolution.y
+		, RGB(255,0,255));
+
+	TransparentBlt(_hDest
+		, iLeft + (int)m_vResolution.x
+		, 0
+		, (int)m_vResolution.x
+		, (int)m_vResolution.y 
+		,_hSrc
+		, 0
+		, iTop
+		, (int)m_vResolution.x
+		, (int)m_vResolution.y
+		, RGB(255,0,255));
 }
 
 void CCamera::update()
@@ -197,7 +230,7 @@ void CCamera::CalDiff()
 		m_vCurLookAt = m_vLookAt;
 	}
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
-	Vec2 vCenter = vResolution / 2. ;
+	Vec2 vCenter = vResolution / 2.f;
 	Vec2 vCurLookLT = m_vCurLookAt - vResolution / 2;
 	//m_vCurLookAt.x = m_vCurLookAt.x * m_dCamZoom + (FLOAT)(vCurLookLT.x) * 2.f * (1.f - m_dCamZoom);
 	//m_vCurLookAt.y = m_vCurLookAt.y * m_dCamZoom + (FLOAT)(vCurLookLT.y) * 2.f * (1.f - m_dCamZoom);

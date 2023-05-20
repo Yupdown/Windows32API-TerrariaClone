@@ -5,6 +5,7 @@
 #include "CCore.h"
 #include "CObject.h"
 #include "CCamera.h"
+#include "CAtlasMgr.h"
 
 CResMgr::CResMgr()
 {
@@ -20,6 +21,7 @@ CResMgr::~CResMgr()
 void CResMgr::init()
 {
 	std::filesystem::recursive_directory_iterator TexIter{ Mgr(CPathMgr)->GetTexPath() };
+	
 	for (const auto& Tex : TexIter)
 	{
 		if (Tex.is_regular_file())
@@ -28,10 +30,14 @@ void CResMgr::init()
 			pImg->Load(Tex.path().wstring().data());
 			pImg->SetTransparentColor(RGB(255, 0, 255));
 			m_mapCImage.emplace(Tex.path().filename().wstring(), pImg);
+			if (L"Atlas" == Tex.path().parent_path().filename())
+			{
+				Mgr(CAtlasMgr)->CreateAtlas(Tex.path().filename().wstring(), pImg);
+			}
 		}
 	}
 	m_hBackDC = CreateCompatibleDC(Mgr(CCore)->GetMainDC());
-	m_hBackBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x*2, Mgr(CCore)->GetResolution().y*2);
+	m_hBackBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x*2, Mgr(CCore)->GetResolution().y*10);
 	DeleteObject(SelectObject(m_hBackDC, m_hBackBit));
 	Clear();
 	SetStretchBltMode(m_hBackDC, HALFTONE);
@@ -55,16 +61,20 @@ CImage* CResMgr::CreateImg(wstring_view _strKey, UINT _iWidth, UINT _iHeight)
 	return pImg;
 }
 
-void CResMgr::renderImg(const CImage* const _pImg, Vec2 _vLT, Vec2 _vScale) const
+void CResMgr::renderImg(HDC _dc, const CImage* const _pImg, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSliceSize) const
 {
 	 Vec2 vLtPos = _vLT;
 	 Vec2 vScale = _vScale;
-
+	 vLtPos = Mgr(CCamera)->GetRenderPos(vLtPos);
 	 _pImg->StretchBlt(m_hBackDC
 		 , (int)vLtPos.x
 		 , (int)vLtPos.y
 		 , (int)vScale.x
 		 , (int)vScale.y
+		 , (int)_vBitPos.x
+		 , (int)_vBitPos.y
+		 , (int)_vSliceSize.x
+		 , (int)_vSliceSize.y
 		 , SRCCOPY);
 
 	vScale.x = min(vScale.x, vScale.x + vLtPos.x);
@@ -72,7 +82,7 @@ void CResMgr::renderImg(const CImage* const _pImg, Vec2 _vLT, Vec2 _vScale) cons
 	vLtPos.x = max(vLtPos.x, 0);
 	vLtPos.y = max(vLtPos.y, 0);
 
-	TransparentBlt(Mgr(CCore)->GetMemDC()
+	TransparentBlt(_dc
 		, (int)vLtPos.x
 		, (int)vLtPos.y
 		, (int)vScale.x

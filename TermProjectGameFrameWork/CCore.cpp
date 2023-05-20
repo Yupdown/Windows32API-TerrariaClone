@@ -12,6 +12,7 @@
 #include "CEventMgr.h"
 #include "CScene.h"
 #include "CObject.h"
+#include "CAtlasMgr.h"
 
 CCore::CCore()
 {
@@ -107,7 +108,7 @@ int CCore::init(HWND _hwnd, POINT _ptResolution)
 	CCamera::GetInst()->init();
 	CSceneMgr::GetInst()->init();
 	Mgr(CEventMgr)->init();	 
-	
+	Mgr(CAtlasMgr)->init();
 
 
 	CreateBrushPen();

@@ -121,6 +121,18 @@
     <Filter Include="Engine\04. Scene\Scene_Tool">
       <UniqueIdentifier>{2f591532-e24f-493d-8500-c043a110583e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\02. Manager\AtlasMgr">
+      <UniqueIdentifier>{e76e6913-a8d0-4e15-9621-165ea50d0b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Atlas">
+      <UniqueIdentifier>{be2858e1-926f-4e0d-b48f-9fc9e1b394a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Atlas\AtlasElement">
+      <UniqueIdentifier>{6c124bac-15ca-4472-b205-b4fb80f4f87f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\10. Layer">
+      <UniqueIdentifier>{56b91cde-1a47-474c-befa-b902d87c8040}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -225,6 +237,18 @@
     <ClInclude Include="CScene_Tool.h">
       <Filter>Engine\04. Scene\Scene_Tool</Filter>
     </ClInclude>
+    <ClInclude Include="CAtlasMgr.h">
+      <Filter>Engine\02. Manager\AtlasMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CAtlas.h">
+      <Filter>Engine\09. Atlas</Filter>
+    </ClInclude>
+    <ClInclude Include="CAtlasElement.h">
+      <Filter>Engine\09. Atlas\AtlasElement</Filter>
+    </ClInclude>
+    <ClInclude Include="CLayer.h">
+      <Filter>Engine\10. Layer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TermProjectGameFrameWork.cpp">
@@ -307,6 +331,18 @@
     </ClCompile>
     <ClCompile Include="CScene_Tool.cpp">
       <Filter>Engine\04. Scene\Scene_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="CAtlasMgr.cpp">
+      <Filter>Engine\02. Manager\AtlasMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CAtlas.cpp">
+      <Filter>Engine\09. Atlas</Filter>
+    </ClCompile>
+    <ClCompile Include="CAtlasElement.cpp">
+      <Filter>Engine\09. Atlas\AtlasElement</Filter>
+    </ClCompile>
+    <ClCompile Include="CLayer.cpp">
+      <Filter>Engine\10. Layer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

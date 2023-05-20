@@ -3,7 +3,8 @@
 class CObject;
 class CTile;
 class CTexture;
-	
+class CLayer;
+
 class CScene
 {
 	static int g_iSceneID;
@@ -15,6 +16,7 @@ protected:
 	const CImage* m_pBackGroundImg = nullptr;
 	const CImage* m_pBackGroundImg2 = nullptr;
 	vector<CImage*> m_vecSceneLayer;
+	vector<unique_ptr<CLayer>> m_vecLayer;
 private:
 	vector<unique_ptr<CObject>>			m_vecObj[(UINT)GROUP_TYPE::END]; // 오브젝트를 관리할 벡터를 그룹개수만큼
 	vector<unique_ptr<CObject>>			m_vecDeadObj;

@@ -94,6 +94,7 @@ public:
 	pair<Vec2,Vec2> GetRenderPos(const CObject* const _pObj)const;
 	void SetNowLookAt(Vec2 _vLook) { m_vCurLookAt =m_vLookAt = _vLook; }
 	void renderBackGround(const CImage* const _pImg1, const CImage* const _pImg2,int _iXratio,int _iYratio)const;
+	void renderBackGround(HDC _hDest, HDC _hSrc, Vec2 _vLayerScale ,float _fSpeed)const;
 public:
 	void update();
 

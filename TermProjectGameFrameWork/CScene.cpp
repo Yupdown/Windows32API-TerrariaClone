@@ -7,6 +7,7 @@
 #include "CCore.h"
 #include "CCamera.h"
 #include "CEventMgr.h"
+#include "CLayer.h"
 
 int CScene::g_iSceneID;
 
@@ -87,19 +88,23 @@ void CScene::component_update()const
 void CScene::render(HDC _dc)
 {
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
-	Mgr(CCamera)->renderBackGround(m_pBackGroundImg, m_pBackGroundImg2,1,10);
-	Mgr(CCamera)->SetNowLookAt(Mgr(CCore)->GetResolutionV() / 2);
-	Mgr(CCamera)->TransformRenderPos();
-	m_pBackGroundImg2->BitBlt(_dc
+	//Mgr(CCamera)->renderBackGround(m_pBackGroundImg, m_pBackGroundImg2,1,10);
+	//Mgr(CCamera)->SetNowLookAt(Mgr(CCore)->GetResolutionV() / 2);
+	//Mgr(CCamera)->TransformRenderPos();
+	/*m_pBackGroundImg2->BitBlt(_dc
 		, 0
 		, 0
-		, (int)vRes.x
-		, (int)vRes.y
+		, (int)vRes.x * 2
+		, (int)vRes.y * 10
 		, 0
-		, 0);
-	Mgr(CCamera)->ResetRenderPos();
-	Mgr(CCamera)->SetNowLookAt(GetPlayer()->GetPos());
-	
+		, 0);*/
+	//Mgr(CCamera)->ResetRenderPos();
+	//Mgr(CCamera)->SetNowLookAt(GetPlayer()->GetPos());
+	for (const auto& layer : m_vecLayer)
+	{
+		layer->render(_dc);
+	}
+
 	for (auto& vecObj : m_vecObj)
 	{
 		const auto vecPtr = vecObj.data();

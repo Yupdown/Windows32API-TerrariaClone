@@ -51,3 +51,5 @@ CoRoutine ChangeScene(SCENE_TYPE _eNext);
 void ChangeAIState(AI* const _pAI, MON_STATE _eNextState);
 
 XFORM operator*(const XFORM& lhs, const XFORM& rhs);
+
+void CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit,Vec2 _vBitMapScale);

@@ -68,6 +68,20 @@ XFORM operator*(const XFORM& lhs, const XFORM& rhs)
 	return xform;
 }
 
+void CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit, Vec2 _vBitMapScale)
+{
+	_dc = CreateCompatibleDC(Mgr(CCore)->GetMainDC());
+	_hBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), (int)_vBitMapScale.x, (int)_vBitMapScale.y);
+	DeleteObject(SelectObject(_dc, _hBit));
+	auto hBrush = CreateSolidBrush(RGB(255, 0, 255));
+	auto hOld = SelectObject(_dc, hBrush);
+	auto hPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 255));
+	auto hOldPen = SelectObject(_dc, hPen);
+	Rectangle(_dc, 0, 0, (int)_vBitMapScale.x, (int)_vBitMapScale.y);
+	DeleteObject(SelectObject(_dc, hOld));
+	DeleteObject(SelectObject(_dc, hOldPen));
+}
+
 CoRoutine DelayCoRoutine(function<void(void)> _fp, float _fDelayTime)
 {
 	float fAccTime = 0.f;
