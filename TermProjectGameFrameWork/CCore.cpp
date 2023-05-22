@@ -126,7 +126,7 @@ void CCore::progress()
 	CTimeMgr::GetInst()->update();
 
 	CKeyMgr::GetInst()->update();
-	CCamera::GetInst()->update();
+	//CCamera::GetInst()->update();
 	// =========
 	// ¾À ¾÷µ¥ÀÌÆ®
 	// =========
@@ -142,7 +142,7 @@ void CCore::progress()
 	//==============
 	// ·»´õ¸µ ½ÃÀÛ
 	// =============
-
+	CCamera::GetInst()->update();
 	CSceneMgr::GetInst()->render(m_hMemDC);
 	
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y,		

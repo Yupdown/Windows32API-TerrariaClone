@@ -14,6 +14,8 @@ private:
 	multimap<CObject*, CoRoutine>      m_mapCoRoutine;
 	std::list<CoRoutine>			   m_listCoRoutine;
 	vector<unique_ptr<CObject>>		   m_vecDeadObj;
+
+	function<void(void)> m_fpTRupdate = nullptr;
 public:
 	void init();
 	void update();
@@ -26,5 +28,12 @@ public:
 		m_vecEvent.emplace_back(std::bind(std::forward<Func>(fp),std::forward<Args>(args)...));
 	}
 	void AddDeadObj(unique_ptr<CObject>& _pDeadObj) { m_vecDeadObj.emplace_back(std::move(_pDeadObj)); }
+
+	template<typename Func, typename... Args> requires std::invocable<Func, Args...>
+	void SetTRupdate(Func&& fp, Args&&... args)
+	{
+		m_fpTRupdate = std::bind(std::forward<Func>(fp), std::forward<Args>(args)...);
+	}
+	void ResetTRupdate() { m_fpTRupdate = nullptr; }
 };
 

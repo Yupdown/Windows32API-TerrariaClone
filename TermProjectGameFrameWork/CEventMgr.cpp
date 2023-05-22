@@ -50,5 +50,9 @@ void CEventMgr::update()
 
 	m_vecEvent.clear();
 	m_vecDeadObj.clear();
-	
+
+	if (m_fpTRupdate)
+	{
+		m_fpTRupdate();
+	}
 }

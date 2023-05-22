@@ -13,6 +13,7 @@ CPlayer::CPlayer()
 	m_bIsCamAffected = true;
 	CreateComponent(COMPONENT_TYPE::COLLIDER);
 	CreateComponent(COMPONENT_TYPE::ANIMATOR);
+	CreateComponent(COMPONENT_TYPE::RIGIDBODY);
 //	m_pTex = Mgr(CResMgr)->GetTexture(L"link_0.bmp");
 	/*m_playerImg = Mgr(CResMgr)->GetImg(L"link_0.bmp").value();
 	auto pAnim = GetComp<CAnimator>();
@@ -26,6 +27,7 @@ CPlayer::CPlayer()
 	m_pAnimLeg->SetOwner(this);
 	pAnim->CreateAnimation(L"Player_Torso_WALK", L"Player_Torso.png", Vec2{ 20,28 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.2f, 4);
 	pAnim->CreateAnimation(L"Player_Torso_IDLE", L"Player_Torso.png", Vec2{ 0,0 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.2f, 1);
+//	pAnim->CreateAnimation(L"Player_Torse_JUMP",L"Player_Torso.png",Vec2{})
 	m_pAnimLeg->CreateAnimation(L"Player_Leg_WALK", L"Player_Leg.png", Vec2{ 0,28 * 5 }, Vec2{ 20,28 }, Vec2{ 0,28 },0.1f, 15);
 	m_pAnimLeg->CreateAnimation(L"Player_Leg_IDLE", L"Player_Leg.png", Vec2{ 0,0}, Vec2{ 20,28 }, Vec2{ 0,28 }, 0.1f, 4);
 	pAnim->Play(L"Player_Torso_IDLE",true);
@@ -95,9 +97,9 @@ void CPlayer::update()
 	//StartDelayCoRoutine(this,&CPlayer::update, 1);
 	//StartDelayCoRoutine(this, &CPlayer::update, 1);
 	//StartDelayCoRoutine(1,this,&CPlayer::update);
-	m_pPrevAnim = pAnim->GetCurAnim();
+	//m_pPrevAnim = pAnim->GetCurAnim();
 	//StartDelayCoRoutine(this, [&]() {this->update(); }, 1);
-	m_pAnimLeg->component_update();
+	//m_pAnimLeg->component_update();
 
 }
 
@@ -115,6 +117,12 @@ void CPlayer::render(HDC _dc)const
 	m_pAnimLeg->component_render(_dc);
 	//Mgr(CCore)->ResetTransform();
 	m_iDegree = (m_iDegree + 1);
+}
+
+void CPlayer::component_update()
+{
+	CObject::component_update();
+	m_pAnimLeg->component_update();
 }
 
 void CPlayer::OnCollision(CCollider* const _pOther)
