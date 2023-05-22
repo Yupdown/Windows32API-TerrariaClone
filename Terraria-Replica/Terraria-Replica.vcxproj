@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Yup\Documents\TermProjectGameFrameWork\TermProjectGameFrameWork;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Yup\Documents\TermProjectGameFrameWork\Output\bin_Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)TermProjectGameFrameWork\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Output\bin_Debug\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
