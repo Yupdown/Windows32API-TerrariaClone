@@ -14,5 +14,14 @@ TRWorld::~TRWorld()
 void TRWorld::CreateWorld(int seed)
 {
 	TRWorldGeneration* generator = new TRWorldGeneration();
+	TRWorldGenerationProcess* gen = new TRWorldGenerationTerrainHeight();
+	generator->AddProcess(gen);
 	generator->GenerateWorld(tile_map, TRWorld::WORLD_WIDTH, TRWorld::WORLD_HEIGHT, seed);
+	delete gen;
+	delete generator;
+}
+
+void TRWorld::OnSceneCreate(CScene* scene)
+{
+	tile_map->OnSceneCreate(scene);
 }

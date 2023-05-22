@@ -84,7 +84,7 @@ void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fS
 	const int iBackWidth = (int)_vLayerScale.x;
 	const int iBackHeight = (int)_vLayerScale.y;
 	const int iLeft = ((int)(m_vDiff.x * _fSpeed) % iBackWidth + iBackWidth) % iBackWidth;
-	const int iTop = ((int)(m_vDiff.y) % iBackHeight + iBackHeight) % iBackHeight;
+	const int iTop = ((int)(m_vDiff.y ) % iBackHeight + iBackHeight) % iBackHeight;
 	
 	
 	TransparentBlt(_hDest

@@ -1,9 +1,12 @@
 // TermProjectGameFrameWork.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
-#include "Terraria-Replica.h"
+#include "pch.h"
 #include "framework.h"
+#include "CEventMgr.h"
 #include "CCore.h"
+#include "TRMain.h"
+#include "Terraria-Replica.h"
 
 #define MAX_LOADSTRING 100
 
@@ -46,6 +49,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         MessageBox(nullptr, L"게임 실행 실패", L"ERROR", MB_OK);
     }
 
+   TRMain* terraria_main = new TRMain();
+    Mgr(CEventMgr)->SetTRupdate(&TRMain::Update, terraria_main);
+
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TERMPROJECTGAMEFRAMEWORK));
 
     MSG msg;
@@ -70,6 +76,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
+    Mgr(CEventMgr)->ResetTRupdate();
     return (int)msg.wParam;
 }
 

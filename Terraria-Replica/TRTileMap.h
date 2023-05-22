@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TRTile.h"
+#include "CScene.h"
 
 class TRTileMap
 {
@@ -16,6 +17,7 @@ public:
 
 	TRTile* GetTile(int x, int y) const;
 	void SetTile(int x, int y, TRTile* new_tile);
+	void OnSceneCreate(CScene* scene);
 
 private:
 	TRTile** GetTileReference(int x, int y) const;

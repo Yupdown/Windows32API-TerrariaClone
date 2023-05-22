@@ -17,5 +17,5 @@ CAtlasElement::~CAtlasElement()
 void CAtlasElement::render(HDC _dc,Vec2 _v) const
 {
 	auto vPos = Mgr(CCamera)->GetRenderPos(_v);
-	Mgr(CResMgr)->renderImg(_dc,m_pAtlasImg, vPos, Vec2{20.f,20.f}, m_vBitPos, m_vSliceSize);
+	Mgr(CResMgr)->renderImg(_dc, m_pAtlasImg, vPos, Vec2{ 8.0f, 8.0f }, m_vBitPos, m_vSliceSize);
 }

@@ -56,3 +56,18 @@ void CEventMgr::update()
 		m_fpTRupdate();
 	}
 }
+
+void CEventMgr::AddCoRoutineWithObj(CObject* const _pObj, CoRoutine&& _coEvn)
+{
+	{ m_mapCoRoutine.emplace(make_pair(_pObj, std::move(_coEvn))); }
+}
+
+void CEventMgr::AddCoRoutineWithOutObj(CoRoutine&& _coEvn)
+{
+	{ m_listCoRoutine.emplace_back(std::move(_coEvn)); }
+}
+
+void CEventMgr::AddDeadObj(unique_ptr<CObject>& _pDeadObj)
+{
+	{ m_vecDeadObj.emplace_back(std::move(_pDeadObj)); }
+}

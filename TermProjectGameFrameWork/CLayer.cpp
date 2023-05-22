@@ -3,7 +3,7 @@
 #include "CResMgr.h"
 #include "CCamera.h"
 #include "CCore.h"
-
+#include "CObject.h"
 CLayer::CLayer()
 {
 }
@@ -80,20 +80,20 @@ void CLayer::render(HDC _dc)
 		//vScale.y = min(vScale.y, vScale.y + vLtPos.y);
 		//vLtPos.x = max(vLtPos.x, 0);
 		vLtPos.y = max(vLtPos.y, 0);
-		auto hDC = m_pLayerImg->GetDC();
-
+	//	auto hDC = m_pLayerImg->GetDC();
+		Vec2 vRes = Mgr(CCore)->GetResolutionV();
 		TransparentBlt(_dc
 			, vLtPos.x
 			, vLtPos.y
 			, (int)vScale.x
 			, (int)vScale.y
-			, hDC
+			, m_hLayerDC
 			, 0
 			, 0
 			, (int)vScale.x
 			, (int)vScale.y
 			, RGB(255, 0, 255));
 
-		m_pLayerImg->ReleaseDC();
+		//m_pLayerImg->ReleaseDC();
 	}
 }

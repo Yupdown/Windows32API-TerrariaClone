@@ -17,5 +17,6 @@ public:
 	static CLayer* CreateTileLayer(wstring_view _wstrFileName, Vec2 _vLayerScale);
 	void render(HDC _dc);
 	const CImage* GetLayerImg()const { return m_pLayerImg; }
+	HDC GetLayerDC()const { return m_hLayerDC; }
 };
 

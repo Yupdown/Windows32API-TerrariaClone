@@ -19,6 +19,16 @@ public:
 		this->k_element = k_element;
 		this->k_dropitem = k_dropitem;
 	}
+
+	bool Solid() const
+	{
+		return solid;
+	}
+
+	float Hardness() const
+	{
+		return hardness;
+	}
 };
 
 class TRTileAir : public TRTile

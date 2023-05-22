@@ -124,14 +124,14 @@
     <Filter Include="Engine\02. Manager\AtlasMgr">
       <UniqueIdentifier>{e76e6913-a8d0-4e15-9621-165ea50d0b5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\10. Layer">
+      <UniqueIdentifier>{56b91cde-1a47-474c-befa-b902d87c8040}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\09. Atlas">
       <UniqueIdentifier>{be2858e1-926f-4e0d-b48f-9fc9e1b394a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\09. Atlas\AtlasElement">
       <UniqueIdentifier>{6c124bac-15ca-4472-b205-b4fb80f4f87f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\10. Layer">
-      <UniqueIdentifier>{56b91cde-1a47-474c-befa-b902d87c8040}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

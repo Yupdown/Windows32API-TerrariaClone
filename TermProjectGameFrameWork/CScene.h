@@ -24,12 +24,13 @@ private:
 	CObject*							m_pPlayer = {};
 public: 
 	void AddTile(wstring_view _strTileTexName, Vec2 _vPos, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSlice);
+	void AddLayer(CLayer* const _layer);
 	void AddChunkTile(wstring_view _strTileTexName,Vec2 _vLtPos,Vec2 _vScale ,UINT _iRow, UINT _iCol,UINT _iBitMapIdx);
 	void RegisterPlayer(CObject* const _pPlayer) { m_pPlayer = _pPlayer; }
 	CObject* GetPlayer()const { return m_pPlayer; }
-	void AddObject(CObject* const _pObj, GROUP_TYPE _eType) { m_vecObj[(UINT)_eType].emplace_back(_pObj); }
-	const auto& GetGroupObject(GROUP_TYPE _eType)const { return m_vecObj[(UINT)_eType]; }
-	auto& GetUIGroup() { return m_vecObj[(UINT)GROUP_TYPE::UI]; }
+	void AddObject(CObject* const _pObj, GROUP_TYPE _eType);
+	const vector<unique_ptr<CObject>>& GetGroupObject(GROUP_TYPE _eType)const;
+	vector<unique_ptr<CObject>>& GetUIGroup();
 public:
 	
 	void component_update()const;

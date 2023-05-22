@@ -19,6 +19,9 @@
     <Filter Include="Terraria-Replica\Utilities">
       <UniqueIdentifier>{844b91dd-3ebf-49fd-aade-2dc2af5e2f5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="pch">
+      <UniqueIdentifier>{b87f2319-97c8-4c04-b7ee-44926361726b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -69,11 +72,11 @@
     <ClInclude Include="PerlinNoise.hpp">
       <Filter>Terraria-Replica\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>pch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Terraria-Replica.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TRMain.cpp">
       <Filter>Terraria-Replica</Filter>
     </ClCompile>
@@ -95,11 +98,12 @@
     <ClCompile Include="TRWorldGenerationProcess.cpp">
       <Filter>Terraria-Replica</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Terraria-Replica.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ClCompile Include="Terraria-Replica.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>pch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -108,5 +112,10 @@
     <Image Include="Terraria-Replica.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Terraria-Replica.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

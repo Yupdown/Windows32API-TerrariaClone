@@ -2,9 +2,9 @@
 
 #include <math.h>
 
-constexpr float PI = 3.14159265358979323846;
-constexpr float DEG2RAD = PI / 180.0;
-constexpr float RAD2DEG = 180.0 / PI;
+constexpr float F_PI = 3.14159265358979323846;
+constexpr float F_DEG2RAD = F_PI / 180.0;
+constexpr float F_RAD2DEG = 180.0 / F_PI;
 
 inline float Floor(float value)
 {

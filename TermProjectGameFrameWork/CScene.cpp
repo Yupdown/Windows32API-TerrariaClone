@@ -32,6 +32,11 @@ void CScene::AddTile(wstring_view _strTileTexName, Vec2 _vPos, Vec2 _vScale, Vec
 	m_mapTile.insert(make_pair(_vPos, pTile));
 }
 
+void CScene::AddLayer(CLayer* const _layer)
+{
+	m_vecLayer.emplace_back(_layer);
+}
+
 void CScene::AddChunkTile(wstring_view _strTileTexName,Vec2 _vLtPos,Vec2 _vScale ,UINT _iRow, UINT _iCol, UINT _iBitMapIdx)
 {
 	for (int i = 0; i < (int)_iRow; ++i)
@@ -59,6 +64,20 @@ void CScene::AddChunkTile(wstring_view _strTileTexName,Vec2 _vLtPos,Vec2 _vScale
 	}
 
 }
+void CScene::AddObject(CObject* const _pObj, GROUP_TYPE _eType)
+{
+	{ m_vecObj[(UINT)_eType].emplace_back(_pObj); }
+}
+const vector<unique_ptr<CObject>>& CScene::GetGroupObject(GROUP_TYPE _eType) const
+{
+	{ return m_vecObj[(UINT)_eType]; }
+}
+
+vector<unique_ptr<CObject>>& CScene::GetUIGroup()
+{
+	{ return m_vecObj[(UINT)GROUP_TYPE::UI]; }
+}
+
 void CScene::update()
 {
 	for (const auto& i : m_vecObj)
