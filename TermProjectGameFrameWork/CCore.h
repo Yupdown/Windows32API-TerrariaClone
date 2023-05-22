@@ -1,4 +1,6 @@
 #pragma once
+
+#include "pch.h"
 #include "Singleton.hpp"
 
 class CTexture; 
