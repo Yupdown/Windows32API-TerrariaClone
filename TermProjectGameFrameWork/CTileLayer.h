@@ -1,6 +1,8 @@
 #pragma once
 #include "CObject.h"
 
+class CAtlasElement;
+
 class CTileLayer
 	:public CObject
 {
@@ -12,7 +14,8 @@ public:
 	CTileLayer(Vec2 _vWorldPos,UINT _iWidth,UINT _iHeight);
 	~CTileLayer();
 	void pre_render(wstring_view _wstrFileName,Vec2 _vLayerLTPos,Vec2 _vBitPos, Vec2 _vSliceSize = TILE_PIXEL_XY);
-
+	void pre_render(CAtlasElement* _element, Vec2 _vLayerLTPos);
+	
 	CTileLayer* Clone()const
 	{
 		auto pTileLayer = new CTileLayer{ *this };
@@ -20,4 +23,3 @@ public:
 	}
 	void render(HDC _dc)const override;
 };
-

@@ -25,7 +25,7 @@ void TRTile::CreateAtlasElements()
 	}
 }
 
-void TRTile::OnDrawElement(HDC hdc, int x, int y, int bitmask)
+void TRTile::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
 {
     if (k_element == L"")
         return;
@@ -105,7 +105,7 @@ void TRTile::OnDrawElement(HDC hdc, int x, int y, int bitmask)
         break;
     }
 
-    elements[sj][si]->render(hdc, Vec2{ x * 16.0f, y * 16.0f });
+    tilemap_layer->pre_render(elements[sj][si], Vec2{ x * 8.0f, y * 8.0f });
 }
 
 bool TRTile::Solid() const

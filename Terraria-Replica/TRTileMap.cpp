@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "TRTileMap.h"
-#include "CLayer.h"
+#include "CTileLayer.h"
 #include "CAtlasMgr.h"
 #include "CAtlasElement.h"
 
@@ -35,8 +35,7 @@ void TRTileMap::SetTile(int x, int y, TRTile* new_tile)
 
 void TRTileMap::OnSceneCreate(CScene* scene)
 {
-	CLayer* tilemap_layer = CLayer::CreateTileLayer(L"Tilemap_Layer", Vec2{ tile_width * 8.0f, tile_height * 8.0f });
-	HDC tilemap_dc = tilemap_layer->GetLayerDC();
+	CTileLayer* tilemap_layer = new CTileLayer(Vec2(500.0f, 7300.0f), tile_width * 8, tile_height * 8);
 
 	for (int x = 0; x < tile_width; ++x)
 	{
@@ -60,10 +59,10 @@ void TRTileMap::OnSceneCreate(CScene* scene)
                     bitmask |= (GetTile(xp, yp)->Solid()) << k;
             }
 
-			tile->OnDrawElement(tilemap_dc, x, y, bitmask);
+			tile->OnDrawElement(tilemap_layer, x, y, bitmask);
 		}
 	}
-	scene->AddLayer(tilemap_layer);
+	scene->AddTileLayer(tilemap_layer);
 }
 
 TRTile** TRTileMap::GetTileReference(int x, int y) const

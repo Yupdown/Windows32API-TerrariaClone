@@ -27,22 +27,22 @@ CScene_Start::CScene_Start()
 
 
 
-	m_vecTileLayer.emplace_back(new CTileLayer{ Vec2{500,7300},2048,1024 });
-	for (int i = 0; i < 100; ++i) {
-		m_vecTileLayer[0]->pre_render(L"Tiles_0000.png", Vec2{ 100 + (float)i * 20 ,500 }, Vec2{ 0,0 });
-	}
-	
+	//m_vecTileLayer.emplace_back(new CTileLayer{ Vec2{500,7300},2048,1024 });
+	//for (int i = 0; i < 100; ++i) {
+	//	m_vecTileLayer[0]->pre_render(L"Tiles_0000.png", Vec2{ 100 + (float)i * 20 ,500 }, Vec2{ 0,0 });
+	//}
+	//
 
-	m_vecTileLayer.emplace_back(new CTileLayer{ Vec2{500,7400},2048,1024 });
-	for (int i = 0; i < 100; ++i) {
-		m_vecTileLayer[1]->pre_render(L"Tiles_0001.png", Vec2{ 100 + (float)i * 20 ,500 }, Vec2{ 0,0 });
-	}
-	
+	//m_vecTileLayer.emplace_back(new CTileLayer{ Vec2{500,7400},2048,1024 });
+	//for (int i = 0; i < 100; ++i) {
+	//	m_vecTileLayer[1]->pre_render(L"Tiles_0001.png", Vec2{ 100 + (float)i * 20 ,500 }, Vec2{ 0,0 });
+	//}
+	//
 
-	m_vecTileLayer.emplace_back(new CTileLayer{ Vec2{500,7500},2048,1024 });
-	for (int i = 0; i < 100; ++i) {
-		m_vecTileLayer[2]->pre_render(L"Tiles_0002.png", Vec2{ 100 + (float)i * 20 ,500 }, Vec2{ 0,0 });
-	}
+	//m_vecTileLayer.emplace_back(new CTileLayer{ Vec2{500,7500},2048,1024 });
+	//for (int i = 0; i < 100; ++i) {
+	//	m_vecTileLayer[2]->pre_render(L"Tiles_0002.png", Vec2{ 100 + (float)i * 20 ,500 }, Vec2{ 0,0 });
+	//}
 	
 }
 

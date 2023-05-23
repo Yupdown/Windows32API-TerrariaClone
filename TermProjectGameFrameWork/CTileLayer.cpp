@@ -22,6 +22,11 @@ void CTileLayer::pre_render(wstring_view _wstrFileName, Vec2 _vLayerLTPos, Vec2 
 	pAtlasEle->render(m_hTileLayerDC, _vLayerLTPos);
 }
 
+void CTileLayer::pre_render(CAtlasElement* _element, Vec2 _vLayerLTPos)
+{
+	_element->render(m_hTileLayerDC, _vLayerLTPos);
+}
+
 void CTileLayer::render(HDC _dc)const
 {
 	const auto vOriginScale = GetScale();
