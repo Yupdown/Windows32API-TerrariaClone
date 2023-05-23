@@ -19,8 +19,8 @@ private:
 public:
 	void init();
 	void update();
-	void AddCoRoutineWithObj(CObject* const _pObj, CoRoutine&& _coEvn);
-	void AddCoRoutineWithOutObj(CoRoutine&& _coEvn);
+	void AddCoRoutineWithObj(CObject* const _pObj, CoRoutine&& _coEvn) { m_mapCoRoutine.emplace(_pObj, std::move(_coEvn)); }
+	void AddCoRoutineWithOutObj(CoRoutine&& _coEvn) { m_listCoRoutine.emplace_back(std::move(_coEvn)); }
 	size_t GetCoRoutineSize()const { return m_mapCoRoutine.size(); }
 	template<typename Func, typename... Args> requires std::invocable<Func,Args...>
 	void AddEvent(Func&& fp,Args&&... args) 
