@@ -95,6 +95,16 @@ public:
 		return *this = *this / _f;
 	}
 
+	constexpr bool operator==(const Vec2Int& _other) const
+	{
+		return x == _other.x && y == _other.y;
+	}
+
+	constexpr bool operator!=(const Vec2Int& _other) const
+	{
+		return !(*this == _other);
+	}
+
 	constexpr operator Vec2() const
 	{
 		return Vec2(static_cast<float>(x), static_cast<float>(y));
