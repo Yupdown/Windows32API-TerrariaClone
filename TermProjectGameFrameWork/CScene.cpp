@@ -35,6 +35,11 @@ void CScene::update()
 	}
 }
 
+void CScene::AddTileLayer(CTileLayer* const _pTileLayer)
+{
+	m_vecTileLayer.emplace_back(_pTileLayer);
+}
+
 void CScene::AddObject(CObject* const _pObj, GROUP_TYPE _eType)
 {
 	m_vecObj[(UINT)_eType].emplace_back(_pObj); 
