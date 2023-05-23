@@ -246,6 +246,9 @@
     <ClInclude Include="CLayer.h">
       <Filter>Engine\10. Layer</Filter>
     </ClInclude>
+    <ClInclude Include="Vec2Int.hpp">
+      <Filter>Default</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -337,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="CLayer.cpp">
       <Filter>Engine\10. Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2Int.cpp">
+      <Filter>Default</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

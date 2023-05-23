@@ -48,36 +48,37 @@ public:
 		return Vec2{ nx,ny };
 	}
 
-	constexpr Vec2 operator + (const Vec2& _other)const
+	constexpr Vec2 operator+(const Vec2& _other) const
 	{
 		return Vec2{ x + _other.x , y + _other.y };
 	}
 
-	constexpr Vec2& operator +=(const Vec2& _other)
+	constexpr Vec2 operator-(const Vec2& _other) const
+	{
+		return Vec2{ x - _other.x , y - _other.y };
+	}
+
+	constexpr Vec2 operator*(float _f) const
+	{
+		return Vec2{ x * _f , y * _f };
+	}
+
+	constexpr Vec2 operator/(float _f) const
+	{
+		assert(_f != 0.f);
+		return Vec2{ x / _f,y / _f };
+	}
+
+	constexpr Vec2& operator+=(const Vec2& _other)
 	{
 		(*this) = (*this) + _other;
 		return *this;
 	}
 
-	constexpr Vec2 operator - (const Vec2& _other)const
+	constexpr Vec2& operator-=(const Vec2& _other)
 	{
-		return Vec2{ x - _other.x , y - _other.y };
-	}
-
-	constexpr Vec2 operator * (const Vec2& _other)const
-	{
-		return Vec2{ x * _other.x , y * _other.y };
-	}
-
-	constexpr Vec2 operator * (float _f)const
-	{
-		return Vec2{ x * _f , y * _f };
-	}
-
-	constexpr Vec2 operator / (float _f)const
-	{
-		assert(_f != 0.f);
-		return Vec2{ x / _f,y / _f };
+		(*this) = (*this) - _other;
+		return *this;
 	}
 
 	constexpr Vec2& operator*=(float _f)
@@ -85,15 +86,15 @@ public:
 		(*this) = (*this) * _f;
 		return *this;
 	}
-
-	constexpr Vec2& operator-=(const Vec2& _v)
+	
+	constexpr Vec2& operator/=(float _f)
 	{
-		(*this) = (*this) - _v;
+		(*this) = (*this) / _f;
 		return *this;
 	}
 	
 public:
-	constexpr bool operator <(const Vec2& _v)const
+	constexpr bool operator <(const Vec2& _v) const
 	{
 		if (y == _v.y)
 		{
