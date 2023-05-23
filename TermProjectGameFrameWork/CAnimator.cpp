@@ -37,7 +37,12 @@ optional<CAnimation*> CAnimator::FindAnimation(wstring_view _strName)
 	
 void CAnimator::Play(wstring_view _strName, bool _bRepeat)
 {
+	if (m_pCurAnim)
+	{
+		m_pCurAnim->SetFrame(0);
+	}
 	m_pCurAnim = FindAnimation(_strName).value_or(nullptr);
+	m_pCurAnim->m_bFinish = false;
 	m_bRepeat = _bRepeat;
 }
 
@@ -60,6 +65,11 @@ void CAnimator::component_render(HDC _dc)const
 	{
 		m_pCurAnim->render(_dc,m_iAnimDir);
 	}
+}
+
+bool CAnimator::IsFinish() const
+{
+	return !m_bRepeat && m_pCurAnim->IsFinish();
 }
 
 void CAnimator::LoadAnimation(wstring_view _strRelativePath)

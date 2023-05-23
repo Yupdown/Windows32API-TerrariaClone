@@ -53,3 +53,7 @@ void ChangeAIState(AI* const _pAI, MON_STATE _eNextState);
 XFORM operator*(const XFORM& lhs, const XFORM& rhs);
 
 void CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit,Vec2 _vBitMapScale);
+
+void DeleteDCBITMAP(HDC& _dc, HBITMAP& _hBit);
+
+BOOL TransparentBltSafe(HDC hdcDest, int xoriginDest, int yoriginDest, int wDest, int hDest, HDC hdcSrc, int xoriginSrc, int yoriginSrc, int wSrc, int hSrc, int wBit, int hBit, UINT crTransparent);

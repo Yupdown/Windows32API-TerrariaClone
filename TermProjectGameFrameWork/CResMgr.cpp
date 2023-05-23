@@ -37,7 +37,7 @@ void CResMgr::init()
 		}
 	}
 	m_hBackDC = CreateCompatibleDC(Mgr(CCore)->GetMainDC());
-	m_hBackBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x*2, Mgr(CCore)->GetResolution().y*10);
+	m_hBackBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x*2, Mgr(CCore)->GetResolution().y*5);
 	DeleteObject(SelectObject(m_hBackDC, m_hBackBit));
 	Clear();
 	SetStretchBltMode(m_hBackDC, HALFTONE);
@@ -46,7 +46,7 @@ void CResMgr::init()
 
 void CResMgr::Clear()
 {
-	PatBlt(m_hBackDC, -Mgr(CCore)->GetResolution().x, -Mgr(CCore)->GetResolution().y, Mgr(CCore)->GetResolution().x*2 , Mgr(CCore)->GetResolution().y*2, WHITENESS);
+	PatBlt(m_hBackDC, -Mgr(CCore)->GetResolution().x, -Mgr(CCore)->GetResolution().y, Mgr(CCore)->GetResolution().x*2 , Mgr(CCore)->GetResolution().y*5, WHITENESS);
 }
 
 CImage* CResMgr::CreateImg(wstring_view _strKey, UINT _iWidth, UINT _iHeight)
@@ -65,7 +65,9 @@ void CResMgr::renderImg(HDC _dc, const CImage* const _pImg, Vec2 _vLT, Vec2 _vSc
 {
 	 Vec2 vLtPos = _vLT;
 	 Vec2 vScale = _vScale;
+
 	 vLtPos = Mgr(CCamera)->GetRenderPos(vLtPos);
+
 	 _pImg->StretchBlt(m_hBackDC
 		 , (int)vLtPos.x
 		 , (int)vLtPos.y
@@ -97,8 +99,8 @@ void CResMgr::renderImg(HDC _dc, const CImage* const _pImg, Vec2 _vLT, Vec2 _vSc
 
 void CResMgr::renderImg(const CImage* const _pImg, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const
 {
-	Vec2 vLtPos;
-	Vec2 vScale;
+	static Vec2 vLtPos;
+	static Vec2 vScale;
 
 	if (_pObj->IsCamAffect())
 	{
@@ -127,6 +129,51 @@ void CResMgr::renderImg(const CImage* const _pImg, const CObject* const _pObj, V
 	vLtPos.y = max(vLtPos.y, 0);
 
 	TransparentBlt(Mgr(CCore)->GetMemDC()
+		, (int)vLtPos.x
+		, (int)vLtPos.y
+		, (int)vScale.x
+		, (int)vScale.y
+		, m_hBackDC
+		, (int)vLtPos.x
+		, (int)vLtPos.y
+		, (int)vScale.x
+		, (int)vScale.y
+		, RGB(255, 0, 255));
+}
+
+void CResMgr::renderDC(HDC _dest, HDC _src, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const
+{
+	static Vec2 vLtPos;
+	static Vec2 vScale;
+
+	if (_pObj->IsCamAffect())
+	{
+		std::tie(vLtPos, vScale) = Mgr(CCamera)->GetRenderPos(_pObj);
+	}
+	else
+	{
+		vLtPos = _pObj->GetPos() - _pObj->GetScale() / 2.;
+		vScale = _pObj->GetScale();
+	}
+
+	StretchBlt(m_hBackDC
+		, (int)vLtPos.x
+		, (int)vLtPos.y
+		, (int)vScale.x
+		, (int)vScale.y
+		,  _src
+		, (int)_vBitPos.x
+		, (int)_vBitPos.y
+		, (int)_vSlice.x
+		, (int)_vSlice.y
+		, SRCCOPY);
+
+	vScale.x = min(vScale.x, vScale.x + vLtPos.x);
+	vScale.y = min(vScale.y, vScale.y + vLtPos.y);
+	vLtPos.x = max(vLtPos.x, 0);
+	vLtPos.y = max(vLtPos.y, 0);
+
+	TransparentBlt(_dest
 		, (int)vLtPos.x
 		, (int)vLtPos.y
 		, (int)vScale.x

@@ -16,7 +16,18 @@ CObject::~CObject()
 }
 
 CObject::CObject(const CObject& _other)
+	:m_strName{ _other.m_strName }
+	, m_vPos{ _other.m_vPos }
+	, m_vScale{ _other.m_vScale }
 {
+	for (int i = 0; i < etoi(COMPONENT_TYPE::END); ++i)
+	{
+		if (_other.m_arrComp[i])
+		{
+			CComponent* pComp = _other.m_arrComp[i]->Clone(this);
+			AddComponent(static_cast<COMPONENT_TYPE>(i), pComp);
+		}
+	}
 }
 
 void CObject::AddComponent(COMPONENT_TYPE _eCompType, CComponent* const _pComp)
@@ -38,16 +49,12 @@ void CObject::update()
 void CObject::render(HDC _dc)const
 {
 	auto [vPos, vScale] = Mgr(CCamera)->GetRenderPos(this);
-	/*Rectangle(_dc, (int)(vPos.x - vScale.x / 2.),
-		(int)(vPos.y - vScale.y / 2.),
-		(int)(vPos.x + vScale.x / 2.),
-		(int)(vPos.y + vScale.y / 2.));*/
+	
 	Rectangle(_dc, 
 		(int)(vPos.x),
 		(int)(vPos.y),
 		(int)(vPos.x + vScale.x),
 		(int)(vPos.y + vScale.y));
-//	Mgr(CCamera)->ResetRenderPos();
 }
 
 void CObject::component_render(HDC _dc)const

@@ -10,7 +10,7 @@ private:
 	Vec2            m_vForce;   
 	Vec2            m_vAccel;  
 	Vec2            m_vVelocity;   
-	Vec2            m_vMaxVelocity = {200.f,600.f};
+	Vec2            m_vMaxVelocity = {1000.f,600.f};
 	float            m_fMass = 1.f;
 	float           m_fFriction = 100.f;
 	bool            m_bGravity = true;  

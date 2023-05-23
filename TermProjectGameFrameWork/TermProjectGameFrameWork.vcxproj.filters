@@ -246,6 +246,9 @@
     <ClInclude Include="CLayer.h">
       <Filter>Engine\10. Layer</Filter>
     </ClInclude>
+    <ClInclude Include="CTileLayer.h">
+      <Filter>Engine\10. Layer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -336,6 +339,9 @@
       <Filter>Engine\09. Atlas\AtlasElement</Filter>
     </ClCompile>
     <ClCompile Include="CLayer.cpp">
+      <Filter>Engine\10. Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileLayer.cpp">
       <Filter>Engine\10. Layer</Filter>
     </ClCompile>
   </ItemGroup>

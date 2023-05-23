@@ -56,3 +56,8 @@ void CEventMgr::update()
 		m_fpTRupdate();
 	}
 }
+
+void CEventMgr::AddDeadObj(unique_ptr<CObject>& _pDeadObj)
+{
+	m_vecDeadObj.emplace_back(std::move(_pDeadObj));
+}

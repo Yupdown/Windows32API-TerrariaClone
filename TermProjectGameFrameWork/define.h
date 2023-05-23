@@ -110,3 +110,8 @@ enum class SOUND_TYPE
 
 	END
 };
+
+
+#define PIXELS_PER_TILE 8
+
+#define TILE_PIXEL_XY (Vec2{PIXELS_PER_TILE,PIXELS_PER_TILE})

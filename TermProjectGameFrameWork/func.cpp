@@ -80,6 +80,13 @@ void CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit, Vec2 _vBitMapScale)
 	Rectangle(_dc, 0, 0, (int)_vBitMapScale.x, (int)_vBitMapScale.y);
 	DeleteObject(SelectObject(_dc, hOld));
 	DeleteObject(SelectObject(_dc, hOldPen));
+	SetGraphicsMode(_dc, GM_ADVANCED);
+}
+
+void DeleteDCBITMAP(HDC& _dc, HBITMAP& _hBit)
+{
+	DeleteDC(_dc);
+	DeleteObject(_hBit);
 }
 
 CoRoutine DelayCoRoutine(function<void(void)> _fp, float _fDelayTime)
@@ -92,4 +99,18 @@ CoRoutine DelayCoRoutine(function<void(void)> _fp, float _fDelayTime)
 	}
 	_fp();
 	co_return;
+}
+
+BOOL TransparentBltSafe(HDC hdcDest, int xoriginDest, int yoriginDest, int wDest, int hDest, HDC hdcSrc, int xoriginSrc, int yoriginSrc, int wSrc, int hSrc, int wBit, int hBit, UINT crTransparent)
+{
+	const int os_left = max(-xoriginSrc, 0);
+	const int os_top = max(-yoriginSrc, 0);
+	const int os_right = max(xoriginSrc + wSrc - wBit, 0);
+	const int os_bottom = max(yoriginSrc + hSrc - hBit, 0);
+	const int od_left = os_left * wDest / wSrc;
+	const int od_top = os_top * hDest / hSrc;
+	const int od_right = os_right * wDest / wSrc;
+	const int od_bottom = os_bottom * hDest / hSrc;
+
+	return TransparentBlt(hdcDest, xoriginDest + od_left, yoriginDest + od_top, wDest - od_left - od_right, hDest - od_top - od_bottom, hdcSrc, xoriginSrc + os_left, yoriginSrc + os_top, wSrc - os_left - os_right, hSrc - os_top - os_bottom, crTransparent);
 }

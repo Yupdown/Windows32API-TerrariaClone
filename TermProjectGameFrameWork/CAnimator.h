@@ -27,6 +27,7 @@ public:
 	void component_render(HDC _dc)const override;
 	void SetAnimRight() { m_iAnimDir = 0; }
 	void SetAnimLeft() { m_iAnimDir = 1; }
+	bool IsFinish()const;
 	CAnimation* GetCurAnim()const { return m_pCurAnim; };
 public:
 	CAnimator* Clone(CObject* const _pOwner)const override

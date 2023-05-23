@@ -19,7 +19,6 @@ public:
 	virtual ~CObject();
 	virtual void initObj() {};
 protected:
-	int					m_iPrevDir = {};
 	Vec2				m_vPrevPos = {};
 	bool				m_bIsCamAffected = true;
 private:

@@ -27,7 +27,7 @@ public:
 	{ 
 		m_vecEvent.emplace_back(std::bind(std::forward<Func>(fp),std::forward<Args>(args)...));
 	}
-	void AddDeadObj(unique_ptr<CObject>& _pDeadObj) { m_vecDeadObj.emplace_back(std::move(_pDeadObj)); }
+	void AddDeadObj(unique_ptr<CObject>& _pDeadObj);
 
 	template<typename Func, typename... Args> requires std::invocable<Func, Args...>
 	void SetTRupdate(Func&& fp, Args&&... args)

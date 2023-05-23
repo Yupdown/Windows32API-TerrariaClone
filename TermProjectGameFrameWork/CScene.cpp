@@ -8,57 +8,18 @@
 #include "CCamera.h"
 #include "CEventMgr.h"
 #include "CLayer.h"
-
-int CScene::g_iSceneID;
+#include "CTileLayer.h"
 
 CScene::CScene()
 {
-	
+	CreateDCBITMAP(m_hSceneDC, m_hSceneBit, Mgr(CCore)->GetResolutionV());
 }
 
 CScene::~CScene()
 {
+	DeleteDCBITMAP(m_hSceneDC, m_hSceneBit);
 }
 
-void CScene::AddTile(wstring_view _strTileTexName, Vec2 _vPos, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSlice)
-{
-	CTile* pTile = new CTile;
-	pTile->SetTileTex(_strTileTexName);
-	pTile->SetPos(_vPos);
-	pTile->SetScale(_vScale);
-	pTile->SetTileBitPos(_vBitPos);
-	pTile->SetTileSliceSize(_vSlice);
-	//pTile->render(m_pBackGroundTex->GetDC());
-	m_mapTile.insert(make_pair(_vPos, pTile));
-}
-
-void CScene::AddChunkTile(wstring_view _strTileTexName,Vec2 _vLtPos,Vec2 _vScale ,UINT _iRow, UINT _iCol, UINT _iBitMapIdx)
-{
-	for (int i = 0; i < (int)_iRow; ++i)
-	{
-		for (int j = 0; j < (int)_iCol; ++j)
-		{
-			CTile* pTile = new CTile;
-			pTile->SetTileTex(_strTileTexName);
-			const float xScale = _vScale.x / static_cast<float>(_iCol);
-			const float yScale = _vScale.y / static_cast<float>(_iRow);
-			const Vec2 vScale = Vec2{ xScale,yScale };
-			const Vec2 vLtPos = Vec2{ _vLtPos.x + xScale *(float)j ,_vLtPos.y + yScale *(float)i};
-			pTile->SetPos(vLtPos+vScale/2);
-			pTile->SetScale(vScale);
-			// x ÇÑÄ­ 64 y ÇÑÄ­ 64
-			// x8°³ y4°³
-			const UINT yBitPos = _iBitMapIdx / 8;
-			const UINT xBitPos = _iBitMapIdx % 8;
-			pTile->SetTileSliceSize(Vec2{ 64,64 });
-			Vec2 vBit = Vec2{ float(64 * xBitPos),float(64 * yBitPos) };
-			pTile->SetTileBitPos(vBit);
-		//	pTile->render(m_pBackGroundTex->GetDC());
-			m_mapTile.insert(make_pair(vLtPos + vScale / 2, pTile));
-		}
-	}
-
-}
 void CScene::update()
 {
 	for (const auto& i : m_vecObj)
@@ -72,6 +33,21 @@ void CScene::update()
 			j->update();
 		}
 	}
+}
+
+void CScene::AddObject(CObject* const _pObj, GROUP_TYPE _eType)
+{
+	m_vecObj[(UINT)_eType].emplace_back(_pObj); 
+}
+
+const vector<unique_ptr<CObject>>& CScene::GetGroupObject(GROUP_TYPE _eType) const
+{
+	return m_vecObj[(UINT)_eType];
+}
+
+vector<unique_ptr<CObject>>& CScene::GetUIGroup()
+{
+	return m_vecObj[(UINT)GROUP_TYPE::UI];
 }
 
 void CScene::component_update()const
@@ -88,23 +64,31 @@ void CScene::component_update()const
 void CScene::render(HDC _dc)
 {
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
-	//Mgr(CCamera)->renderBackGround(m_pBackGroundImg, m_pBackGroundImg2,1,10);
-	//Mgr(CCamera)->SetNowLookAt(Mgr(CCore)->GetResolutionV() / 2);
-	//Mgr(CCamera)->TransformRenderPos();
-	/*m_pBackGroundImg2->BitBlt(_dc
-		, 0
-		, 0
-		, (int)vRes.x * 2
-		, (int)vRes.y * 10
-		, 0
-		, 0);*/
-	//Mgr(CCamera)->ResetRenderPos();
-	//Mgr(CCamera)->SetNowLookAt(GetPlayer()->GetPos());
+	
 	for (const auto& layer : m_vecLayer)
 	{
-		layer->render(_dc);
+		layer->render(m_hSceneDC);
 	}
+	for (const auto& tileVec : m_vecTileLayer)
+	{
+		tileVec->render(m_hSceneDC);
+	}
+	
+	Mgr(CCamera)->SetNowLookAt(vRes/2);
+	Mgr(CCamera)->TransformRenderPos();
+	BitBlt(_dc
+		, 0
+		, 0
+		, (int)vRes.x 
+		, (int)vRes.y 
+		, m_hSceneDC
+		, 0
+		, 0
+		, SRCCOPY);
+	Mgr(CCamera)->ResetRenderPos();
+	Mgr(CCamera)->SetNowLookAt(GetPlayer()->GetPos());
 
+	
 	for (auto& vecObj : m_vecObj)
 	{
 		const auto vecPtr = vecObj.data();
@@ -112,7 +96,6 @@ void CScene::render(HDC _dc)
 		{
 			if (vecPtr[i]->IsDead())
 			{
-				//m_vecDeadObj.emplace_back(std::move(vecPtr[i]));
 				Mgr(CEventMgr)->AddDeadObj(vecPtr[i]);
 				vecPtr[i] = std::move(vecObj.back());
 				vecObj.pop_back();
@@ -138,3 +121,4 @@ void CScene::Reset()
 		i.clear();
 	}
 }
+

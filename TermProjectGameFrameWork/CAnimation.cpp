@@ -43,7 +43,7 @@ void CAnimation::update()
 		++m_iCurFrm;
 		if (m_vecFrm.size() <= m_iCurFrm)
 		{
-			m_iCurFrm = -1;
+			m_iCurFrm = 0;
 			m_bFinish = true;
 		}
 	}
@@ -53,7 +53,7 @@ void CAnimation::render(HDC _dc, int _iDir)
 {
 	if (m_bFinish)
 	{
-		return;
+		//return;
 	}
 	CObject* pObj = m_pAnimator->GetOwner();
 	Vec2 vPos = pObj->GetPos();

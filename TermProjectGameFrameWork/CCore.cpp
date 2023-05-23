@@ -96,7 +96,7 @@ int CCore::init(HWND _hwnd, POINT _ptResolution)
 	m_hDC = GetDC(m_hWnd);	
 	
 	m_hMemDC = CreateCompatibleDC(m_hDC);
-	m_hBackBuffer = CreateCompatibleBitmap(m_hDC,m_ptResolution.x * 2,m_ptResolution.y * 2);
+	m_hBackBuffer = CreateCompatibleBitmap(m_hDC,m_ptResolution.x ,m_ptResolution.y );
 	DeleteObject(SelectObject(m_hMemDC, m_hBackBuffer));
 	
 	SetGraphicsMode(m_hMemDC, GM_ADVANCED);
@@ -153,7 +153,7 @@ void CCore::progress()
 
 void CCore::Clear()
 {
-	PatBlt(m_hMemDC, -m_ptResolution.x, -m_ptResolution.y, m_ptResolution.x*2, m_ptResolution.y*2, WHITENESS);
+	PatBlt(m_hMemDC, 0, 0, m_ptResolution.x, m_ptResolution.y, WHITENESS);
 	Mgr(CResMgr)->Clear();
 }
 

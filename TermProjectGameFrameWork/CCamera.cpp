@@ -5,6 +5,9 @@
 #include "CObject.h"
 #include "CKeyMgr.h"
 
+
+
+
 CCamera::CCamera()
 {
 
@@ -50,66 +53,42 @@ pair<Vec2, Vec2> CCamera::GetRenderPos(const CObject* const _pObj) const
 	return std::make_pair(vLtPos, vScale);
 }
 
-void CCamera::renderBackGround(const CImage* const _pImg1, const CImage* const _pImg2, int _iXratio, int _iYratio)const
-{
-	const int iBackWidth = (int)m_vResolution.x * _iXratio;
-	const int iBackHeight = (int)m_vResolution.y * _iYratio;
-	const int iLeft = ((int)m_vDiff.x % iBackWidth + iBackWidth) % iBackWidth;
-	const int iTop= ((int)m_vDiff.y % iBackHeight + iBackHeight) % iBackHeight;
-	const auto hDC = _pImg2->GetDC();
 
-	_pImg1->BitBlt(hDC
-		, 0
-		, 0
-		, (int)m_vResolution.x 
-		, (int)m_vResolution.y * 10
-		, iLeft
-		, iTop
-		, SRCCOPY);
-
-	_pImg1->BitBlt(hDC
-		, iLeft + (int)m_vResolution.x 
-		, 0
-		, (int)m_vResolution.x  
-		, (int)m_vResolution.y * 10
-		, 0
-		, iTop
-		, SRCCOPY);
-
-	_pImg2->ReleaseDC();
-}
 
 void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fSpeed) const
-{
+{	
 	const int iBackWidth = (int)_vLayerScale.x;
 	const int iBackHeight = (int)_vLayerScale.y;
 	const int iLeft = ((int)(m_vDiff.x * _fSpeed) % iBackWidth + iBackWidth) % iBackWidth;
-	const int iTop = ((int)(m_vDiff.y) % iBackHeight + iBackHeight) % iBackHeight;
-	
-	
-	TransparentBlt(_hDest
+	const int iTop = (int)(m_vCurLookAt.y - m_vResolution.y/2);
+
+	TransparentBltSafe(_hDest
 		, 0
 		, 0
 		, (int)m_vResolution.x
 		, (int)m_vResolution.y 
-		,_hSrc
+		, _hSrc
 		, iLeft
 		, iTop
-		, (int)m_vResolution.x
-		, (int)m_vResolution.y
-		, RGB(255,0,255));
+		, (int)_vLayerScale.x
+		, (int)(m_vResolution.y / _fSpeed)
+		, (int)_vLayerScale.x * 2
+		, (int)_vLayerScale.y
+		, RGB(255, 0, 255));
 
-	TransparentBlt(_hDest
+	TransparentBltSafe(_hDest
 		, iLeft + (int)m_vResolution.x
 		, 0
 		, (int)m_vResolution.x
 		, (int)m_vResolution.y 
-		,_hSrc
+		, _hSrc
 		, 0
 		, iTop
 		, (int)m_vResolution.x
-		, (int)m_vResolution.y
-		, RGB(255,0,255));
+		, (int)(m_vResolution.y / _fSpeed)
+		, (int)_vLayerScale.x * 2
+		, (int)_vLayerScale.y 
+		, RGB(255, 0, 255));
 }
 
 void CCamera::update()

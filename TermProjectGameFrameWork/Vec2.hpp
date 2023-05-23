@@ -38,8 +38,8 @@ public:
 
 	Vec2 Normalize()const
 	{
-		float fLen = length();
-		if (0. == fLen)
+		const float fLen = length();
+		if (0.f == fLen)
 		{
 			return Vec2{ 0.f,0.f };
 		}

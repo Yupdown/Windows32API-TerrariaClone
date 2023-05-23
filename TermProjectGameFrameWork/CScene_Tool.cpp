@@ -93,7 +93,7 @@ INT_PTR CALLBACK TileCountProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 			CScene_Tool* pToolScene = dynamic_cast<CScene_Tool*>(pCurScene);
 			assert(pToolScene);
 			const Vec2 vScale =   pToolScene->GetRbPos()- pToolScene->GetLtPos();
-			pCurScene->AddChunkTile(L"Tile.bmp", pToolScene->GetLtPos(), vScale, iRow, iCol, iBitIdx);
+		//	pCurScene->AddChunkTile(L"Tile.bmp", pToolScene->GetLtPos(), vScale, iRow, iCol, iBitIdx);
 			pToolScene->SetDone();
 			EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;
