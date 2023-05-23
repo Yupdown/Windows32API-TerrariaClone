@@ -85,12 +85,12 @@ public:
 		return *this = *this - _other;
 	}
 
-	constexpr Vec2Int& operator*=(float _f)
+	constexpr Vec2Int& operator*=(int _f)
 	{
 		return *this = *this * _f;
 	}
 
-	constexpr Vec2Int& operator/=(float _f)
+	constexpr Vec2Int& operator/=(int _f)
 	{
 		return *this = *this / _f;
 	}

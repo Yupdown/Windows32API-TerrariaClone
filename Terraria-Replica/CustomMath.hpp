@@ -2,9 +2,9 @@
 
 #include <math.h>
 
-constexpr float F_PI = 3.14159265358979323846;
-constexpr float F_DEG2RAD = F_PI / 180.0;
-constexpr float F_RAD2DEG = 180.0 / F_PI;
+constexpr float F_PI = 3.14159265358979323846f;
+constexpr float F_DEG2RAD = F_PI / 180.0f;
+constexpr float F_RAD2DEG = 180.0f / F_PI;
 
 inline float Floor(float value)
 {
@@ -38,7 +38,7 @@ inline int RoundToInt(float value)
 
 inline float Sign(float value)
 {
-	return value >= 0.0 ? 1.0 : -1.0;
+	return value >= 0.0f ? 1.0f : -1.0f;
 }
 
 inline float Max(float lhs, float rhs)
@@ -58,7 +58,7 @@ inline float Clamp(float value, float min, float max)
 
 inline float Clamp01(float value)
 {
-	return Clamp(value, 0.0, 1.0);
+	return Clamp(value, 0.0f, 1.0f);
 }
 
 inline float Repeat(float t, float length)
