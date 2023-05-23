@@ -178,6 +178,7 @@
     <ClInclude Include="define.h" />
     <ClInclude Include="Vec2.hpp" />
     <ClInclude Include="func.h" />
+    <ClInclude Include="Vec2Int.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAnimation.cpp" />
@@ -213,6 +214,7 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Vec2Int.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TermProjectGameFrameWork.rc" />
