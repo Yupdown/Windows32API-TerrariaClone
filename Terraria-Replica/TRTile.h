@@ -1,44 +1,40 @@
 #pragma once
 
 #include <string>
+#include <Windows.h>
+#include "CAtlasElement.h"
 
 class TRTile
 {
 private:
+	std::wstring name;
+
 	bool solid;
 	float hardness;
 	
-	std::string k_element;
-	std::string k_dropitem;
+	std::wstring k_element;
+	std::wstring k_dropitem;
+
+	CAtlasElement* elements[16][16];
 
 public:
-	TRTile(bool solid, float hardness, std::string k_element, std::string k_dropitem)
-	{
-		this->solid = solid;
-		this->hardness = hardness;
-		this->k_element = k_element;
-		this->k_dropitem = k_dropitem;
-	}
+    TRTile(std::wstring name, bool solid, float hardness, std::wstring k_element, std::wstring k_dropitem);
 
-	bool Solid() const
-	{
-		return solid;
-	}
+    void CreateAtlasElements();
+	void OnDrawElement(HDC hdc, int x, int y, int bitmask);
 
-	float Hardness() const
-	{
-		return hardness;
-	}
+	bool Solid() const;
+	float Hardness() const;
 };
 
 class TRTileAir : public TRTile
 {
 public:
-	TRTileAir() : TRTile(false, 0.0f, "", "") {}
+	TRTileAir() : TRTile(L"Air", false, 0.0f, L"", L"") {}
 };
 
 class TRTileSolid : public TRTile
 {
 public:
-	TRTileSolid(float hardness, std::string k_element, std::string k_dropitem) : TRTile(true, hardness, k_element, k_dropitem) {}
+	TRTileSolid(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTile(name, true, hardness, k_element, k_dropitem) {}
 };

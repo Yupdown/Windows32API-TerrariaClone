@@ -52,8 +52,8 @@ CScene_Start::CScene_Start()
 	//	}
 	//}
 	//auto hDC = m_pBackGroundImg->GetDC();
-	m_vecTile.emplace_back(Mgr(CAtlasMgr)->GetAtlasElement(L"Tiles_0000.png",{0,0},{8,8}));
-	m_vecTile.emplace_back(Mgr(CAtlasMgr)->GetAtlasElement(L"Tiles_0000.png", { 16,0 }, { 8,8 }));
+	// m_vecTile.emplace_back(Mgr(CAtlasMgr)->GetAtlasElement(L"Tiles_0000.png",{0,0},{8,8}));
+	// m_vecTile.emplace_back(Mgr(CAtlasMgr)->GetAtlasElement(L"Tiles_0000.png", { 16,0 }, { 8,8 }));
 
 	/*for (int i = 0; i < 100; ++i) {
 		m_vecTile[0]->render(hDC, Vec2{ 100 + (float)i * 20 ,7000  });

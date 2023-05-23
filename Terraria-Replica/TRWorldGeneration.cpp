@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "TRWorldGeneration.h"
+#include "TRTileManager.h"
+#include "TRTile.h"
 
 TRWorldGeneration::TRWorldGeneration()
 {
@@ -18,6 +20,12 @@ void TRWorldGeneration::AddProcess(TRWorldGenerationProcess* process)
 
 void TRWorldGeneration::GenerateWorld(TRTileMap* tile_map, int width, int height, int seed)
 {
+    for (int i = 0; i < width; ++i)
+    {
+        for (int j = 0; j < height; ++j)
+            tile_map->SetTile(i, j, TRTileManager::GetInst()->TileAir());
+    }
+
 	for (TRWorldGenerationProcess* process : *processes)
 		process->GenerateWorld(tile_map, width, height, seed);
 }
