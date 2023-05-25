@@ -6,8 +6,15 @@ struct Vec2
 	float y = {};
 
 public:
+	static const Vec2 zero;
+	static const Vec2 one;
+	static const Vec2 right;
+	static const Vec2 left;
+	static const Vec2 up;
+	static const Vec2 down;
 
-	constexpr bool IsZero()const
+public:
+	constexpr bool IsZero() const
 	{
 		if (x == 0.f && y == 0.f)
 		{
@@ -16,7 +23,7 @@ public:
 		return false;
 	}
 	
-	float length()const
+	float length() const
 	{
 		return sqrtf(x * x + y * y);
 	}
@@ -36,7 +43,7 @@ public:
 
 	}
 
-	Vec2 Normalize()const
+	Vec2 Normalize() const
 	{
 		const float fLen = length();
 		if (0.f == fLen)
@@ -46,6 +53,16 @@ public:
 		const float nx = x / fLen;
 		const float ny = y / fLen;
 		return Vec2{ nx,ny };
+	}
+
+	constexpr Vec2 operator+() const
+	{
+		return Vec2{ x, y };
+	}
+
+	constexpr Vec2 operator-() const
+	{
+		return Vec2{ -x, -y };
 	}
 
 	constexpr Vec2 operator+(const Vec2& _other) const
@@ -92,9 +109,18 @@ public:
 		(*this) = (*this) / _f;
 		return *this;
 	}
+
+	constexpr bool operator==(const Vec2& _other) const
+	{
+		return x == _other.x && y == _other.y;
+	}
+
+	constexpr bool operator!=(const Vec2& _other) const
+	{
+		return !(*this == _other);
+	}
 	
-public:
-	constexpr bool operator <(const Vec2& _v) const
+	constexpr bool operator<(const Vec2& _v) const
 	{
 		if (y == _v.y)
 		{
@@ -105,6 +131,7 @@ public:
 			return y < _v.y;
 		}
 	}
+
 	operator POINT()const
 	{
 		POINT temp{};

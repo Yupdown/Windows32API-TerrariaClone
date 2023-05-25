@@ -22,9 +22,6 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{4d33ed9c-e0c9-407a-8db2-e121f0d720c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\02. Manager">
-      <UniqueIdentifier>{1602c205-05ed-4a8b-a2d9-1d6e85ffcc31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\01. Core">
       <UniqueIdentifier>{cf00a148-c25e-48ed-b826-f8f9851c0edf}</UniqueIdentifier>
     </Filter>
@@ -58,9 +55,6 @@
     <Filter Include="Engine\06. Component\Animator\Animation">
       <UniqueIdentifier>{e20013fa-ce50-4375-a065-76c25eff5099}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\02. Manager\TimeMgr">
-      <UniqueIdentifier>{85bbbb29-34f9-4f81-abeb-0706a50e2ddb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\08. Factory">
       <UniqueIdentifier>{63f83fb3-e3cc-4c17-b943-a7d5ea6151b4}</UniqueIdentifier>
     </Filter>
@@ -76,6 +70,45 @@
     <Filter Include="Engine\05. Resource\CTexture">
       <UniqueIdentifier>{6f5496b2-5f7f-4373-af2f-c6dd70ed321a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Default\func">
+      <UniqueIdentifier>{864d1aa3-6e03-42b2-952f-e94a7b3f7236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Scene\Scene">
+      <UniqueIdentifier>{90c0b8ed-0f84-451e-8745-6a154b9749b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Scene\Scene_Start">
+      <UniqueIdentifier>{b8490388-4c38-4fe6-acf2-c6b87292682b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Object\Player">
+      <UniqueIdentifier>{0006cbbf-cd0d-48ad-a7ef-89a351ee804e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Object\Monster">
+      <UniqueIdentifier>{06547a9d-436b-4b60-8342-717fa1103fbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Object\Tile">
+      <UniqueIdentifier>{ff847272-3cc0-420d-b96c-bf234eb229bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default\CoRoutine">
+      <UniqueIdentifier>{e26f8aa9-8bba-44c3-b415-0f3e356280f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Scene\Scene_Tool">
+      <UniqueIdentifier>{2f591532-e24f-493d-8500-c043a110583e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\10. Layer">
+      <UniqueIdentifier>{56b91cde-1a47-474c-befa-b902d87c8040}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Atlas">
+      <UniqueIdentifier>{be2858e1-926f-4e0d-b48f-9fc9e1b394a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Atlas\AtlasElement">
+      <UniqueIdentifier>{6c124bac-15ca-4472-b205-b4fb80f4f87f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\02. Manager">
+      <UniqueIdentifier>{1602c205-05ed-4a8b-a2d9-1d6e85ffcc31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\02. Manager\TimeMgr">
+      <UniqueIdentifier>{85bbbb29-34f9-4f81-abeb-0706a50e2ddb}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\02. Manager\ResMgr">
       <UniqueIdentifier>{0793f1a5-8fef-472e-9af1-93c889676e04}</UniqueIdentifier>
     </Filter>
@@ -88,50 +121,17 @@
     <Filter Include="Engine\02. Manager\SceneMgr">
       <UniqueIdentifier>{c5465eb0-4253-4c6d-8722-5762b39295ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Default\func">
-      <UniqueIdentifier>{864d1aa3-6e03-42b2-952f-e94a7b3f7236}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\04. Scene\Scene">
-      <UniqueIdentifier>{90c0b8ed-0f84-451e-8745-6a154b9749b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\02. Manager\KeyMgr">
       <UniqueIdentifier>{1bcc50ad-b54b-4bbb-ac5e-37ac6f4bbc22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\04. Scene\Scene_Start">
-      <UniqueIdentifier>{b8490388-4c38-4fe6-acf2-c6b87292682b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\03. Object\Player">
-      <UniqueIdentifier>{0006cbbf-cd0d-48ad-a7ef-89a351ee804e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\02. Manager\Camera">
       <UniqueIdentifier>{27e1c8e0-3057-42ba-9d22-1c4eb3f52ccb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\03. Object\Monster">
-      <UniqueIdentifier>{06547a9d-436b-4b60-8342-717fa1103fbb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\03. Object\Tile">
-      <UniqueIdentifier>{ff847272-3cc0-420d-b96c-bf234eb229bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Default\CoRoutine">
-      <UniqueIdentifier>{e26f8aa9-8bba-44c3-b415-0f3e356280f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\02. Manager\EventMgr">
       <UniqueIdentifier>{d28b997a-7d44-4b03-bc51-f8456f5f3322}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\04. Scene\Scene_Tool">
-      <UniqueIdentifier>{2f591532-e24f-493d-8500-c043a110583e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\02. Manager\AtlasMgr">
       <UniqueIdentifier>{e76e6913-a8d0-4e15-9621-165ea50d0b5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\10. Layer">
-      <UniqueIdentifier>{56b91cde-1a47-474c-befa-b902d87c8040}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\09. Atlas">
-      <UniqueIdentifier>{be2858e1-926f-4e0d-b48f-9fc9e1b394a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\09. Atlas\AtlasElement">
-      <UniqueIdentifier>{6c124bac-15ca-4472-b205-b4fb80f4f87f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +249,9 @@
     <ClInclude Include="Vec2Int.hpp">
       <Filter>Default</Filter>
     </ClInclude>
+    <ClInclude Include="CTileLayer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -342,6 +345,12 @@
       <Filter>Engine\10. Layer</Filter>
     </ClCompile>
     <ClCompile Include="Vec2Int.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileLayer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
       <Filter>Default</Filter>
     </ClCompile>
   </ItemGroup>

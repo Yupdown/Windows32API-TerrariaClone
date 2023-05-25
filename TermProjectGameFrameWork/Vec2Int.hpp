@@ -45,12 +45,12 @@ public:
 
 	}
 
-	Vec2Int operator+() const
+	constexpr Vec2Int operator+() const
 	{
 		return Vec2Int(x, y);
 	}
 
-	Vec2Int operator-() const
+	constexpr Vec2Int operator-() const
 	{
 		return Vec2Int(-x, -y);
 	}

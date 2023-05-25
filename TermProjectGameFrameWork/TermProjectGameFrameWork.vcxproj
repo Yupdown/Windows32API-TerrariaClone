@@ -214,6 +214,7 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Vec2Int.cpp" />
   </ItemGroup>
   <ItemGroup>
