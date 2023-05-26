@@ -25,6 +25,10 @@ private:
 	HMENU			m_hMenu; 
 	XFORM m_xform = {};
 	XFORM m_xform2 = {};
+
+	HDC m_hThreadMazentaDC[THREAD::END];
+	HBITMAP m_hThreadMazentaBit[THREAD::END];
+
 public:
 	void CreateBrushPen(); 
 	constexpr HBRUSH	GetBrush(BRUSH_TYPE _eType)const { return m_arrBrush[(UINT)_eType]; }
@@ -64,5 +68,18 @@ public:
 	{
 		SelectObject(_dc, m_arrBrush[etoi(BRUSH_TYPE::MAZENTA)]);
 		Rectangle(_dc, 0, 0, (int)_vRes.x, (int)_vRes.y);
+	}
+
+	void MaznetaClear(HDC _dc, const UINT _idx)const
+	{
+		BitBlt(_dc
+			, 0
+			, 0
+			, m_ptResolution.x
+			, m_ptResolution.y
+			, m_hThreadMazentaDC[_idx]
+			, 0
+			, 0
+			, SRCCOPY);
 	}
 };

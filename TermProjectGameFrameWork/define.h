@@ -113,6 +113,14 @@ enum class SOUND_TYPE
 	END
 };
 
+enum THREAD
+{
+	T0,
+	T1,
+	T2,
+	
+	END
+};
 
 #define SRC_TILE_SIZE 8
 
@@ -121,3 +129,4 @@ enum class SOUND_TYPE
 #define PIXELS_PER_TILE 16
 
 #define TILE_PIXEL_XY (Vec2{PIXELS_PER_TILE,PIXELS_PER_TILE})
+

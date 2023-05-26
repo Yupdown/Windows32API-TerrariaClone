@@ -42,16 +42,16 @@ void CResMgr::init()
 		}
 	}
 	m_hBackDC = CreateCompatibleDC(Mgr(CCore)->GetMainDC());
-	m_hBackBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x*2, Mgr(CCore)->GetResolution().y*10);
+	m_hBackBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x*10, Mgr(CCore)->GetResolution().y*10);
 	DeleteObject(SelectObject(m_hBackDC, m_hBackBit));
 	Clear();
 	SetStretchBltMode(m_hBackDC, HALFTONE);
 	SetGraphicsMode(m_hBackDC, GM_ADVANCED);
 
 	m_hBackEraseDC = CreateCompatibleDC(Mgr(CCore)->GetMainDC());
-	m_hBackEraseBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x * 2, Mgr(CCore)->GetResolution().y * 10);
+	m_hBackEraseBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x * 10, Mgr(CCore)->GetResolution().y * 10);
 	DeleteObject(SelectObject(m_hBackEraseDC, m_hBackEraseBit));
-	PatBlt(m_hBackEraseDC, 0, 0, Mgr(CCore)->GetResolution().x * 2, Mgr(CCore)->GetResolution().y * 10,WHITENESS);
+	PatBlt(m_hBackEraseDC, 0, 0, Mgr(CCore)->GetResolution().x * 10, Mgr(CCore)->GetResolution().y * 10,WHITENESS);
 
 	SetStretchBltMode(m_hBackEraseDC, HALFTONE);
 	SetGraphicsMode(m_hBackEraseDC, GM_ADVANCED);
@@ -64,7 +64,7 @@ void CResMgr::Clear()
 	BitBlt(m_hBackDC
 		, 0
 		, 0
-		, (int)Mgr(CCore)->GetResolution().x * 2
+		, (int)Mgr(CCore)->GetResolution().x * 10
 		, (int)Mgr(CCore)->GetResolution().y * 10
 		, m_hBackEraseDC
 		, 0
