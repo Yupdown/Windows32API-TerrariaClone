@@ -45,11 +45,18 @@ void TRWorldGenerationGrowGrass::GenerateWorld(TRTileMap* tile_map, int width, i
             if (tile_map->GetTile(i, j) != dirt)
                 continue;
 
+            int dir[][2] = { 0, -1, 0, 1, -1, 0, 1, 0, -1, -1, -1, 1, 1, -1, 1, 1 };
             bool exposed = false;
-            exposed |= i > 0 && !tile_map->GetTile(i - 1, j)->Solid();
-            exposed |= i < width - 1 && !tile_map->GetTile(i + 1, j)->Solid();
-            exposed |= j > 0 && !tile_map->GetTile(i, j - 1)->Solid();
-            exposed |= j < height - 1 && !tile_map->GetTile(i, j + 1)->Solid();
+
+            for (int k = 0; k < 8 && !exposed; ++k)
+            {
+                int xp = i + dir[k][0];
+                int yp = j + dir[k][1];
+
+                if (yp < 0 || yp >= height || xp < 0 || xp >= width)
+                    continue;
+                exposed |= !tile_map->GetTile(xp, yp)->Solid();
+            }
 
             if (exposed)
                 tile_map->SetTile(i, j, grass);

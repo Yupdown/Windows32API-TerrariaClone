@@ -11,6 +11,8 @@ TRTile::TRTile(std::wstring name, bool solid, float hardness, std::wstring k_ele
 	this->hardness = hardness;
 	this->k_element = k_element;
 	this->k_dropitem = k_dropitem;
+    this->stick_group = 0;
+    this->stick_each = true;
 
 	if (k_element != L"")
 		CreateAtlasElements();
@@ -37,75 +39,287 @@ void TRTile::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
     int sj = 0;
     int sr = uid(dre) % 3;
 
-    switch (bitmask)
+    int loword = bitmask & 127;
+    int hiword = bitmask >> 8 & 127;
+
+    switch (loword)
     {
-    case 0:
+    case 0b00000000:
         si = 3;
         sj = 9 + sr;
         break;
-    case 1:
-        si = 3;
-        sj = 6 + sr;
+    case 0b00000001:
+        switch (hiword)
+        {
+        case 0b00000001:
+            si = 8 + sr;
+            sj = 6;
+            break;
+        default:
+            si = 3;
+            sj = 6 + sr;
+            break;
+        }
         break;
-    case 2:
-        si = 0;
-        sj = 6 + sr;
+    case 0b00000010:
+        switch (hiword)
+        {
+        case 0b00000010:
+            si = 5 + sr;
+            sj = 6;
+            break;
+        default:
+            si = 0;
+            sj = 6 + sr;
+            break;
+        }
         break;
-    case 3:
-        si = sr;
-        sj = 5;
+    case 0b00000011:
+        switch (hiword)
+        {
+        case 0b00000001:
+            si = 8 + sr;
+            sj = 7;
+            break;
+        case 0b00000010:
+            si = 5 + sr;
+            sj = 7;
+            break;
+        case 0b00000011:
+            si = 12 + sr;
+            sj = 6;
+            break;
+        default:
+            si = sr;
+            sj = 5;
+            break;
+        }
         break;
-    case 4:
-        si = sr;
-        sj = 12;
+    case 0b00000100:
+        switch (hiword)
+        {
+        case 0b00000100:
+            si = 13;
+            sj = sr;
+            break;
+        default:
+            si = sr;
+            sj = 12;
+            break;
+        }
         break;
-    case 5:
+    case 0b00000101:
         si = 4;
         sj = 1 + sr * 2;
         break;
-    case 6:
+    case 0b00000110:
         si = 3;
         sj = 1 + sr * 2;
         break;
-    case 7:
-        si = sr;
-        sj = 4;
+    case 0b00000111:
+        switch (hiword)
+        {
+        case 0b00000001:
+            si = 8 + sr;
+            sj = 5;
+            break;
+        case 0b00000010:
+            si = 5 + sr;
+            sj = 5;
+            break;
+        case 0b00000100:
+            si = 3;
+            sj = 13 + sr;
+            break;
+        default:
+            si = sr;
+            sj = 4;
+            break;
+        }
         break;
-    case 8:
-        si = sr;
-        sj = 9;
+    case 0b00001000:
+        switch (hiword)
+        {
+        case 0b00000100:
+            si = 13;
+            sj = 3 + sr;
+            break;
+        default:
+            si = sr;
+            sj = 9;
+            break;
+        }
         break;
-    case 9:
+    case 0b00001001:
         si = 4;
         sj = sr * 2;
         break;
-    case 10:
+    case 0b00001010:
         si = 3;
         sj = sr * 2;
         break;
-    case 11:
-        si = sr;
-        sj = 0;
+    case 0b00001011:
+        switch (hiword)
+        {
+        case 0b00000001:
+            si = 8 + sr;
+            sj = 4;
+            break;
+        case 0b00000010:
+            si = 5 + sr;
+            sj = 4;
+            break;
+        case 0b00001000:
+            si = 2;
+            sj = 13 + sr;
+            break;
+        default:
+            si = sr;
+            sj = 0;
+            break;
+        }
         break;
-    case 12:
-        si = 4;
-        sj = 6 + sr;
+    case 0b00001100:
+        switch (hiword)
+        {
+        case 0b00000100:
+            si = 14;
+            sj = sr;
+            break;
+        case 0b00001000:
+            si = 14;
+            sj = 3 + sr;
+            break;
+        case 0b00001100:
+            si = 11;
+            sj = 9 + sr;
+            break;
+        default:
+            si = 4;
+            sj = 6 + sr;
+            break;
+        }
         break;
-    case 13:
-        si = 2;
-        sj = 1 + sr;
+    case 0b00001101:
+        switch (hiword)
+        {
+        case 0b00000001:
+            si = 1;
+            sj = 13 + sr;
+            break;
+        case 0b00000100:
+            si = 12;
+            sj = sr;
+            break;
+        case 0b00001000:
+            si = 12;
+            sj = 3 + sr;
+            break;
+        default:
+            si = 2;
+            sj = 1 + sr;
+            break;
+        }
         break;
-    case 14:
-        si = 0;
-        sj = 1 + sr;
+    case 0b00001110:
+        switch (hiword)
+        {
+        case 0b00000010:
+            si = 0;
+            sj = 13 + sr;
+            break;
+        case 0b00000100:
+            si = 11;
+            sj = sr;
+            break;
+        case 0b00001000:
+            si = 11;
+            sj = 3 + sr;
+            break;
+        default:
+            si = 0;
+            sj = 1 + sr;
+            break;
+        }
         break;
     default:
-        si = 1;
-        sj = 1 + sr;
+        switch (hiword)
+        {
+        case 0b00000000:
+            si = 1;
+            sj = 1 + sr;
+            break;
+        case 0b00000001:
+            si = 6;
+            sj = 8 + sr;
+            break;
+        case 0b00000010:
+            si = 5;
+            sj = 8 + sr;
+            break;
+        case 0b00000011:
+            si = 10;
+            sj = 8 + sr;
+            break;
+        case 0b00000100:
+            si = 7 + sr;
+            sj = 9;
+            break;
+        case 0b00000101:
+            si = 5 + sr * 2;
+            sj = 2;
+            break;
+        case 0b00000110:
+            si = 6 + sr * 2;
+            sj = 2;
+            break;
+        case 0b00000111:
+            si = 5 + sr;
+            sj = 12;
+            break;
+        case 0b00001000:
+            si = 7 + sr;
+            sj = 8;
+            break;
+        case 0b00001001:
+            si = 5 + sr * 2;
+            sj = 3;
+            break;
+        case 0b00001010:
+            si = 6 + sr * 2;
+            sj = 3;
+            break;
+        case 0b00001011:
+            si = 8 + sr;
+            sj = 12;
+            break;
+        case 0b00001100:
+            si = 7 + sr;
+            sj = 10;
+            break;
+        case 0b00001101:
+            si = 5 + sr;
+            sj = 11;
+            break;
+        case 0b00001110:
+            si = 8 + sr;
+            sj = 11;
+            break;
+        }
         break;
     }
 
     tilemap_layer->pre_render(elements[sj][si], Vec2{ x * 16.0f, y * 16.0f });
+}
+
+int TRTile::StickGroup() const
+{
+    return stick_group;
+}
+
+bool TRTile::StickEach() const
+{
+    return stick_each;
 }
 
 bool TRTile::Solid() const
@@ -116,4 +330,25 @@ bool TRTile::Solid() const
 float TRTile::Hardness() const
 {
     return hardness;
+}
+
+TRTileSolid::TRTileSolid(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTile(name, true, hardness, k_element, k_dropitem)
+{
+    this->stick_group = 1;
+}
+
+TRTileOre::TRTileOre(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, k_element, k_dropitem)
+{
+    this->stick_group = 2;
+    this->stick_each = false;
+}
+
+TRTileDirt::TRTileDirt(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, k_element, k_dropitem)
+{
+    this->stick_group = 3;
+}
+
+TRTileGrass::TRTileGrass(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, k_element, k_dropitem)
+{
+    this->stick_group = 1;
 }

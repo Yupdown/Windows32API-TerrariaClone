@@ -7,16 +7,19 @@
 
 class TRTile
 {
-private:
+protected:
 	std::wstring name;
 
 	bool solid;
 	float hardness;
-	
+
+	int stick_group;
+	bool stick_each;
+
 	std::wstring k_element;
 	std::wstring k_dropitem;
 
-	CAtlasElement* elements[16][16];
+	CAtlasElement* elements[16][22];
 
 public:
     TRTile(std::wstring name, bool solid, float hardness, std::wstring k_element, std::wstring k_dropitem);
@@ -24,6 +27,8 @@ public:
     void CreateAtlasElements();
 	void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask);
 
+	int StickGroup() const;
+	bool StickEach() const;
 	bool Solid() const;
 	float Hardness() const;
 };
@@ -37,5 +42,23 @@ public:
 class TRTileSolid : public TRTile
 {
 public:
-	TRTileSolid(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTile(name, true, hardness, k_element, k_dropitem) {}
+	TRTileSolid(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem);
+};
+
+class TRTileDirt : public TRTileSolid
+{
+public:
+	TRTileDirt(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem);
+};
+
+class TRTileGrass : public TRTileSolid
+{
+public:
+	TRTileGrass(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem);
+};
+
+class TRTileOre : public TRTileSolid
+{
+public:
+	TRTileOre(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem);
 };

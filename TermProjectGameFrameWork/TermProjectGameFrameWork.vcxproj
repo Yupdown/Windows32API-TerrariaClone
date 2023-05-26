@@ -225,6 +225,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\UnityRelease\PCH.pch</PrecompiledHeaderOutputFile>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>
     </ClCompile>
+    <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Vec2Int.cpp" />
   </ItemGroup>
   <ItemGroup>
