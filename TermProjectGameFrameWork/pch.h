@@ -52,6 +52,7 @@ using std::multimap;
 #include <concepts>
 #include <type_traits>
 #include <bitset>
+#include <future>
 using std::wofstream;
 using std::wifstream;
 using std::list;

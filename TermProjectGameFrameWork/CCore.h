@@ -59,4 +59,10 @@ public:
 	void XFlipTransform(HDC dc, Vec2 vCenter = {});
 	void ScaleTransform(HDC dc, float _fScale);
 	void TranslateTransform(HDC dc, Vec2 vDist);
+
+	void MazentaBlt(HDC _dc, Vec2 _vRes)const
+	{
+		SelectObject(_dc, m_arrBrush[etoi(BRUSH_TYPE::MAZENTA)]);
+		Rectangle(_dc, 0, 0, (int)_vRes.x, (int)_vRes.y);
+	}
 };

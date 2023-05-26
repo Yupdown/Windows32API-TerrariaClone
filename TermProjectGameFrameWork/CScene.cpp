@@ -10,9 +10,14 @@
 #include "CLayer.h"
 #include "CTileLayer.h"
 
+
+jthread CScene::m_renderThread[2];
+
 CScene::CScene()
 {
 	CreateDCBITMAP(m_hSceneDC, m_hSceneBit, Mgr(CCore)->GetResolutionV());
+	CreateDCBITMAP(m_hSceneDC2, m_hSceneBit2, Mgr(CCore)->GetResolutionV());
+	CreateDCBITMAP(m_hSceneDC3, m_hSceneBit3, Mgr(CCore)->GetResolutionV());
 }
 
 CScene::~CScene()
@@ -70,29 +75,21 @@ void CScene::render(HDC _dc)
 {
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	
-	for (const auto& layer : m_vecLayer)
+	static const auto render_layer = [this]() {for (const auto& layer : m_vecLayer)
 	{
 		layer->render(m_hSceneDC);
-	}
-	for (const auto& tileVec : m_vecTileLayer)
-	{
-		tileVec->render(m_hSceneDC);
-	}
-	
-	Mgr(CCamera)->SetNowLookAt(vRes/2);
-	Mgr(CCamera)->TransformRenderPos();
-	BitBlt(_dc
-		, 0
-		, 0
-		, (int)vRes.x 
-		, (int)vRes.y 
-		, m_hSceneDC
-		, 0
-		, 0
-		, SRCCOPY);
-	Mgr(CCamera)->ResetRenderPos();
-	Mgr(CCamera)->SetNowLookAt(GetPlayer()->GetPos());
+	}};
 
+	static const auto render_Tile = [this]() {for (const auto& tileVec : m_vecTileLayer)
+	{
+		tileVec->render(m_hSceneDC2);
+	}};
+
+	static const auto mazentaBlt1 = [this]() {Mgr(CCore)->MazentaBlt(m_hSceneDC2, Mgr(CCore)->GetResolutionV()); };
+	static const auto mazentaBlt2 = [this]() {Mgr(CCore)->MazentaBlt(m_hSceneDC3, Mgr(CCore)->GetResolutionV()); };
+
+	m_renderThread[0] = jthread{ render_layer };
+	m_renderThread[1] = jthread{ render_Tile };
 	
 	for (auto& vecObj : m_vecObj)
 	{
@@ -107,11 +104,57 @@ void CScene::render(HDC _dc)
 			}
 			else
 			{
-				vecPtr[i]->render(_dc);
+				vecPtr[i]->render(m_hSceneDC3);
 				++i;
 			}
 		}
-	}
+	};
+	
+	m_renderThread[1].join();
+	
+	TransparentBlt(m_hSceneDC2
+		, 0
+		, 0
+		, (int)vRes.x
+		, (int)vRes.y
+		, m_hSceneDC3
+		, 0
+		, 0
+		, (int)vRes.x
+		, (int)vRes.y
+		, RGB(255, 0, 255));
+
+	m_renderThread[0].join();
+
+	TransparentBlt(m_hSceneDC
+		, 0
+		, 0
+		, (int)vRes.x
+		, (int)vRes.y
+		, m_hSceneDC2
+		, 0
+		, 0
+		, (int)vRes.x
+		, (int)vRes.y
+		, RGB(255, 0, 255));
+
+	Mgr(CCamera)->SetNowLookAt(vRes/2);
+	Mgr(CCamera)->TransformRenderPos();
+		BitBlt(_dc
+			, 0
+			, 0
+			, (int)vRes.x
+			, (int)vRes.y
+			, m_hSceneDC
+			, 0
+			, 0
+			,SRCCOPY);
+
+	m_renderThread[0] = jthread{ mazentaBlt1 };
+	m_renderThread[1] = jthread{ mazentaBlt2 };
+
+	Mgr(CCamera)->ResetRenderPos();
+	Mgr(CCamera)->SetNowLookAt(GetPlayer()->GetPos());
 }
 
 void CScene::DeleteGroup(GROUP_TYPE _eTarget)

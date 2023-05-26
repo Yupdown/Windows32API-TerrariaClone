@@ -3,6 +3,7 @@
 #include "CTileLayer.h"
 #include "CAtlasMgr.h"
 #include "CAtlasElement.h"
+#include "CResMgr.h"
 
 TRTileMap::TRTileMap(int width, int height)
 {
@@ -35,7 +36,7 @@ void TRTileMap::SetTile(int x, int y, TRTile* new_tile)
 
 void TRTileMap::OnSceneCreate(CScene* scene)
 {
-	CTileLayer* tilemap_layer = new CTileLayer(Vec2(500.0f, 7300.0f), tile_width * 8, tile_height * 8);
+	CTileLayer* tilemap_layer = new CTileLayer(Vec2(500.0f, 7300.0f), tile_width * 8 * 2, tile_height * 8 * 2);
 
 	for (int x = 0; x < tile_width; ++x)
 	{
@@ -62,6 +63,7 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 			tile->OnDrawElement(tilemap_layer, x, y, bitmask);
 		}
 	}
+	Mgr(CResMgr)->Clear();
 	scene->AddTileLayer(tilemap_layer);
 }
 

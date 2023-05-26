@@ -14,6 +14,9 @@ private:
 	unordered_map<wstring, unique_ptr<CImage>>		m_mapCImage;
 	HDC	 m_hBackDC;
 	HBITMAP m_hBackBit;
+	
+	HDC	 m_hBackEraseDC =nullptr;
+	HBITMAP m_hBackEraseBit = nullptr;
 
 public:
 	void Clear();
@@ -28,7 +31,7 @@ public:
 		return iter->second.get();
 	}
 	CImage* CreateImg(wstring_view _strKey, UINT _iWidth, UINT _iHeight);
-	void renderImg(const CImage* const _pImg, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const;
+	void renderImg(HDC _dc ,const CImage* const _pImg, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const;
 	void renderImg(HDC _dc, const CImage* const _pImg, Vec2 _vLT, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSliceSize)const;
 	HDC GetResMgrBackDC()const { return m_hBackDC; }
 	void renderDC(HDC _dest,HDC _src, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const;

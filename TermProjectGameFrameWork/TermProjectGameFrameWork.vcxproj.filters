@@ -249,6 +249,9 @@
     <ClInclude Include="Vec2Int.hpp">
       <Filter>Default</Filter>
     </ClInclude>
+    <ClInclude Include="CTileLayer.h">
+      <Filter>Engine\10. Layer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -343,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="Vec2Int.cpp">
       <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileLayer.cpp">
+      <Filter>Engine\10. Layer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

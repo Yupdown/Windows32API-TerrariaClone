@@ -48,7 +48,7 @@ void CCamera::ResetRenderPos(HDC _dc) const
 
 pair<Vec2, Vec2> CCamera::GetRenderPos(const CObject* const _pObj) const
 {
-	Vec2 vScale = _pObj->GetScale() * m_fCamZoom;
+	Vec2 vScale = _pObj->GetScale();
 	Vec2 vLtPos =   (m_vCurLookAt * (1.f - m_fCamZoom) + _pObj->GetPos() * m_fCamZoom) -vScale/2.f - m_vDiff;
 	return std::make_pair(vLtPos, vScale);
 }
@@ -61,6 +61,7 @@ void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fS
 	const int iBackHeight = (int)_vLayerScale.y;
 	const int iLeft = ((int)(m_vDiff.x * _fSpeed) % iBackWidth + iBackWidth) % iBackWidth;
 	const int iTop = (int)(m_vCurLookAt.y - m_vResolution.y/2);
+
 
 	TransparentBltSafe(_hDest
 		, 0
@@ -89,6 +90,7 @@ void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fS
 		, (int)_vLayerScale.x * 2
 		, (int)_vLayerScale.y 
 		, RGB(255, 0, 255));
+
 }
 
 void CCamera::update()

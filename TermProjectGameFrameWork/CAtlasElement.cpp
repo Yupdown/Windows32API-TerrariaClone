@@ -16,5 +16,5 @@ CAtlasElement::~CAtlasElement()
 
 void CAtlasElement::render(HDC _dc,Vec2 _v) const
 {
-	Mgr(CResMgr)->renderImg(_dc,m_pAtlasImg, _v, m_vSliceSize, m_vBitPos, m_vSliceSize);
+	Mgr(CResMgr)->renderImg(_dc,m_pAtlasImg, _v, TILE_PIXEL_XY, m_vBitPos, m_vSliceSize);
 }

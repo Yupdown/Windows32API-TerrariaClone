@@ -63,7 +63,7 @@ void CAnimation::render(HDC _dc, int _iDir)
 	//Mgr(CResMgr)->renderImg(m_pAnimImg, pObj, m_vecFrm[m_iCurFrm].vLT, m_vecFrm[m_iCurFrm].vSlice);
 	//m_pTex->render(_dc, m_pAnimator->GetOwner(), m_vecFrm[m_iCurFrm].vLT , m_vecFrm[m_iCurFrm].vSlice);
 
-	Mgr(CResMgr)->renderImg(m_pAnimImg, m_pAnimator->GetOwner(), m_vecFrm[m_iCurFrm].vLT + Vec2{ m_vecFrm[m_iCurFrm].vSlice.x *_iDir,0 }, m_vecFrm[m_iCurFrm].vSlice - Vec2{ m_vecFrm[m_iCurFrm].vSlice.x*2*_iDir, 0});
+	Mgr(CResMgr)->renderImg(_dc,m_pAnimImg, m_pAnimator->GetOwner(), m_vecFrm[m_iCurFrm].vLT + Vec2{ m_vecFrm[m_iCurFrm].vSlice.x *_iDir,0 }, m_vecFrm[m_iCurFrm].vSlice - Vec2{ m_vecFrm[m_iCurFrm].vSlice.x*2*_iDir, 0});
 	
 	//m_pTex->render(_dc, m_pAnimator->GetOwner(), m_vecFrm[m_iCurFrm].vLT + Vec2{ m_vecFrm[m_iCurFrm].vSlice.x *_iDir,0 }, m_vecFrm[m_iCurFrm].vSlice - Vec2{ m_vecFrm[m_iCurFrm].vSlice.x*2*_iDir, 0});
 	
