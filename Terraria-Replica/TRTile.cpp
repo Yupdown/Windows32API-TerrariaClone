@@ -23,7 +23,7 @@ void TRTile::CreateAtlasElements()
 	for (int i = 0; i < 16; ++i)
 	{
 		for (int j = 0; j < 15; ++j)
-			elements[i][j] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, { i * 9.0f, j * 9.0f }, { 8, 8 });
+			elements[i][j] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, { i * 9.0f, j * 9.0f });
 	}
 }
 
@@ -309,7 +309,7 @@ void TRTile::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
         break;
     }
 
-    tilemap_layer->pre_render(elements[sj][si], Vec2{ x * 8.0f, y * 8.0f });
+    tilemap_layer->pre_render(elements[sj][si], Vec2{ x * 16.0f, y * 16.0f });
 }
 
 int TRTile::StickGroup() const

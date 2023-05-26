@@ -7,6 +7,7 @@
 #include "CCamera.h"
 #include "CAtlasMgr.h"
 
+
 CResMgr::CResMgr()
 {
 
@@ -16,6 +17,10 @@ CResMgr::~CResMgr()
 {
 	DeleteDC(m_hBackDC);
 	DeleteObject(m_hBackBit);
+
+	DeleteDC(m_hBackEraseDC);
+	DeleteObject(m_hBackEraseBit);
+	
 }
 
 void CResMgr::init()
@@ -37,16 +42,34 @@ void CResMgr::init()
 		}
 	}
 	m_hBackDC = CreateCompatibleDC(Mgr(CCore)->GetMainDC());
-	m_hBackBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x*2, Mgr(CCore)->GetResolution().y*5);
+	m_hBackBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x*2, Mgr(CCore)->GetResolution().y*10);
 	DeleteObject(SelectObject(m_hBackDC, m_hBackBit));
 	Clear();
 	SetStretchBltMode(m_hBackDC, HALFTONE);
 	SetGraphicsMode(m_hBackDC, GM_ADVANCED);
+
+	m_hBackEraseDC = CreateCompatibleDC(Mgr(CCore)->GetMainDC());
+	m_hBackEraseBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), Mgr(CCore)->GetResolution().x * 2, Mgr(CCore)->GetResolution().y * 10);
+	DeleteObject(SelectObject(m_hBackEraseDC, m_hBackEraseBit));
+	PatBlt(m_hBackEraseDC, 0, 0, Mgr(CCore)->GetResolution().x * 2, Mgr(CCore)->GetResolution().y * 10,WHITENESS);
+
+	SetStretchBltMode(m_hBackEraseDC, HALFTONE);
+	SetGraphicsMode(m_hBackEraseDC, GM_ADVANCED);
+
 }
 
 void CResMgr::Clear()
 {
-	PatBlt(m_hBackDC, -Mgr(CCore)->GetResolution().x, -Mgr(CCore)->GetResolution().y, Mgr(CCore)->GetResolution().x*2 , Mgr(CCore)->GetResolution().y*5, WHITENESS);
+	//PatBlt(m_hBackDC, 0, 0, Mgr(CCore)->GetResolution().x*2 , Mgr(CCore)->GetResolution().y*10, WHITENESS);
+	BitBlt(m_hBackDC
+		, 0
+		, 0
+		, (int)Mgr(CCore)->GetResolution().x * 2
+		, (int)Mgr(CCore)->GetResolution().y * 10
+		, m_hBackEraseDC
+		, 0
+		, 0
+		, SRCCOPY);
 }
 
 CImage* CResMgr::CreateImg(wstring_view _strKey, UINT _iWidth, UINT _iHeight)
@@ -95,9 +118,10 @@ void CResMgr::renderImg(HDC _dc, const CImage* const _pImg, Vec2 _vLT, Vec2 _vSc
 		, (int)vScale.x
 		, (int)vScale.y
 		, RGB(255, 0, 255));
+
 }
 
-void CResMgr::renderImg(const CImage* const _pImg, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const
+void CResMgr::renderImg(HDC _dc,const CImage* const _pImg, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const
 {
 	static Vec2 vLtPos;
 	static Vec2 vScale;
@@ -128,7 +152,7 @@ void CResMgr::renderImg(const CImage* const _pImg, const CObject* const _pObj, V
 	vLtPos.x = max(vLtPos.x, 0);
 	vLtPos.y = max(vLtPos.y, 0);
 
-	TransparentBlt(Mgr(CCore)->GetMemDC()
+	TransparentBlt(_dc
 		, (int)vLtPos.x
 		, (int)vLtPos.y
 		, (int)vScale.x
@@ -139,6 +163,20 @@ void CResMgr::renderImg(const CImage* const _pImg, const CObject* const _pObj, V
 		, (int)vScale.x
 		, (int)vScale.y
 		, RGB(255, 0, 255));
+
+	BitBlt(m_hBackDC
+		, (int)vLtPos.x
+		, (int)vLtPos.y
+		, (int)vScale.x
+		, (int)vScale.y
+		, m_hBackEraseDC
+		, (int)vLtPos.x
+		, (int)vLtPos.y
+		, SRCCOPY);
+
+	//PatBlt(m_hBackDC,0,0, (int)vScale.x, (int)vScale.y, WHITENESS);
+	//auto f = std::async(std::launch::async,PatBlt,m_hBackDC, (int)vLtPos.x, (int)vLtPos.y, (int)vScale.x, (int)vScale.y, WHITENESS);
+	
 }
 
 void CResMgr::renderDC(HDC _dest, HDC _src, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const
@@ -156,7 +194,7 @@ void CResMgr::renderDC(HDC _dest, HDC _src, const CObject* const _pObj, Vec2 _vB
 		vScale = _pObj->GetScale();
 	}
 
-	StretchBlt(m_hBackDC
+	/*StretchBlt(m_hBackDC
 		, (int)vLtPos.x
 		, (int)vLtPos.y
 		, (int)vScale.x
@@ -166,22 +204,24 @@ void CResMgr::renderDC(HDC _dest, HDC _src, const CObject* const _pObj, Vec2 _vB
 		, (int)_vBitPos.y
 		, (int)_vSlice.x
 		, (int)_vSlice.y
-		, SRCCOPY);
+		, SRCCOPY);*/
 
 	vScale.x = min(vScale.x, vScale.x + vLtPos.x);
 	vScale.y = min(vScale.y, vScale.y + vLtPos.y);
 	vLtPos.x = max(vLtPos.x, 0);
 	vLtPos.y = max(vLtPos.y, 0);
-
+	
 	TransparentBlt(_dest
 		, (int)vLtPos.x
 		, (int)vLtPos.y
 		, (int)vScale.x
 		, (int)vScale.y
-		, m_hBackDC
+		, _src
 		, (int)vLtPos.x
 		, (int)vLtPos.y
 		, (int)vScale.x
 		, (int)vScale.y
 		, RGB(255, 0, 255));
+
+	
 }

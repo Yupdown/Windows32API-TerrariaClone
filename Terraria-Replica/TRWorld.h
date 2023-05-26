@@ -20,5 +20,8 @@ public:
 
 	void CreateWorld(int seed);
 	void OnSceneCreate(CScene* scene);
+
+	static Vec2 WorldToGlobal(const Vec2& v);
+	static Vec2 GlobalToWorld(const Vec2& v);
 };
 

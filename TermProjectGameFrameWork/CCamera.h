@@ -30,7 +30,7 @@ private:
 	Vec2		m_vPrevLookAt = {};
 	Vec2		m_vResolution = {};
 	Vec2		m_vOriginMid = {};
-
+	
 	CObject* m_pTargetObj = {}; 
 
 	Vec2		m_vDiff = {};		
@@ -94,6 +94,7 @@ public:
 	pair<Vec2,Vec2> GetRenderPos(const CObject* const _pObj)const;
 	void SetNowLookAt(Vec2 _vLook) { m_vCurLookAt =m_vLookAt = _vLook; }
 	void renderBackGround(HDC _hDest, HDC _hSrc, Vec2 _vLayerScale ,float _fSpeed)const;
+
 public:
 	void update();
 

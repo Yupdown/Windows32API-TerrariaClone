@@ -9,6 +9,7 @@ private:
 	HBITMAP m_hLayerBit = nullptr;
 	Vec2 m_vLayerScale = {};
 	float m_fLayerSpeed = 1.f;
+
 public:
 	CLayer();
 	~CLayer();

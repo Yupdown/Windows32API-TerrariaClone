@@ -55,6 +55,7 @@ enum class BRUSH_TYPE
 	RED,
 	GREEN,
 	BLUE,
+	MAZENTA,
 
 	END,
 };
@@ -65,6 +66,7 @@ enum class PEN_TYPE
 	RED,
 	GREEN,
 	BLUE,
+	MAZENTA,
 
 	END,
 };
@@ -112,6 +114,10 @@ enum class SOUND_TYPE
 };
 
 
-#define PIXELS_PER_TILE 8
+#define SRC_TILE_SIZE 8
+
+#define SRC_TILE_SIZE_XY (Vec2{SRC_TILE_SIZE,SRC_TILE_SIZE})
+
+#define PIXELS_PER_TILE 16
 
 #define TILE_PIXEL_XY (Vec2{PIXELS_PER_TILE,PIXELS_PER_TILE})

@@ -54,11 +54,13 @@ void CCore::CreateBrushPen()
 	m_arrBrush[(UINT)BRUSH_TYPE::RED] = CreateSolidBrush(RGB(255, 0, 0));
 	m_arrBrush[(UINT)BRUSH_TYPE::BLUE] = CreateSolidBrush(RGB(0, 0, 255));
 	m_arrBrush[(UINT)BRUSH_TYPE::GREEN] = CreateSolidBrush(RGB(0, 255, 0));
+	m_arrBrush[(UINT)BRUSH_TYPE::MAZENTA] = CreateSolidBrush(RGB(255, 0, 255));
 
 	m_arrPen[(UINT)PEN_TYPE::BLACK] = CreatePen(PS_SOLID, 1, RGB(255, 255, 255));
 	m_arrPen[(UINT)PEN_TYPE::RED] = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
 	m_arrPen[(UINT)PEN_TYPE::GREEN] = CreatePen(PS_SOLID, 1, RGB(0, 255, 0));
 	m_arrPen[(UINT)PEN_TYPE::BLUE] = CreatePen(PS_SOLID, 1, RGB(0, 0, 255));
+	m_arrPen[(UINT)PEN_TYPE::MAZENTA] = CreatePen(PS_SOLID, 1, RGB(255, 0, 255));
 }
 
 void CCore::DockMenu()
@@ -147,13 +149,13 @@ void CCore::progress()
 	
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y,		
 		m_hMemDC, 0, 0, SRCCOPY);
-	Clear();
+	//Clear();
 	Mgr(CEventMgr)->update();
 }
 
 void CCore::Clear()
 {
-	PatBlt(m_hMemDC, 0, 0, m_ptResolution.x, m_ptResolution.y, WHITENESS);
+	//PatBlt(m_hMemDC, 0, 0, m_ptResolution.x, m_ptResolution.y, WHITENESS);
 	Mgr(CResMgr)->Clear();
 }
 

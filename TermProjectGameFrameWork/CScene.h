@@ -7,19 +7,27 @@ class CTileLayer;
 
 class CScene
 {
-	
+	static jthread m_renderThread[2];
 public:
 	CScene();
 	virtual ~CScene();
 protected:
 	vector<unique_ptr<CLayer>> m_vecLayer;
 	vector<unique_ptr<CTileLayer>> m_vecTileLayer;
+	
 private:
 	vector<unique_ptr<CObject>>			m_vecObj[(UINT)GROUP_TYPE::END]; 
 	wstring								m_strName;	
 	CObject*							m_pPlayer = {};
 	HDC									m_hSceneDC = nullptr;
 	HBITMAP								m_hSceneBit = nullptr;
+
+	HDC									m_hSceneDC2 = nullptr;
+	HBITMAP								m_hSceneBit2 = nullptr;
+
+	HDC									m_hSceneDC3 = nullptr;
+	HBITMAP								m_hSceneBit3 = nullptr;
+
 public: 
 	void RegisterPlayer(CObject* const _pPlayer) { m_pPlayer = _pPlayer; }
 	CObject* GetPlayer()const { return m_pPlayer; }

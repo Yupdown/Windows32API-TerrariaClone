@@ -40,3 +40,13 @@ void TRWorld::OnSceneCreate(CScene* scene)
 {
 	tile_map->OnSceneCreate(scene);
 }
+
+Vec2 TRWorld::WorldToGlobal(const Vec2& v)
+{
+	return Vec2(v.x * PIXELS_PER_TILE, (static_cast<float>(TRWorld::WORLD_HEIGHT) - v.y) * PIXELS_PER_TILE);
+}
+
+Vec2 TRWorld::GlobalToWorld(const Vec2& v)
+{
+	return Vec2(v.x / PIXELS_PER_TILE, static_cast<float>(TRWorld::WORLD_HEIGHT) - v.y / PIXELS_PER_TILE);
+}
