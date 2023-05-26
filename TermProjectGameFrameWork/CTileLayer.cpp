@@ -11,7 +11,7 @@ CTileLayer::CTileLayer(Vec2 _vWorldPos ,UINT _iWidth, UINT _iHeight)
 	SetScale(Vec2{ (float)_iWidth,(float)_iHeight});
 	SetPos(_vWorldPos);
 	CreateDCBITMAP(m_hTileLayerDC, m_hTileLayerBit, GetScale());
-	SetStretchBltMode(m_hTileLayerDC, HALFTONE);
+	//SetStretchBltMode(m_hTileLayerDC, HALFTONE);
 	m_vTileLayerScale = Vec2{ (float)_iWidth,(float)_iHeight };
 }
 
