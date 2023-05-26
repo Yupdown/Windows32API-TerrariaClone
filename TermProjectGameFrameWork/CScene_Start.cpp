@@ -52,7 +52,7 @@ CScene_Start::~CScene_Start()
 
 void CScene_Start::Enter()
 {
-
+	CScene::Enter();
 	auto p = new CPlayer;
 	p->SetPos(Vec2{ 500., 6500. });
 	p->SetScale(Vec2{ 40.f, 56.f });

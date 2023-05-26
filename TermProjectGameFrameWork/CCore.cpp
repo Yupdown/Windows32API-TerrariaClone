@@ -43,6 +43,11 @@ CCore::~CCore()
 		DeleteObject(m_arrBrush[i]);
 	}
 	DestroyMenu(m_hMenu); 
+
+	for (int i = 0; i < THREAD::END; ++i)
+	{
+		DeleteDCBITMAP(m_hThreadMazentaDC[i], m_hThreadMazentaBit[i]);
+	}
 }
 
 void CCore::CreateBrushPen()
@@ -116,6 +121,11 @@ int CCore::init(HWND _hwnd, POINT _ptResolution)
 	CreateBrushPen();
 	
 	Clear();
+
+	for (int i = 0; i < THREAD::END; ++i)
+	{
+		CreateDCBITMAP(m_hThreadMazentaDC[i], m_hThreadMazentaBit[i], GetResolutionV());
+	}
 
 	return S_OK;
 }

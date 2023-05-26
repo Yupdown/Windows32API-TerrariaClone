@@ -5,7 +5,6 @@
 #include "CTileLayer.h"
 #include "CAtlasMgr.h"
 #include "CAtlasElement.h"
-#include "CResMgr.h"
 
 TRTileMap::TRTileMap(int width, int height)
 {
@@ -13,6 +12,7 @@ TRTileMap::TRTileMap(int width, int height)
 	tile_height = height;
 
 	tile_map = new TRTile*[width * height];
+	renderer = nullptr;
 }
 
 TRTileMap::~TRTileMap()
@@ -25,20 +25,28 @@ TRTile* TRTileMap::GetTile(int x, int y) const
 	TRTile** ref = GetTileReference(x, y);
 	if (ref == nullptr)
 		return nullptr;
+
 	return *ref;
 }
 
-void TRTileMap::SetTile(int x, int y, TRTile* new_tile)
+TRTile* TRTileMap::SetTile(int x, int y, TRTile* new_tile)
 {
 	TRTile** ref = GetTileReference(x, y);
 	if (ref == nullptr)
-		return;
+		return nullptr;
+
+	TRTile* old_tile = *ref;
 	*ref = new_tile;
+
+	if (new_tile != old_tile)
+		;
+
+	return old_tile;
 }
 
 void TRTileMap::OnSceneCreate(CScene* scene)
 {
-	CTileLayer* tilemap_layer = new CTileLayer(Vec2(500.0f, 7300.0f), tile_width * 8 * 2, tile_height * 8 * 2);
+	renderer = new CTileLayer(Vec2(500.0f, 7300.0f), tile_width * 8, tile_height * 8);
 
 	TRTile* tile_dirt = Mgr(TRTileManager)->GetTileByKey("dirt");
 	TRTile* tile_grass = Mgr(TRTileManager)->GetTileByKey("dirtgrass");
@@ -78,11 +86,15 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 				}
             }
 
-			tile->OnDrawElement(tilemap_layer, x, y, bitmask);
+			tile->OnDrawElement(renderer, x, y, bitmask);
 		}
 	}
-	Mgr(CResMgr)->Clear();
-	scene->AddTileLayer(tilemap_layer);
+	scene->AddTileLayer(renderer);
+}
+
+void TRTileMap::UpdateTileRenderer(int x, int y)
+{
+
 }
 
 TRTile** TRTileMap::GetTileReference(int x, int y) const
