@@ -7,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include <execution>
+#include <atomic>
 using std::jthread;
 using std::thread;
 using std::vector;

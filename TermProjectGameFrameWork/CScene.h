@@ -7,7 +7,6 @@ class CTileLayer;
 
 class CScene
 {
-	static jthread g_renderThread[3];
 public:
 	CScene();
 	virtual ~CScene();

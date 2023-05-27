@@ -133,6 +133,9 @@
     <Filter Include="Engine\09. Atlas\AtlasElement">
       <UniqueIdentifier>{6c124bac-15ca-4472-b205-b4fb80f4f87f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\02. Manager\ThreadMgr">
+      <UniqueIdentifier>{8a82d6e0-61a0-40bf-ab77-434c4605c792}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -252,6 +255,9 @@
     <ClInclude Include="CTileLayer.h">
       <Filter>Engine\10. Layer</Filter>
     </ClInclude>
+    <ClInclude Include="CThreadMgr.h">
+      <Filter>Engine\02. Manager\ThreadMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -349,6 +355,12 @@
     </ClCompile>
     <ClCompile Include="CTileLayer.cpp">
       <Filter>Engine\10. Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CThreadMgr.cpp">
+      <Filter>Engine\02. Manager\ThreadMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

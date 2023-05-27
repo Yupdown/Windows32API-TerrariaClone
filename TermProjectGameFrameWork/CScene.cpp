@@ -9,9 +9,8 @@
 #include "CEventMgr.h"
 #include "CLayer.h"
 #include "CTileLayer.h"
+#include "CThreadMgr.h"
 
-
-jthread CScene::g_renderThread[3];
 
 CScene::CScene()
 {
@@ -48,17 +47,12 @@ void CScene::update()
 
 void CScene::Enter()
 {
-	g_renderThread[THREAD::T0] = jthread{ &CCore::MaznetaClear,Mgr(CCore),m_hSceneThreadDC[THREAD::T1],0 };
-	g_renderThread[THREAD::T1] = jthread{ &CCore::MaznetaClear,Mgr(CCore),m_hSceneThreadDC[THREAD::T2],1 };
-	g_renderThread[THREAD::T2] = jthread{ &CCore::MaznetaClear,Mgr(CCore),m_hSceneThreadDC[THREAD::END],2 };
+
 }
 
 void CScene::Exit()
 {
-	for (auto& t : g_renderThread)
-	{
-		t.join();
-	}
+	Mgr(CThreadMgr)->join_all();
 }
 
 void CScene::AddTileLayer(CTileLayer* const _pTileLayer)
@@ -96,32 +90,25 @@ void CScene::render(HDC _dc)
 {
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	
+	Mgr(CThreadMgr)->join_all();
+
+	static const int size = (int)m_vecLayer.size();
 	
-	static const auto render_layer1 = [this]() {for (int i = 0; i < 3; ++i)
+	Mgr(CThreadMgr)->Enqueue(THREAD::T0, [this]() {for (int i = 0; i < 3; ++i)
 	{
 		m_vecLayer[i]->render(m_hSceneThreadDC[THREAD::T0]);
-	}};
+	}});
 
-	
-	static const int size = (int)m_vecLayer.size();
-	static const auto render_layer2 = [this]() {for (int i = 3; i < size; ++i)
+	Mgr(CThreadMgr)->Enqueue(THREAD::T1, [this]() {for (int i = 3; i < size; ++i)
 	{
 		m_vecLayer[i]->render(m_hSceneThreadDC[THREAD::T1]);
-	}};
+	}});
 
-	static const auto render_Tile = [this]() {for (const auto& tileVec : m_vecTileLayer)
+	Mgr(CThreadMgr)->Enqueue(THREAD::T2, [this]() {for (const auto& tileVec : m_vecTileLayer)
 	{
 		tileVec->render(m_hSceneThreadDC[THREAD::T2]);
-	}};
+	}});
 
-	static const auto mazentaClear1 = [this]() {Mgr(CCore)->MaznetaClear(m_hSceneThreadDC[THREAD::T1], THREAD::T0); };
-	static const auto mazentaClear2 = [this]() {Mgr(CCore)->MaznetaClear(m_hSceneThreadDC[THREAD::T2], THREAD::T1); };
-	static const auto mazentaClear3 = [this]() {Mgr(CCore)->MaznetaClear(m_hSceneThreadDC[THREAD::END], THREAD::T2); };
-
-	g_renderThread[THREAD::T0] = jthread{ render_layer1 };
-	g_renderThread[THREAD::T1] = jthread{ render_layer2 };
-	g_renderThread[THREAD::T2] = jthread{ render_Tile };
-	
 	for (auto& vecObj : m_vecObj)
 	{
 		const auto vecPtr = vecObj.data();
@@ -141,8 +128,8 @@ void CScene::render(HDC _dc)
 		}
 	};
 	
-	g_renderThread[THREAD::T2].join();
-	
+	Mgr(CThreadMgr)->Join(THREAD::T2);
+
 	TransparentBlt(m_hSceneThreadDC[THREAD::T2]
 		, 0
 		, 0
@@ -155,8 +142,8 @@ void CScene::render(HDC _dc)
 		, (int)vRes.y
 		, RGB(255, 0, 255));
 
-	g_renderThread[THREAD::T0].join();
-	g_renderThread[THREAD::T1].join();
+	Mgr(CThreadMgr)->Join(THREAD::T0);
+	Mgr(CThreadMgr)->Join(THREAD::T1);
 
 	TransparentBlt(m_hSceneThreadDC[THREAD::T0]
 		, 0
@@ -185,7 +172,7 @@ void CScene::render(HDC _dc)
 	Mgr(CCamera)->SetNowLookAt(vRes/2);
 
 	Mgr(CCamera)->TransformRenderPos();
-
+	
 	BitBlt(_dc
 		, 0
 		, 0
@@ -197,11 +184,10 @@ void CScene::render(HDC _dc)
 		,SRCCOPY);
 
 
-	g_renderThread[THREAD::T0] = jthread{ mazentaClear1 };
-	g_renderThread[THREAD::T1] = jthread{ mazentaClear2 };
-	g_renderThread[THREAD::T2] = jthread{ mazentaClear3 };
+	Mgr(CThreadMgr)->Enqueue(THREAD::T0, &CCore::MaznetaClear,Mgr(CCore), m_hSceneThreadDC[THREAD::T1], THREAD::T0);
+	Mgr(CThreadMgr)->Enqueue(THREAD::T1, &CCore::MaznetaClear, Mgr(CCore), m_hSceneThreadDC[THREAD::T2], THREAD::T1);
+	Mgr(CThreadMgr)->Enqueue(THREAD::T2, &CCore::MaznetaClear, Mgr(CCore), m_hSceneThreadDC[THREAD::END], THREAD::T2);
 
-	
 	Mgr(CCamera)->ResetRenderPos();
 	Mgr(CCamera)->SetNowLookAt(GetPlayer()->GetPos());
 }
