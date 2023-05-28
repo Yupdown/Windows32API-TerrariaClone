@@ -152,11 +152,15 @@ void CPlayer::updateMove()
 	}
 	if (KEY_HOLD(KEY::W))
 	{
-		SetPos(GetPos() + Vec2{ 0,-1000 } *DT);
+		SetPos({ GetPos().x,GetPos().y - 5.f });
+		pRigid->AddVelocity(Vec2{ 0,-1000 });
+		pRigid->AddForce(Vec2{ 0,-1000 });
 	}
 	if (KEY_HOLD(KEY::S))
 	{
-		SetPos(GetPos() + Vec2{ 0,1000 } *DT);
+		SetPos({ GetPos().x,GetPos().y + 5.f });
+		pRigid->AddVelocity(Vec2{ 0,1000 });
+		pRigid->AddForce(Vec2{ 0,1000 });
 	}
 }
 

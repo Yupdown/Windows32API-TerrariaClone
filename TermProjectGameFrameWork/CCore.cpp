@@ -14,6 +14,7 @@
 #include "CObject.h"
 #include "CAtlasMgr.h"
 #include "CThreadMgr.h"
+#include "CDebugMgr.h"
 
 CCore::CCore()
 {
@@ -30,6 +31,13 @@ CCore::CCore()
 	m_xform2.eM22 = (FLOAT)1.0;
 	m_xform2.eDx = (FLOAT)0.0;
 	m_xform2.eDy = (FLOAT)0.0;
+
+	m_xform3.eM11 = (FLOAT)1.0;
+	m_xform3.eM12 = (FLOAT)0.0;
+	m_xform3.eM21 = (FLOAT)0.0;
+	m_xform3.eM22 = (FLOAT)1.0;
+	m_xform3.eDx = (FLOAT)0.0;
+	m_xform3.eDy = (FLOAT)0.0;
 }
 
 CCore::~CCore()
@@ -88,12 +96,13 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 	SetWindowPos(m_hWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top, 0);
 }
 
-int CCore::init(HWND _hwnd, POINT _ptResolution)
+int CCore::init(HWND _hwnd, POINT _ptResolution, HINSTANCE _hInst)
 {
 
 	m_hWnd = _hwnd;						
 	m_ptResolution = _ptResolution;		
-	
+	m_hInst = _hInst;
+
 	ChangeWindowSize(m_ptResolution, false);
 
 	// 대신 툴씬이 사용할 메뉴바의 핸들을 가지고있는다.
@@ -118,7 +127,6 @@ int CCore::init(HWND _hwnd, POINT _ptResolution)
 	Mgr(CEventMgr)->init();	 
 	Mgr(CAtlasMgr)->init();
 	Mgr(CThreadMgr)->init();
-
 	CreateBrushPen();
 	
 	Clear();
@@ -132,9 +140,16 @@ int CCore::init(HWND _hwnd, POINT _ptResolution)
 }
 
 
+static bool bDebugInit;
 
 void CCore::progress()
 {
+	if (!bDebugInit)
+	{
+		Mgr(CDebugMgr)->init();
+		jthread{ []() {Mgr(CDebugMgr)->progress(); } }.detach();
+		bDebugInit = true;
+	}
 	// 매니저들 업데이트
 	CTimeMgr::GetInst()->update();
 
@@ -162,6 +177,8 @@ void CCore::progress()
 		m_hMemDC, 0, 0, SRCCOPY);
 	//Clear();
 	Mgr(CEventMgr)->update();
+
+	
 }
 
 void CCore::Clear()
@@ -378,4 +395,30 @@ void CCore::TranslateTransform(HDC dc, Vec2 vDist)
 	xform.eDy = (FLOAT)(vDist.y);
 	m_xform2 = xform * m_xform2;
 	SetWorldTransform(dc, &m_xform2);
+}
+
+void CCore::ScaleTransform(HDC dc, float _fScaleX, float _fScaleY)
+{
+	XFORM xform;
+	xform.eM11 = _fScaleX;
+	xform.eM12 = (FLOAT)0;
+	xform.eM21 = (FLOAT)0;
+	xform.eM22 = _fScaleY;
+	xform.eDx = 0;
+	xform.eDy = 0;
+	m_xform3 = xform * m_xform3;
+	SetWorldTransform(dc, &m_xform3);
+}
+
+void CCore::ResetTransformDebug(HDC dc)
+{
+	XFORM xform;
+	xform.eM11 = (FLOAT)1.0;
+	xform.eM12 = (FLOAT)0.0;
+	xform.eM21 = (FLOAT)0.0;
+	xform.eM22 = (FLOAT)1.0;
+	xform.eDx = (FLOAT)0.0;
+	xform.eDy = (FLOAT)0.0;
+	m_xform3 = xform;
+	SetWorldTransform(dc, &m_xform3);
 }

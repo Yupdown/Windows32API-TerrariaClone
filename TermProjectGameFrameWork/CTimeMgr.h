@@ -11,6 +11,7 @@ private:
 	std::chrono::steady_clock::time_point m_PrevTime;
 	std::chrono::duration<float> m_DeltaTime;
 	float m_fAccTime = 0.;
+	float m_fCheckDT = 1.;
 public:
 	void init();
 	void update();

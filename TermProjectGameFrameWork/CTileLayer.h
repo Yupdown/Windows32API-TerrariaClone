@@ -11,6 +11,8 @@ private:
 	Vec2 m_vTileLayerScale = {};
 	HDC m_hTileLayerDC = nullptr;
 	HBITMAP m_hTileLayerBit = nullptr;
+	
+	
 
 public:
 	CTileLayer(Vec2 _vWorldPos,UINT _iWidth,UINT _iHeight);

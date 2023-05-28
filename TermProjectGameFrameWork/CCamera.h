@@ -16,6 +16,21 @@ struct tCamEffect
 	float	fCurTime; 
 };
 
+struct CamRect
+{
+	Vec2 vLT = {};
+	Vec2 vRB = {};
+
+	Vec2 vLookMid = {};
+
+	static constexpr Vec2 vCamSize = Vec2{1400.f,800.f};
+
+	operator RECT()const
+	{
+		return RECT{ (int)vLT.x,(int)vLT.y,(int)vRB.x,(int)vRB.y };
+	}
+};
+
 class CTexture;
 
 class CCamera
@@ -24,7 +39,11 @@ class CCamera
 	friend class Singleton;
 	CCamera();
 	~CCamera();
+	static constexpr Vec2 vCamLowLimit{ 0.f,8000.f };
+	static constexpr Vec2 vCamUpperLimit{ (float)INT32_MAX,0.f };
 private:
+	CamRect	m_CamRect = {};
+
 	Vec2		m_vLookAt = {}; 
 	Vec2		m_vCurLookAt = {}; 
 	Vec2		m_vPrevLookAt = {};
@@ -97,8 +116,26 @@ public:
 
 public:
 	void update();
+	CamRect GetCamRect()const { return m_CamRect; }
+	void SetCamRect(Vec2 _vCamLookMid) 
+	{ 
+		_vCamLookMid.x = max(m_vOriginMid.x, _vCamLookMid.x);
+		_vCamLookMid.y = max(m_vOriginMid.y , _vCamLookMid.y);
+		_vCamLookMid.x = min(((float)(INT32_MAX)), _vCamLookMid.x);
+		_vCamLookMid.y = min(8000.f - m_vOriginMid.y , _vCamLookMid.y);
+		m_CamRect.vLookMid = _vCamLookMid;
+		m_CamRect.vLT = _vCamLookMid - m_CamRect.vCamSize / 2.f;
+		m_CamRect.vRB = _vCamLookMid + m_CamRect.vCamSize / 2.f;
+		SetNowLookAt(_vCamLookMid);
+	}
+
+	void SetCamRect(Vec2 _vGlobalLT, Vec2 _vGlobalRB)
+	{
+		SetCamRect((_vGlobalLT + _vGlobalRB) / 2.f);
+	}
 
 private:
 	void CalDiff();
+	
 };
 

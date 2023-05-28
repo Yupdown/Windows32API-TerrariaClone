@@ -21,9 +21,23 @@ void CRigidBody::Move()
 	{
 		m_vVelocity.y = 0.f;
 	}
+
 	Vec2 vPos = m_pOwner->GetPos();
+	Vec2 vScale = m_pOwner->GetScale()/2;
+	
+
 	vPos += m_vVelocity * DT;
+
+	if (vPos.x < vScale.x)
+	{
+		vPos.x = vScale.x;
+	}
+	if (vPos.y > 8000.f - vScale.y)
+	{
+		vPos.y = 8000.f - vScale.y;
+	}
 	m_pOwner->SetPos(vPos);
+
 }
 
 void CRigidBody::component_update()
@@ -64,7 +78,7 @@ void CRigidBody::component_render(HDC _dc)const
 void CRigidBody::update_gravity()
 {
 	auto vLow = m_pOwner->GetPos().y + m_pOwner->GetScale().y/2.f;
-	if (vLow >= 7600)
+	if (vLow >= 7040)
 	{
 		m_bIsGround = true;
 	}

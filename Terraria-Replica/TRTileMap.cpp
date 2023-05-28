@@ -46,7 +46,7 @@ TRTile* TRTileMap::SetTile(int x, int y, TRTile* new_tile)
 
 void TRTileMap::OnSceneCreate(CScene* scene)
 {
-	renderer = new CTileLayer(Vec2(500.0f, 7300.0f), tile_width * 8, tile_height * 8);
+	renderer = new CTileLayer(Vec2(2000.0f, 7500.0f), tile_width * 8, tile_height * 8);
 
 	TRTile* tile_dirt = Mgr(TRTileManager)->GetTileByKey("dirt");
 	TRTile* tile_grass = Mgr(TRTileManager)->GetTileByKey("dirtgrass");

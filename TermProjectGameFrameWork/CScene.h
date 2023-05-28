@@ -7,6 +7,7 @@ class CTileLayer;
 
 class CScene
 {
+	friend class CDebugMgr;
 public:
 	CScene();
 	virtual ~CScene();

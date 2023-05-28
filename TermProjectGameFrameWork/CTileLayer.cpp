@@ -6,6 +6,7 @@
 #include "CCamera.h"
 #include "CCore.h"
 
+
 CTileLayer::CTileLayer(Vec2 _vWorldPos ,UINT _iWidth, UINT _iHeight)
 {
 	SetScale(Vec2{ (float)_iWidth,(float)_iHeight});
