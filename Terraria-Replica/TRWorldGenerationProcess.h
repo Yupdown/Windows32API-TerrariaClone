@@ -38,3 +38,9 @@ public:
 	TRWorldGenerationGrowOres(TRTile* _tile, int _seed);
 	virtual void GenerateWorld(TRTileMap* tile_map, int width, int height, int seed) override;
 };
+
+class TRWorldGenerationAttachWall : public TRWorldGenerationProcess
+{
+public:
+	virtual void GenerateWorld(TRTileMap* tile_map, int width, int height, int seed) override;
+};

@@ -21,15 +21,15 @@ CTileLayer::~CTileLayer()
 	DeleteDCBITMAP(m_hTileLayerDC, m_hTileLayerBit);
 }
 
-void CTileLayer::pre_render(wstring_view _wstrFileName, Vec2 _vLayerLTPos, Vec2 _vBitPos, Vec2 _vSliceSize)
+void CTileLayer::pre_render(wstring_view _wstrFileName, Vec2 _vLayerLTPos, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSliceSize)
 {
 	auto pAtlasEle = Mgr(CAtlasMgr)->GetAtlasElement(_wstrFileName, _vBitPos, _vSliceSize);
-	pAtlasEle->render(m_hTileLayerDC, _vLayerLTPos);
+	pAtlasEle->render(m_hTileLayerDC, _vLayerLTPos, _vScale);
 }
 
-void CTileLayer::pre_render(CAtlasElement* const _pElement, Vec2 _vLayerLTPos)
+void CTileLayer::pre_render(CAtlasElement* const _pElement, Vec2 _vLayerLTPos, Vec2 _vScale)
 {
-	_pElement->render(m_hTileLayerDC, _vLayerLTPos);
+	_pElement->render(m_hTileLayerDC, _vLayerLTPos, _vScale);
 }
 
 void CTileLayer::render(HDC _dc)const

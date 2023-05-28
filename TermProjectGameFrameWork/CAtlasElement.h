@@ -9,6 +9,6 @@ private:
 public:
 	CAtlasElement(const CImage* const _pImg,Vec2 _vBit,Vec2 _vSlice);
 	~CAtlasElement();
-	void render(HDC _dc, Vec2 _v)const;
+	void render(HDC _dc, Vec2 _vLT, Vec2 _vScale)const;
 };
 

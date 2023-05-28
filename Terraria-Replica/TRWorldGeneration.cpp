@@ -22,8 +22,11 @@ void TRWorldGeneration::GenerateWorld(TRTileMap* tile_map, int width, int height
 {
     for (int i = 0; i < width; ++i)
     {
-        for (int j = 0; j < height; ++j)
-            tile_map->SetTile(i, j, TRTileManager::GetInst()->TileAir());
+		for (int j = 0; j < height; ++j)
+		{
+			tile_map->SetTile(i, j, TRTileManager::GetInst()->TileAir());
+			tile_map->SetTileWall(i, j, TRTileManager::GetInst()->TileWallAir());
+		}
     }
 
 	for (TRWorldGenerationProcess* process : *processes)

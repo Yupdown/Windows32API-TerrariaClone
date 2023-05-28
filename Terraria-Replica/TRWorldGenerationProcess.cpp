@@ -3,6 +3,7 @@
 #include "PerlinNoise.hpp"
 #include "TRTileManager.h"
 #include "TRTile.h"
+#include "TRTileWall.h"
 
 void TRWorldGenerationTerrainHeight::GenerateWorld(TRTileMap* tile_map, int width, int height, int seed)
 {
@@ -86,6 +87,48 @@ void TRWorldGenerationGrowOres::GenerateWorld(TRTileMap* tile_map, int width, in
 
             if (value == 0)
                 tile_map->SetTile(i, j, ore_tile);
+        }
+    }
+}
+
+void TRWorldGenerationAttachWall::GenerateWorld(TRTileMap* tile_map, int width, int height, int seed)
+{
+    int dir[][2] = { 0, -1, 0, 1, -1, 0, 1, 0, 1, -1, -1, 1, -1, -1, 1, 1 };
+
+    TRTile* tile_dirt = Mgr(TRTileManager)->GetTileByKey("dirt");
+    TRTile* tile_stone = Mgr(TRTileManager)->GetTileByKey("cobblestone");
+
+    TRTileWall* tile_wall_dirt = Mgr(TRTileManager)->GetTileWallByKey("dirt");
+    TRTileWall* tile_wall_stone = Mgr(TRTileManager)->GetTileWallByKey("cobblestone");
+
+    for (int i = 0; i < width; ++i)
+    {
+        for (int j = 0; j < height; ++j)
+        {
+            TRTile* tile = tile_map->GetTile(i, j);
+            int bitmask = 255;
+
+            for (int k = 0; k < 8; ++k)
+            {
+                int xp = i + dir[k][0];
+                int yp = j + dir[k][1];
+
+                if (yp < 0 || yp >= height || xp < 0 || xp >= width)
+                    continue;
+
+                TRTile* tile_p = tile_map->GetTile(xp, yp);
+
+                if (!tile_p->Solid())
+                    bitmask &= ~(1 << k);
+            }
+
+            if (bitmask == 255)
+            {
+                if (tile == tile_dirt)
+                    tile_map->SetTileWall(i, j, tile_wall_dirt);
+                else if (tile == tile_stone)
+                    tile_map->SetTileWall(i, j, tile_wall_stone);
+            }
         }
     }
 }

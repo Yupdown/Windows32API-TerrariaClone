@@ -2,12 +2,15 @@
 #include "Singleton.hpp"
 #include "Registry.hpp"
 #include "TRTile.h"
+#include "TRTileWall.h"
 
 class TRTileManager : public Singleton<TRTileManager>
 {
 private:
-	Registry<TRTile*>* registry;
+	Registry<TRTile*>* registry_tile;
+	Registry<TRTileWall*>* registry_tile_wall;
 	TRTile* tile_air;
+	TRTileWall* tile_wall_air;
 
 public:
 	friend class Singleton;
@@ -21,5 +24,9 @@ public:
 	TRTile* GetTileByID(int id) const;
 	TRTile* GetTileByKey(const std::string& key) const;
 	TRTile* TileAir() const;
+
+	TRTileWall* GetTileWallByID(int id) const;
+	TRTileWall* GetTileWallByKey(const std::string& key) const;
+	TRTileWall* TileWallAir() const;
 };
 

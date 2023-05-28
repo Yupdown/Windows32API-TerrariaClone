@@ -22,7 +22,7 @@ void TRTile::CreateAtlasElements()
 {
 	for (int i = 0; i < 16; ++i)
 	{
-		for (int j = 0; j < 15; ++j)
+		for (int j = 0; j < 22; ++j)
 			elements[i][j] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, { i * 9.0f, j * 9.0f });
 	}
 }
@@ -39,8 +39,8 @@ void TRTile::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
     int sj = 0;
     int sr = uid(dre) % 3;
 
-    int loword = bitmask & 127;
-    int hiword = bitmask >> 8 & 127;
+    int loword = bitmask & 15;
+    int hiword = bitmask >> 8 & 15;
 
     switch (loword)
     {
@@ -309,7 +309,7 @@ void TRTile::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
         break;
     }
 
-    tilemap_layer->pre_render(elements[sj][si], Vec2{ x * 16.0f, y * 16.0f });
+    tilemap_layer->pre_render(elements[sj][si], Vec2(x * 16.0f, y * 16.0f), TILE_PIXEL_XY);
 }
 
 int TRTile::StickGroup() const
@@ -351,4 +351,255 @@ TRTileDirt::TRTileDirt(std::wstring name, float hardness, std::wstring k_element
 TRTileGrass::TRTileGrass(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, k_element, k_dropitem)
 {
     this->stick_group = 1;
+}
+
+void TRTileGrass::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
+{
+    if (k_element == L"")
+        return;
+
+    static std::default_random_engine dre;
+    static std::uniform_int_distribution<int> uid;
+
+    int si = 0;
+    int sj = 0;
+    int sr = uid(dre) % 3;
+
+    int loword = bitmask & 15;
+    int hiword = bitmask >> 4 & 15;
+
+    switch (loword)
+    {
+    case 0b00000000:
+        si = 3;
+        sj = 9 + sr;
+        break;
+    case 0b00000001:
+        si = 3;
+        sj = 6 + sr;
+        break;
+    case 0b00000010:
+        si = 0;
+        sj = 6 + sr;
+        break;
+    case 0b00000011:
+        si = sr;
+        sj = 5;
+        break;
+    case 0b00000100:
+        si = sr;
+        sj = 12;
+        break;
+    case 0b00000101:
+        if (hiword & 0b00000100)
+        {
+            si = 4;
+            sj = 1 + sr * 2;
+        }
+        else
+        {
+            si = 14;
+            sj = 9 + sr * 3;
+        }
+        break;
+    case 0b00000110:
+        if (hiword & 0b00000010)
+        {
+            si = 3;
+            sj = 1 + sr * 2;
+        }
+        else
+        {
+            si = 12;
+            sj = 9 + sr * 3;
+        }
+        break;
+    case 0b00000111:
+        switch (hiword & 0b00000110)
+        {
+        case 0b00000000:
+            si = 13;
+            sj = 9 + sr * 3;
+            break;
+        case 0b00000010:
+            si = 21;
+            sj = 3 + sr;
+            break;
+        case 0b00000100:
+            si = 21;
+            sj = sr;
+            break;
+        default:
+            si = sr;
+            sj = 4;
+            break;
+        }
+        break;
+    case 0b00001000:
+        si = sr;
+        sj = 9;
+        break;
+    case 0b00001001:
+        if (hiword & 0b00000001)
+        {
+            si = 4;
+            sj = sr * 2;
+        }
+        else
+        {
+            si = 14;
+            sj = 7 + sr * 3;
+        }
+        break;
+    case 0b00001010:
+        if (hiword & 0b00001000)
+        {
+            si = 3;
+            sj = sr * 2;
+        }
+        else
+        {
+            si = 12;
+            sj = 7 + sr * 3;
+        }
+        break;
+    case 0b00001011:
+        switch (hiword & 0b00001001)
+        {
+        case 0b00000000:
+            si = 13;
+            sj = 7 + sr * 3;
+            break;
+        case 0b00000001:
+            si = 20;
+            sj = 3 + sr;
+            break;
+        case 0b00001000:
+            si = 20;
+            sj = sr;
+            break;
+        default:
+            si = sr;
+            sj = 0;
+            break;
+        }
+        break;
+    case 0b00001100:
+        si = 4;
+        sj = 6 + sr;
+        break;
+    case 0b00001101:
+        switch (hiword & 0b00000101)
+        {
+        case 0b00000000:
+            si = 14;
+            sj = 8 + sr * 3;
+            break;
+        case 0b00000001:
+            si = 19;
+            sj = 3 + sr;
+            break;
+        case 0b00000100:
+            si = 19;
+            sj = sr;
+            break;
+        default:
+            si = 2;
+            sj = 1 + sr;
+            break;
+        }
+        break;
+    case 0b00001110:
+        switch (hiword & 0b00001010)
+        {
+        case 0b00000000:
+            si = 12;
+            sj = 8 + sr * 3;
+            break;
+        case 0b00000010:
+            si = 18;
+            sj = sr;
+            break;
+        case 0b00001000:
+            si = 18;
+            sj = 3 + sr;
+            break;
+        default:
+            si = 0;
+            sj = 1 + sr;
+            break;
+        }
+        break;
+    default:
+        switch (hiword)
+        {
+        case 0b00000000:
+            si = 13;
+            sj = 8 + sr * 3;
+            break;
+        case 0b00000001:
+            si = 19;
+            sj = 6 + sr;
+            break;
+        case 0b00000010:
+            si = 20;
+            sj = 6 + sr;
+            break;
+        case 0b00000100:
+            si = 21;
+            sj = 6 + sr;
+            break;
+        case 0b00001000:
+            si = 18;
+            sj = 6 + sr;
+            break;
+        case 0b00001110:
+            si = 6 + sr * 2;
+            sj = 2;
+            break;
+        case 0b00001101:
+            si = 5 + sr * 2;
+            sj = 3;
+            break;
+        case 0b00001011:
+            si = 6 + sr * 2;
+            sj = 3;
+            break;
+        case 0b00000111:
+            si = 5 + sr * 2;
+            sj = 2;
+            break;
+        case 0b00001010:
+            si = 1;
+            sj = 6 + sr;
+            break;
+        case 0b00000101:
+            si = 2;
+            sj = 6 + sr;
+            break;
+        case 0b00001001:
+            si = sr;
+            sj = 10;
+            break;
+        case 0b00000110:
+            si = sr;
+            sj = 11;
+            break;
+        case 0b00000011:
+            si = 17;
+            sj = 2 + sr;
+            break;
+        case 0b00001100:
+            si = 17;
+            sj = 5 + sr;
+            break;
+        default:
+            si = 1;
+            sj = 1 + sr;
+            break;
+        }
+        break;
+    }
+
+    tilemap_layer->pre_render(elements[sj][si], Vec2(x * 16.0f, y * 16.0f), TILE_PIXEL_XY);
 }

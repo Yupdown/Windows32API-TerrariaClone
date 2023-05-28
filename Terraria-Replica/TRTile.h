@@ -25,7 +25,7 @@ public:
     TRTile(std::wstring name, bool solid, float hardness, std::wstring k_element, std::wstring k_dropitem);
 
     void CreateAtlasElements();
-	void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask);
+	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask);
 
 	int StickGroup() const;
 	bool StickEach() const;
@@ -55,6 +55,7 @@ class TRTileGrass : public TRTileSolid
 {
 public:
 	TRTileGrass(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem);
+	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask) override;
 };
 
 class TRTileOre : public TRTileSolid

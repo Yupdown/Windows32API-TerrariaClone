@@ -17,8 +17,8 @@ private:
 public:
 	CTileLayer(Vec2 _vWorldPos,UINT _iWidth,UINT _iHeight);
 	~CTileLayer();
-	void pre_render(wstring_view _wstrFileName,Vec2 _vLayerLTPos,Vec2 _vBitPos, Vec2 _vSliceSize = TILE_PIXEL_XY);
-	void pre_render(CAtlasElement* const _pElement, Vec2 _vLayerLTPos);
+	void pre_render(wstring_view _wstrFileName,Vec2 _vLayerLTPos, Vec2 _vScale, Vec2 _vBitPos, Vec2 _vSliceSize = TILE_PIXEL_XY);
+	void pre_render(CAtlasElement* const _pElement, Vec2 _vLayerLTPos, Vec2 _vScale);
 	
 	CTileLayer* Clone()const
 	{

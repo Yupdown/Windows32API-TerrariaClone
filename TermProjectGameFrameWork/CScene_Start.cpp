@@ -20,10 +20,10 @@ CScene_Start::CScene_Start()
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_0.png",Vec2{0,0}, Vec2{ vRes.x,vRes.y * 10 }, Vec2{vRes.x,vRes.y * 10}, 2,1.f));
-	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_1.png",Vec2{0,vRes.y*8},vRes ,Vec2{ vRes.x,vRes.y * 10}, 2, 0.4f));
-	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_2.png",Vec2{0,vRes.y*8},vRes ,Vec2{ vRes.x,vRes.y * 10}, 2,0.6f));
-	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_3.png",Vec2{0,vRes.y*8},vRes ,Vec2{ vRes.x,vRes.y * 10}, 2,0.8f));
-	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_4.png",Vec2{0,vRes.y*8},vRes ,Vec2{ vRes.x,vRes.y * 10}, 2,1.f));
+	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_1.png",Vec2{0,0},vRes ,Vec2{ vRes.x,vRes.y * 10}, 2, 0.4f));
+	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_2.png",Vec2{0,0},vRes ,Vec2{ vRes.x,vRes.y * 10}, 2,0.6f));
+	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_3.png",Vec2{0,0},vRes ,Vec2{ vRes.x,vRes.y * 10}, 2,0.8f));
+	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_4.png",Vec2{0,0},vRes ,Vec2{ vRes.x,vRes.y * 10}, 2,1.f));
 	const  Vec2 vGround = Vec2{ vRes.x,vRes.y * 1.5f };
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_5.png", Vec2{ 0,vRes.y * (8.5f)}, vGround, Vec2{vRes.x,vRes.y * 10}, 2, 1.f));
 
@@ -55,7 +55,7 @@ void CScene_Start::Enter()
 {
 	CScene::Enter();
 	auto p = new CPlayer;
-	p->SetPos(Vec2{ 500., 7020. });
+	p->SetPos(Vec2{ 100.0f, 0.0f });
 	p->SetScale(Vec2{ 40.f, 56.f });
 	AddObject(p, GROUP_TYPE::PLAYER);
 	Mgr(CCamera)->SetTarget(p);

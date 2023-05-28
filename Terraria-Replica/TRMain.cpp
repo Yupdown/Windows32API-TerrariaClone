@@ -1,12 +1,14 @@
 #include "pch.h"
 #include "TRMain.h"
 #include "TRTileManager.h"
+#include "TRItemManager.h"
 #include "CSceneMgr.h"
 #include "CLayer.h"
 
 TRMain::TRMain()
 {
-	TRTileManager::GetInst()->LoadTiles();
+	Mgr(TRTileManager)->LoadTiles();
+	Mgr(TRItemManager)->LoadItems();
 
 	active_world = new TRWorld();
 	active_world->CreateWorld(0);

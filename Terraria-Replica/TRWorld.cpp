@@ -20,6 +20,7 @@ void TRWorld::CreateWorld(int seed)
 	TRWorldGenerationProcess* processes[] =
 	{
 		new TRWorldGenerationTerrainHeight(),
+		new TRWorldGenerationAttachWall(),
 		new TRWorldGenerationPinchCaves(),
 		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey("copper_ore"), -20),
 		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey("iron_ore"), 0),
