@@ -12,6 +12,7 @@ class CCore
 	CCore();
 	~CCore();
 private:
+	HINSTANCE m_hInst;
 	HWND m_hWnd{};			
 	POINT m_ptResolution{};
 	HDC m_hDC{};			
@@ -23,12 +24,15 @@ private:
 	HPEN			m_arrPen[(UINT)PEN_TYPE::END] = {};
 	
 	HMENU			m_hMenu; 
+
 	XFORM m_xform = {};
 	XFORM m_xform2 = {};
+	XFORM m_xform3 = {};
 
 	HDC m_hThreadMazentaDC[THREAD::END];
 	HBITMAP m_hThreadMazentaBit[THREAD::END];
 
+	
 public:
 	void CreateBrushPen(); 
 	constexpr HBRUSH	GetBrush(BRUSH_TYPE _eType)const { return m_arrBrush[(UINT)_eType]; }
@@ -38,7 +42,7 @@ public:
 	void DividMenu(); 
 	void ChangeWindowSize(Vec2 _vResolution, bool _bMenu); 
 public:
-	int init(HWND _hwnd, POINT _ptResolution);
+	int init(HWND _hwnd, POINT _ptResolution,HINSTANCE _hInst);
 	void progress();
 	void Clear();
 public:
@@ -47,6 +51,7 @@ public:
 	constexpr Vec2 GetResolutionV()const { return Vec2{ m_ptResolution }; }
 	constexpr HDC GetMainDC()const { return m_hDC; }
 	constexpr HMENU GetMenu()const { return m_hMenu; }
+	constexpr HINSTANCE GethInst()const { return m_hInst; }
 	HBRUSH ChangeBrush(BRUSH_TYPE _eType);
 	HPEN ChangePen(PEN_TYPE _eType);
 	HDC GetMemDC()const { return m_hMemDC; }
@@ -82,4 +87,7 @@ public:
 			, 0
 			, SRCCOPY);
 	}
+
+	void ScaleTransform(HDC dc, float _fScaleX, float _fScaleY);
+	void ResetTransformDebug(HDC dc);
 };

@@ -136,6 +136,9 @@
     <Filter Include="Engine\02. Manager\ThreadMgr">
       <UniqueIdentifier>{8a82d6e0-61a0-40bf-ab77-434c4605c792}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\02. Manager\DebugMgr">
+      <UniqueIdentifier>{e723a424-1c02-493a-89d7-7ce4cc6b3553}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -258,6 +261,9 @@
     <ClInclude Include="CThreadMgr.h">
       <Filter>Engine\02. Manager\ThreadMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CDebugMgr.h">
+      <Filter>Engine\02. Manager\DebugMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -361,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="CThreadMgr.cpp">
       <Filter>Engine\02. Manager\ThreadMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CDebugMgr.cpp">
+      <Filter>Engine\02. Manager\DebugMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

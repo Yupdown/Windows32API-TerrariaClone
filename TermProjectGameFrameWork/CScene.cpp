@@ -130,7 +130,7 @@ void CScene::render(HDC _dc)
 	
 	Mgr(CThreadMgr)->Join(THREAD::T2);
 
-	TransparentBlt(m_hSceneThreadDC[THREAD::T2]
+	Mgr(CThreadMgr)->Enqueue(THREAD::T2,TransparentBlt,m_hSceneThreadDC[THREAD::T2]
 		, 0
 		, 0
 		, (int)vRes.x
@@ -140,7 +140,7 @@ void CScene::render(HDC _dc)
 		, 0
 		, (int)vRes.x
 		, (int)vRes.y
-		, RGB(255, 0, 255));
+		, RGB(255, 0, 255)); 
 
 	Mgr(CThreadMgr)->Join(THREAD::T0);
 	Mgr(CThreadMgr)->Join(THREAD::T1);
@@ -156,6 +156,8 @@ void CScene::render(HDC _dc)
 		, (int)vRes.x
 		, (int)vRes.y
 		, RGB(255, 0, 255));
+
+	Mgr(CThreadMgr)->Join(THREAD::T2);
 
 	TransparentBlt(m_hSceneThreadDC[THREAD::T0]
 		, 0
@@ -189,7 +191,7 @@ void CScene::render(HDC _dc)
 	Mgr(CThreadMgr)->Enqueue(THREAD::T2, &CCore::MaznetaClear, Mgr(CCore), m_hSceneThreadDC[THREAD::END], THREAD::T2);
 
 	Mgr(CCamera)->ResetRenderPos();
-	Mgr(CCamera)->SetNowLookAt(GetPlayer()->GetPos());
+	Mgr(CCamera)->SetCamRect(GetPlayer()->GetPos());
 }
 
 void CScene::DeleteGroup(GROUP_TYPE _eTarget)

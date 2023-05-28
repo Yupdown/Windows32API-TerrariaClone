@@ -44,7 +44,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    if (FAILED(CCore::GetInst()->init(g_hWnd, POINT{ 1400,800 })))        // 해상도
+    if (FAILED(CCore::GetInst()->init(g_hWnd, POINT{ 1400,800 },hInst)))        // 해상도
     {
         MessageBox(nullptr, L"게임 실행 실패", L"ERROR", MB_OK);
     }
@@ -105,7 +105,13 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.lpszClassName = szWindowClass;
     wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-    return RegisterClassExW(&wcex);
+    RegisterClassExW(&wcex);
+
+    wcex.hCursor = LoadCursor(NULL, IDC_HELP);
+    wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+    wcex.lpszClassName = L"DebugMgr"; 
+    wcex.lpfnWndProc = WndProc; 
+    return  RegisterClassEx(&wcex); 
 }
 
 //

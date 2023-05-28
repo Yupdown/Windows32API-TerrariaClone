@@ -22,6 +22,9 @@ void CCamera::init()
 {
 	m_vResolution = CCore::GetInst()->GetResolutionV();
 	m_vOriginMid = m_vLookAt = m_vCurLookAt = m_vPrevLookAt = m_vResolution / 2.;
+	m_CamRect.vLT = Vec2{ 0.f,0.f };
+	m_CamRect.vRB = m_vResolution;
+	m_CamRect.vLookMid = m_vResolution / 2.f;
 }
 
 void CCamera::TransformRenderPos() const
@@ -104,7 +107,8 @@ void CCamera::update()
 		}
 		else
 		{
-			m_vLookAt = m_pTargetObj->GetPos();
+			//m_vLookAt = m_pTargetObj->GetPos();
+			SetCamRect(m_pTargetObj->GetPos());
 		}
 	}
 
@@ -128,13 +132,15 @@ void CCamera::update()
 			ShakeFlag = false;
 			if (m_pTargetObj)
 			{
-				SetLookAt(m_pTargetObj->GetPos());
+				//SetLookAt(m_pTargetObj->GetPos());
+				SetCamRect(m_pTargetObj->GetPos());
 			}
 			else
 			{
 				//Vec2 vRes = CCore::GetInst()->GetResolution();
 				//SetLookAt(vRes / 2.);
-				SetLookAt(vPrev);
+				//SetLookAt(vPrev);
+				SetCamRect(m_pTargetObj->GetPos());
 			}
 		}
 		else
@@ -165,6 +171,7 @@ void CCamera::update()
 		m_fCamZoom += 0.01f;
 	if (KEY_HOLD(KEY::DOWN))
 		m_fCamZoom -= 0.01f;
+
 	CalDiff();
 }
 
@@ -213,10 +220,13 @@ void CCamera::CalDiff()
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	Vec2 vCenter = vResolution / 2.f;
 	Vec2 vCurLookLT = m_vCurLookAt - vResolution / 2;
+	Vec2 vCurLookRB = m_vCurLookAt + vResolution / 2;
 	//m_vCurLookAt.x = m_vCurLookAt.x * m_dCamZoom + (FLOAT)(vCurLookLT.x) * 2.f * (1.f - m_dCamZoom);
 	//m_vCurLookAt.y = m_vCurLookAt.y * m_dCamZoom + (FLOAT)(vCurLookLT.y) * 2.f * (1.f - m_dCamZoom);
-
+	
+	
 	m_vDiff = m_vCurLookAt - vCenter; 
+
 	
 	m_vPrevLookAt = m_vCurLookAt;
 }

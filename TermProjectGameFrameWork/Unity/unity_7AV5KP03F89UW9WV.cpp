@@ -1,0 +1,10 @@
+#include "pch.h"
+
+#include "C:\Users\jwogu\Documents\TermProjectGameFrameWork\TermProjectGameFrameWork\CPlayer.cpp"
+
+
+#include "C:\Users\jwogu\Documents\TermProjectGameFrameWork\TermProjectGameFrameWork\CRes.cpp"
+
+
+#include "C:\Users\jwogu\Documents\TermProjectGameFrameWork\TermProjectGameFrameWork\CResMgr.cpp"
+

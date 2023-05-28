@@ -31,7 +31,7 @@ public:
 	void Enqueue(const size_t _idx, Func&& fp, Args&&... args)
 	{
 		std::lock_guard<std::mutex> lock{ m_mutexQ };
-		m_jobQueue.emplace(std::bind(std::forward<Func>(fp), std::forward<Args>(args)...), _idx);
+		m_jobQueue.emplace([=]()mutable {std::invoke(std::forward<Func>(fp), std::forward<Args>(args)...); }, _idx);
 		m_arrDone[_idx].store(false);
 		m_cvQ.notify_one();
 	}
