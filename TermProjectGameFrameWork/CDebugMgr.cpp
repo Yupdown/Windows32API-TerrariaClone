@@ -57,18 +57,23 @@ void CDebugMgr::init()
 			, RGB(255, 0, 255));
 	}
 
+	
 	for (auto& layer : pCurScene->m_vecTileLayer)
 	{
+		const Vec2 vLTpos = (layer->GetPos() -layer->GetScale() / 2.f);
+		float yScale = min((8000.f - layer->GetScale().y), layer->GetScale().y);
+		Vec2 vScale = layer->GetScale();
+	
 		TransparentBlt(m_hMemDC2
-			, 0
-			, 0
+			, vLTpos.x * (400.f / 2800.f) 
+			, vLTpos.y * (800.f / 8000.f) - 50.f 
 			, 400
-			, 800
+			, 800 
 			, layer->GetTileLayerDC()
-			, 0
-			, 0
-			, (int)layer->GetScale().x
-			, (int)layer->GetScale().y
+			, 0 
+			, 0 
+			, (int)layer->GetScale().x 
+			, (int)yScale
 			, RGB(255, 0, 255));
 	}
 }
@@ -97,20 +102,20 @@ void CDebugMgr::render()
 			auto vPos = obj->GetPos();
 			auto vScale = obj->GetScale();
 			Rectangle(m_hMemDC
-				,(int)((vPos.x - vScale.x/2) * 400 / 2800)
-				,(int)((vPos.y - vScale.y/2) * 800 / 8000)
-				,(int)((vPos.x + vScale.x/2) * 400 / 2800)
-				,(int)((vPos.y + vScale.y/2) * 800 / 8000));
+				,(int)((vPos.x - vScale.x/2.f) * 400.f / 2800.f)
+				,(int)((vPos.y - vScale.y/2.f) * 800.f / 8000.f)
+				,(int)((vPos.x + vScale.x/2.f) * 400.f / 2800.f)
+				,(int)((vPos.y + vScale.y/2.f) * 800.f / 8000.f));
 		}
 	}
 	auto hOld = SelectObject(m_hMemDC, GetStockObject(HOLLOW_BRUSH));
 	const auto CamRect = Mgr(CCamera)->GetCamRect();
 
 	Rectangle(m_hMemDC
-		,(int)(CamRect.vLT.x * 400 / 2800)
-		,(int)(CamRect.vLT.y * 800 / 8000)
-		,(int)(CamRect.vRB.x * 400 / 2800)
-		,(int)(CamRect.vRB.y * 800 / 8000));
+		,(int)(CamRect.vLT.x * 400.f / 2800.f)
+		,(int)(CamRect.vLT.y * 800.f / 8000.f)
+		,(int)(CamRect.vRB.x * 400.f / 2800.f)
+		,(int)(CamRect.vRB.y * 800.f / 8000.f));
 
 	SelectObject(m_hMemDC, hOld);
 	BitBlt(m_hDC

@@ -144,13 +144,13 @@ static bool bDebugInit;
 
 void CCore::progress()
 {
+	// 매니저들 업데이트
 	if (!bDebugInit)
 	{
 		Mgr(CDebugMgr)->init();
 		jthread{ []() {Mgr(CDebugMgr)->progress(); } }.detach();
 		bDebugInit = true;
 	}
-	// 매니저들 업데이트
 	CTimeMgr::GetInst()->update();
 
 	CKeyMgr::GetInst()->update();
@@ -178,7 +178,6 @@ void CCore::progress()
 	//Clear();
 	Mgr(CEventMgr)->update();
 
-	
 }
 
 void CCore::Clear()
