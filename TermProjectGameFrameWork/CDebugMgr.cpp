@@ -35,10 +35,13 @@ void CDebugMgr::init()
 	DeleteObject(SelectObject(m_hMemDC, m_hMemBit));
 
 
-	m_hDC = GetDC(m_hWnd);
 	m_hMemDC2 = CreateCompatibleDC(m_hDC);
 	m_hMemBit2 = CreateCompatibleBitmap(m_hDC, 400, 800);
 	DeleteObject(SelectObject(m_hMemDC2, m_hMemBit2));
+
+
+	SetStretchBltMode(m_hMemDC, HALFTONE);
+	SetStretchBltMode(m_hMemDC2, HALFTONE);
 
 	auto pCurScene = Mgr(CSceneMgr)->GetCurScene();
 
@@ -52,7 +55,7 @@ void CDebugMgr::init()
 			, layer->GetLayerDC()
 			, 0
 			, 0
-			, 1400
+			, 2800
 			, 8000
 			, RGB(255, 0, 255));
 	}
@@ -60,22 +63,35 @@ void CDebugMgr::init()
 	
 	for (auto& layer : pCurScene->m_vecTileLayer)
 	{
-		const Vec2 vLTpos = (layer->GetPos() -layer->GetScale() / 2.f);
-		float yScale = min((8000.f - layer->GetScale().y), layer->GetScale().y);
-		Vec2 vScale = layer->GetScale();
-	
+		const Vec2 vLTpos = (layer->GetPos() - layer->GetScale() / 2.f);
+		float scaleX = layer->GetScale().x * (400.f / 2800.f);
+		float scaleY = layer->GetScale().y * (800.f / 8000.f);
+
 		TransparentBlt(m_hMemDC2
-			, vLTpos.x * (400.f / 2800.f) 
-			, vLTpos.y * (800.f / 8000.f) - 50.f 
-			, 400
-			, 800 
+			, vLTpos.x * (400.f / 2800.f)
+			, vLTpos.y * (800.f / 8000.f)
+			, static_cast<int>(scaleX)
+			, static_cast<int>(scaleY)
 			, layer->GetTileLayerDC()
-			, 0 
-			, 0 
-			, (int)layer->GetScale().x 
-			, (int)yScale
+			, 0
+			, 0
+			, static_cast<int>(layer->GetScale().x)
+			, static_cast<int>(layer->GetScale().y)
 			, RGB(255, 0, 255));
 	}
+
+	
+	StretchBlt(m_hMemDC
+		, 0
+		, 0
+		, 400
+		, 800
+		, m_hMemDC2
+		, 0
+		, 0
+		, 400
+		, 800
+		, SRCCOPY);
 }
 
 void CDebugMgr::update()

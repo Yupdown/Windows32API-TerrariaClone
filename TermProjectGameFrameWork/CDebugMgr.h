@@ -19,6 +19,7 @@ private:
 	HDC m_hMemDC2;
 	HBITMAP m_hMemBit2;
 
+
 public:
 	void init();
 	void update();

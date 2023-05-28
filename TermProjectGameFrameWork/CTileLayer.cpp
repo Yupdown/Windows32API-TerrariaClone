@@ -50,8 +50,6 @@ void CTileLayer::render(HDC _dc)const
 		, (int)vOriginScale.x
 		, (int)vOriginScale.y
 		, RGB(255, 0, 255));
-	
-	
 }
 
 
