@@ -8,8 +8,8 @@
 class TRWorld
 {
 public:
-	static constexpr int WORLD_WIDTH = 256;
-	static constexpr int WORLD_HEIGHT = 512;
+	static constexpr int WORLD_WIDTH = 512;
+	static constexpr int WORLD_HEIGHT = 256;
 
 private:
 	TRTileMap* tile_map;

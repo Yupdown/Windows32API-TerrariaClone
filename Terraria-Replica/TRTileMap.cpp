@@ -5,6 +5,8 @@
 #include "CTileLayer.h"
 #include "CAtlasMgr.h"
 #include "CAtlasElement.h"
+#include "CResMgr.h"
+#include "Vec2Int.hpp"
 
 TRTileMap::TRTileMap(int width, int height)
 {
@@ -46,7 +48,8 @@ TRTile* TRTileMap::SetTile(int x, int y, TRTile* new_tile)
 
 void TRTileMap::OnSceneCreate(CScene* scene)
 {
-	renderer = new CTileLayer(Vec2(500.0f, 7300.0f), tile_width * 8, tile_height * 8);
+	Vec2Int tile_pixel_size = Vec2Int(tile_width * PIXELS_PER_TILE, tile_height * PIXELS_PER_TILE);
+	renderer = new CTileLayer(tile_pixel_size / 2, tile_pixel_size.x, tile_pixel_size.y);
 
 	TRTile* tile_dirt = Mgr(TRTileManager)->GetTileByKey("dirt");
 	TRTile* tile_grass = Mgr(TRTileManager)->GetTileByKey("dirtgrass");
@@ -89,6 +92,7 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 			tile->OnDrawElement(renderer, x, y, bitmask);
 		}
 	}
+	Mgr(CResMgr)->Clear();
 	scene->AddTileLayer(renderer);
 }
 
