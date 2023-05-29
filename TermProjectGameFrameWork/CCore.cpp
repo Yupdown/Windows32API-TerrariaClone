@@ -16,6 +16,10 @@
 #include "CThreadMgr.h"
 #include "CDebugMgr.h"
 
+jthread CCore::m_miniMapThread;
+
+bool g_bStopToken = false;
+
 CCore::CCore()
 {
 	m_xform.eM11 = (FLOAT)1.0;
@@ -42,6 +46,7 @@ CCore::CCore()
 
 CCore::~CCore()
 {
+	g_bStopToken = true;
 	ReleaseDC(m_hWnd, m_hDC);	
 	for (auto& pen : m_arrPen)
 	{
@@ -57,6 +62,7 @@ CCore::~CCore()
 	{
 		DeleteDCBITMAP(m_hThreadMazentaDC[i], m_hThreadMazentaBit[i]);
 	}
+	m_miniMapThread.join();
 }
 
 void CCore::CreateBrushPen()
@@ -145,16 +151,11 @@ static bool bDebugInit;
 void CCore::progress()
 {
 	// 매니저들 업데이트
-	if (!bDebugInit)
-	{
-		Mgr(CDebugMgr)->init();
-		jthread{ []() {Mgr(CDebugMgr)->progress(); } }.detach();
-		bDebugInit = true;
-	}
-	CTimeMgr::GetInst()->update();
 
+	CTimeMgr::GetInst()->update();
+	
 	CKeyMgr::GetInst()->update();
-	//CCamera::GetInst()->update();
+	
 	// =========
 	// 씬 업데이트
 	// =========
@@ -171,6 +172,7 @@ void CCore::progress()
 	// 렌더링 시작
 	// =============
 	CCamera::GetInst()->update();
+
 	CSceneMgr::GetInst()->render(m_hMemDC);
 	
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y,		
@@ -178,6 +180,13 @@ void CCore::progress()
 	//Clear();
 	Mgr(CEventMgr)->update();
 
+	if (!bDebugInit)
+	{
+		Mgr(CDebugMgr)->init();
+		m_miniMapThread = jthread{ []() {
+			Mgr(CDebugMgr)->progress(); } };
+		bDebugInit = true;
+	}
 }
 
 void CCore::Clear()

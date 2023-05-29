@@ -30,7 +30,7 @@ void CCamera::init()
 void CCamera::TransformRenderPos() const
 {
 	Mgr(CCore)->ScaleTransform(m_fCamZoom);
-	Mgr(CCore)->TranslateTransform(m_vOriginMid- m_vCurLookAt * m_fCamZoom );
+	Mgr(CCore)->TranslateTransform(m_vOriginMid - m_vCurLookAt * m_fCamZoom );
 }
 
 void CCamera::TransformRenderPos(HDC _dc) const
@@ -51,7 +51,7 @@ void CCamera::ResetRenderPos(HDC _dc) const
 
 pair<Vec2, Vec2> CCamera::GetRenderPos(const CObject* const _pObj) const
 {
-	Vec2 vScale = _pObj->GetScale();
+	Vec2 vScale = _pObj->GetScale() ;
 	Vec2 vLtPos =   (m_vCurLookAt * (1.f - m_fCamZoom) + _pObj->GetPos() * m_fCamZoom) -vScale/2.f - m_vDiff;
 	return std::make_pair(vLtPos, vScale);
 }
@@ -66,7 +66,7 @@ void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fS
 	const int iTop = (int)(m_vCurLookAt.y - m_vResolution.y/2);
 
 
-	TransparentBltSafe(_hDest
+	/*TransparentBltSafe(_hDest
 		, 0
 		, 0
 		, (int)m_vResolution.x
@@ -92,7 +92,21 @@ void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fS
 		, (int)(m_vResolution.y / _fSpeed)
 		, (int)_vLayerScale.x * 2
 		, (int)_vLayerScale.y 
-		, RGB(255, 0, 255));
+		, RGB(255, 0, 255));*/
+
+	TransparentBltSafe(_hDest
+		, 0
+		, 0
+		, (int)m_vResolution.x
+		, (int)m_vResolution.y
+		, _hSrc
+		, (int)(m_vDiff.x * _fSpeed)
+		, iTop
+		, (int)m_vResolution.x
+		, (int)(m_vResolution.y / _fSpeed)
+		, (int)1400 * 10
+		, (int)8000
+		, RGB(255, 0, 255)); 
 
 }
 

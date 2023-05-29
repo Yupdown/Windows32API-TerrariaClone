@@ -70,7 +70,7 @@ void CPlayer::updateState()
 	m_bIsIDLE = true;
 	auto pAnim = GetComp<CAnimator>();
 	auto pRigid = GetComp<CRigidBody>();
-
+	pRigid->SetIsGround(true);
 	if (m_ePrevState == PLAYER_STATE::ATTACK && pAnim->IsFinish())
 	{
 		m_eCurState = PLAYER_STATE::IDLE;

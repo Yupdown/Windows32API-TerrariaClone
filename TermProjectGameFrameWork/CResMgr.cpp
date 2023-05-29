@@ -164,7 +164,7 @@ void CResMgr::renderImg(HDC _dc,const CImage* const _pImg, const CObject* const 
 		, (int)vScale.y
 		, RGB(255, 0, 255));
 
-	BitBlt(m_hBackDC
+	/*BitBlt(m_hBackDC
 		, (int)vLtPos.x
 		, (int)vLtPos.y
 		, (int)vScale.x
@@ -172,7 +172,7 @@ void CResMgr::renderImg(HDC _dc,const CImage* const _pImg, const CObject* const 
 		, m_hBackEraseDC
 		, (int)vLtPos.x
 		, (int)vLtPos.y
-		, SRCCOPY);
+		, SRCCOPY);*/
 
 	//PatBlt(m_hBackDC,0,0, (int)vScale.x, (int)vScale.y, WHITENESS);
 	//auto f = std::async(std::launch::async,PatBlt,m_hBackDC, (int)vLtPos.x, (int)vLtPos.y, (int)vScale.x, (int)vScale.y, WHITENESS);

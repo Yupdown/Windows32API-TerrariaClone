@@ -7,6 +7,8 @@
 #include "CTileLayer.h"
 #include "CCamera.h"
 
+extern bool g_bStopToken;
+
 CDebugMgr::CDebugMgr()
 {
 }
@@ -68,9 +70,9 @@ void CDebugMgr::init()
 		float scaleY = layer->GetScale().y * (800.f / 8000.f);
 
 		TransparentBlt(m_hMemDC2
-			, vLTpos.x * (400.f / 2800.f)
-			, vLTpos.y * (800.f / 8000.f)
-			, static_cast<int>(scaleX)
+			, static_cast<int>(vLTpos.x * (400.f / 2800.f))
+			, static_cast<int>((vLTpos.y + 800.f * 8 ) * (800.f / 8000.f))
+			, static_cast<int>(layer->GetScale().x * (400.f / 8196.f))
 			, static_cast<int>(scaleY)
 			, layer->GetTileLayerDC()
 			, 0
@@ -118,9 +120,9 @@ void CDebugMgr::render()
 			auto vPos = obj->GetPos();
 			auto vScale = obj->GetScale();
 			Rectangle(m_hMemDC
-				,(int)((vPos.x - vScale.x/2.f) * 400.f / 2800.f)
+				,(int)((vPos.x - vScale.x/2.f) * 400.f / 8196.f)
 				,(int)((vPos.y - vScale.y/2.f) * 800.f / 8000.f)
-				,(int)((vPos.x + vScale.x/2.f) * 400.f / 2800.f)
+				,(int)((vPos.x + vScale.x/2.f) * 400.f / 8196.f)
 				,(int)((vPos.y + vScale.y/2.f) * 800.f / 8000.f));
 		}
 	}
@@ -128,10 +130,10 @@ void CDebugMgr::render()
 	const auto CamRect = Mgr(CCamera)->GetCamRect();
 
 	Rectangle(m_hMemDC
-		,(int)(CamRect.vLT.x * 400.f / 2800.f)
-		,(int)(CamRect.vLT.y * 800.f / 8000.f)
-		,(int)(CamRect.vRB.x * 400.f / 2800.f)
-		,(int)(CamRect.vRB.y * 800.f / 8000.f));
+		,(int)(CamRect.vLT.x * 400.f / 8196.f)
+		,(int)(CamRect.vLT.y * 800.f / 8000.f )
+		,(int)(CamRect.vRB.x * 400.f / 8196.f)
+		,(int)(CamRect.vRB.y * 800.f / 8000.f ));
 
 	SelectObject(m_hMemDC, hOld);
 	BitBlt(m_hDC
@@ -147,7 +149,7 @@ void CDebugMgr::render()
 
 void CDebugMgr::progress()
 {
-	while (true)
+	while (!g_bStopToken)
 	{
 		update();
 		render();

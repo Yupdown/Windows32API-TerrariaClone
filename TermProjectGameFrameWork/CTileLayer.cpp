@@ -39,7 +39,7 @@ void CTileLayer::render(HDC _dc)const
 	
 	TransparentBltSafe(_dc
 		, (int)vLTpos.x
-		, (int)vLTpos.y
+		, (int)vLTpos.y + 800 * 8
 		, (int)vOriginScale.x
 		, (int)vOriginScale.y
 		, m_hTileLayerDC
@@ -50,6 +50,7 @@ void CTileLayer::render(HDC _dc)const
 		, (int)vOriginScale.x
 		, (int)vOriginScale.y
 		, RGB(255, 0, 255));
+
 }
 
 

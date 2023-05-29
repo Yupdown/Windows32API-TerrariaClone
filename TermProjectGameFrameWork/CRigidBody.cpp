@@ -36,6 +36,11 @@ void CRigidBody::Move()
 	{
 		vPos.y = 8000.f - vScale.y;
 	}
+	if (vPos.x + vScale.x > 8192.f)
+	{
+		vPos.x = 8192.f - vScale.x;
+	}
+
 	m_pOwner->SetPos(vPos);
 
 }

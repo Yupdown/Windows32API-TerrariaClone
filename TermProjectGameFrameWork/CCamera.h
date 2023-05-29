@@ -40,7 +40,7 @@ class CCamera
 	CCamera();
 	~CCamera();
 	static constexpr Vec2 vCamLowLimit{ 0.f,8000.f };
-	static constexpr Vec2 vCamUpperLimit{ (float)INT32_MAX,0.f };
+	static constexpr Vec2 vCamUpperLimit{ (float)8192.f,0.f };
 private:
 	CamRect	m_CamRect = {};
 
@@ -121,7 +121,7 @@ public:
 	{ 
 		_vCamLookMid.x = max(m_vOriginMid.x, _vCamLookMid.x);
 		_vCamLookMid.y = max(m_vOriginMid.y , _vCamLookMid.y);
-		_vCamLookMid.x = min(((float)(INT32_MAX)), _vCamLookMid.x);
+		_vCamLookMid.x = min(((float)(8192.f) - 700.f), _vCamLookMid.x);
 		_vCamLookMid.y = min(8000.f - m_vOriginMid.y , _vCamLookMid.y);
 		m_CamRect.vLookMid = _vCamLookMid;
 		m_CamRect.vLT = _vCamLookMid - m_CamRect.vCamSize / 2.f;
