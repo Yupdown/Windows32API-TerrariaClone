@@ -14,7 +14,7 @@ void TRWorldGenerationTerrainHeight::GenerateWorld(TRTileMap* tile_map, int widt
         for (int j = 0; j < h; ++j)
         {
             TRTile* tile = TRTileManager::GetInst()->GetTileByID(j + 10 >= h ? 2 : 1);
-            tile_map->SetTile(i, height - 1 - j, tile);
+            tile_map->SetTile(i, j, tile);
         }
     }
 }

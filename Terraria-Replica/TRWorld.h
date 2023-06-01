@@ -18,6 +18,8 @@ public:
 	TRWorld();
 	~TRWorld();
 
+	void Update();
+
 	void CreateWorld(int seed);
 	void OnSceneCreate(CScene* scene);
 

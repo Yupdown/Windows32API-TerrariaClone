@@ -24,5 +24,5 @@ TRMain::~TRMain()
 
 void TRMain::Update()
 {
-
+	active_world->Update();
 }

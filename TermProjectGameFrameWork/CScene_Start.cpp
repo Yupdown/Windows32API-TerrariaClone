@@ -55,7 +55,7 @@ void CScene_Start::Enter()
 {
 	CScene::Enter();
 	auto p = new CPlayer;
-	p->SetPos(Vec2{ 100.0f, 6500.0f });
+	p->SetPos(Vec2{ 100.0f, 100.0f });
 	p->SetScale(Vec2{ 40.f, 56.f });
 	AddObject(p, GROUP_TYPE::PLAYER);
 	Mgr(CCamera)->SetTarget(p);

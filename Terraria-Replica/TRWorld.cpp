@@ -2,6 +2,9 @@
 #include "TRWorld.h"
 #include "TRTileManager.h"
 #include "TRTile.h"
+#include "Vec2Int.hpp"
+#include "CKeyMgr.h"
+#include "CCamera.h"
 
 TRWorld::TRWorld()
 {
@@ -11,6 +14,21 @@ TRWorld::TRWorld()
 TRWorld::~TRWorld()
 {
 	delete tile_map;
+}
+
+void TRWorld::Update()
+{
+	if (Mgr(CKeyMgr)->GetKeyState(KEY::LBTN) == KEY_STATE::TAP)
+	{
+		Vec2Int tile_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
+		tile_map->SetTile(tile_pos.x, tile_pos.y + 1, Mgr(TRTileManager)->GetTileByKey("cobblestone"), true);
+
+		/*
+		wchar_t tbuffer[64];
+		wsprintf(tbuffer, L"Clicked Position : {%d, %d}", p.x, p.y);
+		MessageBox(NULL, tbuffer, L"Result", MB_OK);
+		*/
+	}
 }
 
 void TRWorld::CreateWorld(int seed)

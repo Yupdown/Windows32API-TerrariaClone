@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "TRWorld.h"
 #include "TRTileWall.h"
 #include "CAtlasMgr.h"
 #include <random>
@@ -104,5 +105,5 @@ void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitm
         break;
     }
 
-	tilemap_layer->pre_render(elements[sj][si], Vec2(x * 16.0f, y * 16.0f) - Vec2::one * 8.0f, Vec2::one * 32.0f);
+	tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y)) - Vec2::one * 8.0f, Vec2::one * 32.0f);
 }

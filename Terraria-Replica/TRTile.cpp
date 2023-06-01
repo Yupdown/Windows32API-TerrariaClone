@@ -1,7 +1,9 @@
 #include "pch.h"
+#include "TRWorld.h"
 #include "TRTile.h"
 #include "define.h"
 #include "CAtlasMgr.h"
+#include "Vec2Int.hpp"
 #include <random>
 
 TRTile::TRTile(std::wstring name, bool solid, float hardness, std::wstring k_element, std::wstring k_dropitem)
@@ -309,7 +311,7 @@ void TRTile::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
         break;
     }
 
-    tilemap_layer->pre_render(elements[sj][si], Vec2(x * 16.0f, y * 16.0f), TILE_PIXEL_XY);
+    tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y)), TILE_PIXEL_XY);
 }
 
 int TRTile::StickGroup() const
@@ -601,5 +603,14 @@ void TRTileGrass::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bit
         break;
     }
 
-    tilemap_layer->pre_render(elements[sj][si], Vec2(x * 16.0f, y * 16.0f), TILE_PIXEL_XY);
+    tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y)), TILE_PIXEL_XY);
+}
+
+void TRTileAir::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
+{
+    static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
+    HDC hdc = tilemap_layer->GetTileLayerDC();
+    Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y));
+    RECT r = { p.x, p.y, p.x + PIXELS_PER_TILE, p.y + PIXELS_PER_TILE };
+    FillRect(hdc, &r, brush);
 }

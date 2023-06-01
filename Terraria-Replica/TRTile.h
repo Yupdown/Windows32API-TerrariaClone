@@ -37,6 +37,7 @@ class TRTileAir : public TRTile
 {
 public:
 	TRTileAir() : TRTile(L"Air", false, 0.0f, L"", L"") {}
+	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask) override;
 };
 
 class TRTileSolid : public TRTile

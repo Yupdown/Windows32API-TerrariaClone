@@ -21,15 +21,17 @@ public:
 	~TRTileMap();
 
 	TRTile* GetTile(int x, int y) const;
-	TRTile* SetTile(int x, int y, TRTile* new_tile);
+	TRTile* SetTile(int x, int y, TRTile* new_tile, bool render = false);
 
 	TRTileWall* GetTileWall(int x, int y) const;
-	TRTileWall* SetTileWall(int x, int y, TRTileWall* new_tile);
+	TRTileWall* SetTileWall(int x, int y, TRTileWall* new_tile, bool render = false);
 
 	void OnSceneCreate(CScene* scene);
 	void UpdateTileRenderer(int x, int y);
 
 private:
+	int GetTileNeighborMask(int x, int y) const;
+	int GetTileWallNeighborMask(int x, int y) const;
 	TRTile** GetTileReference(int x, int y) const;
 	TRTileWall** GetTileWallReference(int x, int y) const;
 };
