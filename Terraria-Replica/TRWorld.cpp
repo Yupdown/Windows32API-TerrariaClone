@@ -21,7 +21,7 @@ void TRWorld::Update()
 	if (Mgr(CKeyMgr)->GetKeyState(KEY::LBTN) == KEY_STATE::TAP)
 	{
 		Vec2Int tile_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
-		tile_map->SetTile(tile_pos.x, tile_pos.y, Mgr(TRTileManager)->TileAir(), true);
+		tile_map->SetTile(tile_pos.x, tile_pos.y, Mgr(TRTileManager)->GetTileByKey("planks_wood"), true);
 
 		/*wchar_t tbuffer[64];
 		wsprintf(tbuffer, L"Clicked Position : {%d, %d}", tile_pos.x, tile_pos.y);
