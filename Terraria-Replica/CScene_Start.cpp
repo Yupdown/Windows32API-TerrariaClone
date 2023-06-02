@@ -16,7 +16,7 @@
 
 CScene_Start::CScene_Start()
 {
-	
+	SetName(L"Scene_Start");
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_0.png",Vec2{0,0}, Vec2{ vRes.x,vRes.y * 10  }, Vec2{vRes.x,vRes.y * 10}, 10,1.f));

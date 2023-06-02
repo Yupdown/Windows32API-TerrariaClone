@@ -22,6 +22,18 @@
     <Filter Include="pch">
       <UniqueIdentifier>{b87f2319-97c8-4c04-b7ee-44926361726b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CScene">
+      <UniqueIdentifier>{4657ebc1-8bca-4657-ba94-99101cefcbe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CObject">
+      <UniqueIdentifier>{f6d80af0-dfe2-4ca2-bddf-ab73282b3aee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CScene\Scene_Start">
+      <UniqueIdentifier>{09852513-8bc4-4af9-8d02-c957150b35b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CObject\Player">
+      <UniqueIdentifier>{4501b799-b9b7-4e63-961d-3ef5901f2802}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -84,6 +96,12 @@
     <ClInclude Include="TRTileWall.h">
       <Filter>Terraria-Replica</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Start.h">
+      <Filter>CScene\Scene_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>CObject\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -121,6 +139,12 @@
     </ClCompile>
     <ClCompile Include="TRTileWall.cpp">
       <Filter>Terraria-Replica</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Start.cpp">
+      <Filter>CScene\Scene_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>CObject\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

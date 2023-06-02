@@ -7,6 +7,8 @@
 #include "CCore.h"
 #include "TRMain.h"
 #include "Terraria-Replica.h"
+#include "CSceneMgr.h"
+#include "CScene_Start.h"
 
 #define MAX_LOADSTRING 100
 
@@ -49,6 +51,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         MessageBox(nullptr, L"게임 실행 실패", L"ERROR", MB_OK);
     }
+    
+    // 씬 생성
+    auto pSceneStart = new CScene_Start;
+    Mgr(CSceneMgr)->AddScene(SCENE_TYPE::START, pSceneStart);
+
+
+    // 시작 씬 설정
+    Mgr(CSceneMgr)->init(SCENE_TYPE::START);
 
    TRMain* terraria_main = new TRMain();
     Mgr(CEventMgr)->SetTRupdate(&TRMain::Update, terraria_main);
@@ -166,14 +176,6 @@ LRESULT CALLBACK MiniMapProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         // 메뉴 선택을 구문 분석합니다:
         switch (wmId)
         {
-        case IDM_ABOUT:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-            break;
-        case ID_MAKE_TILE:
-        {
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_TILE), hWnd, TileCountProc);
-        }
-        break;
         case IDM_EXIT:
             DestroyWindow(hWnd);
             break;
@@ -182,17 +184,6 @@ LRESULT CALLBACK MiniMapProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         }
     }
     break;
-    case WM_PAINT:
-    {
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps);
-        // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-        EndPaint(hWnd, &ps);
-    }
-    break;
-    case WM_DESTROY:
-       // PostQuitMessage(0);
-        break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

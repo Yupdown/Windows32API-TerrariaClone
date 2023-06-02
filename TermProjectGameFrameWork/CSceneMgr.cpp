@@ -2,7 +2,6 @@
 #include "CCore.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
-#include "CScene_Start.h"
 #include "CScene_Tool.h"
 
 CSceneMgr::CSceneMgr()
@@ -14,20 +13,20 @@ CSceneMgr::~CSceneMgr()
 		
 }
 
-void CSceneMgr::init()
-{
-	// Scene 持失
-	m_arrScene[etoi(SCENE_TYPE::START)] = make_unique<CScene_Start>();
-	m_arrScene[etoi(SCENE_TYPE::START)]->SetName(L"Start Scene");
-
-	m_arrScene[etoi(SCENE_TYPE::TOOL)] = make_unique<CScene_Tool>();
-	m_arrScene[etoi(SCENE_TYPE::TOOL)]->SetName(L"Tool Scene");
-
-	//m_pCurScene = m_arrScene[etoi(SCENE_TYPE::TOOL)].get();
-	m_pCurScene = m_arrScene[etoi(SCENE_TYPE::START)].get();
-
-	m_pCurScene->Enter();
-}
+//void CSceneMgr::init()
+//{
+//	// Scene 持失
+//	m_arrScene[etoi(SCENE_TYPE::START)] = make_unique<CScene_Start>();
+//	m_arrScene[etoi(SCENE_TYPE::START)]->SetName(L"Start Scene");
+//
+//	m_arrScene[etoi(SCENE_TYPE::TOOL)] = make_unique<CScene_Tool>();
+//	m_arrScene[etoi(SCENE_TYPE::TOOL)]->SetName(L"Tool Scene");
+//
+//	//m_pCurScene = m_arrScene[etoi(SCENE_TYPE::TOOL)].get();
+//	m_pCurScene = m_arrScene[etoi(SCENE_TYPE::START)].get();
+//
+//	m_pCurScene->Enter();
+//}
 
 void CSceneMgr::update()
 {
@@ -42,4 +41,16 @@ void CSceneMgr::render(HDC _dc)
 
 void CSceneMgr::ChangeScene(SCENE_TYPE _eNext)
 {
+}
+
+void CSceneMgr::AddScene(SCENE_TYPE _eType, CScene* const _pScene)
+{
+	m_arrScene[etoi(_eType)] = std::unique_ptr<CScene>{ _pScene };
+}
+
+void CSceneMgr::init(SCENE_TYPE _eType)
+{
+	m_pCurScene = m_arrScene[etoi(_eType)].get();
+
+	m_pCurScene->Enter();
 }
