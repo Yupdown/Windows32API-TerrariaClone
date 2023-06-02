@@ -3,6 +3,7 @@
 #include "TRTile.h"
 #include "TRTileMap.h"
 #include "TRWorldGeneration.h"
+#include "CPlayer.h"
 #include "CScene.h"
 
 class TRWorld
@@ -13,6 +14,7 @@ public:
 
 private:
 	TRTileMap* tile_map;
+	CPlayer* player;
 
 public:
 	TRWorld();
@@ -25,4 +27,6 @@ public:
 
 	static Vec2 WorldToGlobal(const Vec2& v);
 	static Vec2 GlobalToWorld(const Vec2& v);
+
+	TRTileMap* GetTileMap() const;
 };

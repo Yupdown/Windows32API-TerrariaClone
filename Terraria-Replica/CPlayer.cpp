@@ -9,9 +9,12 @@
 #include "CCamera.h"
 #include "CRigidBody.h"
 #include "CAnimation.h"
+#include "TRWorld.h"
+#include "Vec2Int.hpp"
 
-CPlayer::CPlayer()
+CPlayer::CPlayer(TRWorld* const _trWorld)
 {
+	m_pTRWolrd = _trWorld;
 	m_bIsCamAffected = true;
 	CreateComponent(COMPONENT_TYPE::COLLIDER);
 	CreateComponent(COMPONENT_TYPE::ANIMATOR);
@@ -49,6 +52,8 @@ void CPlayer::update()
 	updateAnimation();
 	
 	m_ePrevState = m_eCurState;
+
+	//updateTileCollision();
 }
 
 
@@ -70,7 +75,7 @@ void CPlayer::updateState()
 	m_bIsIDLE = true;
 	auto pAnim = GetComp<CAnimator>();
 	auto pRigid = GetComp<CRigidBody>();
-	pRigid->SetIsGround(true);
+	//pRigid->SetIsGround(true);
 	if (m_ePrevState == PLAYER_STATE::ATTACK && pAnim->IsFinish())
 	{
 		m_eCurState = PLAYER_STATE::IDLE;
@@ -222,6 +227,7 @@ void CPlayer::component_update()
 {
 	CObject::component_update();
 	m_pAnimLeg->component_update();
+	updateTileCollision();
 }
 
 void CPlayer::OnCollision(CCollider* const _pOther)
@@ -236,4 +242,102 @@ void CPlayer::OnCollisionEnter(CCollider* const _pOther)
 
 void CPlayer::OnCollisionExit(CCollider* const _pOther)
 {
+}
+
+void CPlayer::updateTileCollision()
+{
+	Vec2Int vStart = TRWorld::GlobalToWorld(GetPos() + GetScale()/2.f);
+
+	Vec2Int vEnd = TRWorld::GlobalToWorld(GetPos() - GetScale() / 2.f);
+
+	auto playerLeft = GetPos().x - GetScale().x / 2;
+	auto playerTop = GetPos().y - GetScale().y / 2;
+	auto playerRight = GetPos().x + GetScale().x / 2;
+	auto playerBottom = GetPos().y + GetScale().y / 2;
+
+	auto vPos = GetPos();
+
+	auto pRigid = GetComp<CRigidBody>();
+
+	bool flag = false;
+		for (int y = vStart.y; y <= vEnd.y; ++y)
+		{
+			for (int x = vEnd.x; x <= vStart.x; ++x)
+			{
+				if (m_pTRWolrd->GetTileMap()->GetTile(x, y)->Solid())
+				{
+					flag = true;
+					auto tilepos = TRWorld::WorldToGlobal(Vec2{ (float)x,(float)y });
+					float tileLeft = tilepos.x;
+					float tileTop = tilepos.y - 16;
+					float tileRight = tilepos.x + 16;
+					float tileBottom = tilepos.y;
+					
+					if (playerRight > tileLeft && playerLeft < tileRight &&
+						playerBottom > tileTop && playerTop < tileBottom) {
+
+						
+
+						float dx = min(std::abs(playerRight - tileLeft), std::abs(playerLeft - tileRight));
+						float dy = min(std::abs(playerBottom - tileTop), std::abs(playerTop - tileBottom));
+						
+						if (dx < dy)
+						{
+							//if (!pRigid->IsGround())
+							{
+								if (playerRight - tileLeft < tileRight - playerLeft)
+								{
+
+									vPos.x = tileLeft - GetScale().x/2 ;
+								}
+								else
+								{
+
+									vPos.x = tileRight + GetScale().x / 2;
+								}
+							}
+						}
+						else
+						{
+
+							if (playerBottom - tileTop < tileBottom - playerTop)
+							{
+								if (!pRigid->IsGround())
+								{
+									//if (!m_bPrevCol)
+									{
+										vPos.y = tileTop - GetScale().y/2 ;
+										pRigid->SetIsGround(true);
+										pRigid->SetVelocity({});
+									}
+								}
+								//pRigid->SetIsGround(false);							
+							}
+							else
+							{
+								//if (!pRigid->IsGround())
+								vPos.y = tileBottom + GetScale().y / 2;
+							}
+
+						}
+						
+					}
+					m_bPrevCol = true;
+					//flag = false;
+				}
+				else
+				{
+					pRigid->SetIsGround(false);
+				}
+			}
+	}
+		if (flag)
+		{
+			SetPos(vPos);
+		}
+		else
+		{
+			pRigid->SetIsGround(false);
+			m_bPrevCol = false;
+		}
 }

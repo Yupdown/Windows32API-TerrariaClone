@@ -7,6 +7,7 @@ class CTexture;
 class CCollider;
 class CRigidBody;
 
+class TRWorld;
 
 class CObject
 {
@@ -21,10 +22,12 @@ public:
 protected:
 	Vec2				m_vPrevPos = {};
 	bool				m_bIsCamAffected = true;
+	Vec2		m_vPos{};
+	Vec2		m_vScale{};
+	TRWorld* m_pTRWolrd;
 private:
 	wstring		m_strName = {}; 
-	Vec2		m_vPos{};	
-	Vec2		m_vScale{};	
+	
 	array<unique_ptr<CComponent>, (UINT)COMPONENT_TYPE::END>		m_arrComp; 
 	bool					m_bAlive = true;
 private:

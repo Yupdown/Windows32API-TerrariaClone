@@ -15,6 +15,6 @@ private:
 public:
 	void init();
 	void update();
-	float GetDT()const { return m_DeltaTime.count(); }
+	float GetDT()const { return min(0.016f,m_DeltaTime.count()); }
 };
 

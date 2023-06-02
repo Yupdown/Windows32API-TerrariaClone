@@ -5,10 +5,14 @@
 #include "Vec2Int.hpp"
 #include "CKeyMgr.h"
 #include "CCamera.h"
+#include "CScene.h"
 
 TRWorld::TRWorld()
 {
 	tile_map = new TRTileMap(TRWorld::WORLD_WIDTH, TRWorld::WORLD_HEIGHT);
+	player = new CPlayer(this);
+	player->SetPos(Vec2{ 100.0f, 100.0f });
+	player->SetScale(Vec2{ 40.f, 56.f });
 }
 
 TRWorld::~TRWorld()
@@ -56,6 +60,9 @@ void TRWorld::CreateWorld(int seed)
 void TRWorld::OnSceneCreate(CScene* scene)
 {
 	tile_map->OnSceneCreate(scene);
+	scene->AddObject(player, GROUP_TYPE::PLAYER);
+	Mgr(CCamera)->SetTarget(player);
+	scene->RegisterPlayer(player);
 }
 
 Vec2 TRWorld::WorldToGlobal(const Vec2& v)
@@ -66,4 +73,9 @@ Vec2 TRWorld::WorldToGlobal(const Vec2& v)
 Vec2 TRWorld::GlobalToWorld(const Vec2& v)
 {
 	return Vec2(v.x / PIXELS_PER_TILE, static_cast<float>(TRWorld::WORLD_HEIGHT) - v.y / PIXELS_PER_TILE);
+}
+
+TRTileMap* TRWorld::GetTileMap() const
+{
+	return tile_map;
 }

@@ -1,9 +1,12 @@
 #pragma once
 #include "CObject.h"
 
+
 class CTexture;
 class CAnimation;
 class CAnimator;
+class TRWorld;
+
 
 enum class PLAYER_STATE
 {
@@ -26,8 +29,10 @@ private:
     PLAYER_STATE m_ePrevState = PLAYER_STATE::IDLE;
     bool m_bIsAtk = false;
     bool m_bIsIDLE = false;
+    bool m_bPrevCol = false;
+
 public:
-    CPlayer();
+    CPlayer(TRWorld* const _trWorld);
     CPlayer(const CPlayer& other);
     void update()override;
     void render(HDC _dc)const override;
@@ -44,5 +49,7 @@ public:
     virtual void OnCollisionEnter(CCollider* const _pOther);
     virtual void OnCollisionExit(CCollider* const _pOther);
 
+
+    void updateTileCollision();
 };
 
