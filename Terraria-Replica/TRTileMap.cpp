@@ -90,8 +90,7 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 				continue;
 
 			int bitmask = GetTileWallNeighborMask(x, y);
-			RECT r = RECT{ 0, 0, 3, 3 };
-			tile->OnDrawElement(renderer, x, y, bitmask, r);
+			tile->OnDrawElement(renderer, x, y, bitmask);
 		}
 	}
 
@@ -133,8 +132,12 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 				return;
 
 			int bitmask = GetTileWallNeighborMask(xp, yp);
-			RECT r = RECT{ max(-dx, 0), max(-dy, 0), min(-dx, 0) + 3, min(-dy, 0) + 3};
-			tile->OnDrawElement(renderer, xp, yp, bitmask, r);
+			int clip = 0;
+			clip |= (dx < 0);
+			clip |= (dx > 0) << 1;
+			clip |= (dy > 0) << 2;
+			clip |= (dy < 0) << 3;
+			tile->OnDrawElement(renderer, xp, yp, bitmask, clip);
 		}
 	}
 

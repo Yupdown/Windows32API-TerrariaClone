@@ -14,8 +14,12 @@ CAtlas::~CAtlas()
 CAtlasElement* CAtlas::LoadAtlasElement(Vec2 _vBitPos,Vec2 _vSliceSize)
 {
 	ATLAS_ID ID = {};
-	ID.Left_ID = _vBitPos.x;
-	ID.Right_ID = _vBitPos.y;
+	//ID.Left_ID = _vBitPos.x;
+	//ID.Right_ID = _vBitPos.y;
+	ID.BitLeft = (short)_vBitPos.x;
+	ID.BitTop = (short)_vBitPos.y;
+	ID.Width = (short)_vSliceSize.x;
+	ID.Height = (short)_vSliceSize.y;
 
 	auto iter = m_mapElement.find(ID.ID);
 	if (m_mapElement.end() == iter)

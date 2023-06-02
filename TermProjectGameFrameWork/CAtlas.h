@@ -5,20 +5,23 @@ class CAtlasElement;
 union ATLAS_ID
 {
 	struct {
-		float Left_ID;
-		float Right_ID;
+		short BitLeft;
+		short BitTop;
+		short Width;
+		short Height;
 	};
-	double ID;
+	ULONGLONG ID;
 };
 
 class CAtlas
 {
 private:
 	const CImage* m_pAtlasImg = nullptr;
-	unordered_map<double, unique_ptr<CAtlasElement>> m_mapElement;
+	unordered_map<ULONGLONG, unique_ptr<CAtlasElement>> m_mapElement;
 public:
 	CAtlas(CImage* const _pImg);
 	~CAtlas();
 	CAtlasElement* LoadAtlasElement(Vec2 _vBitPos, Vec2 _vSliceSize);
+	
 };
 

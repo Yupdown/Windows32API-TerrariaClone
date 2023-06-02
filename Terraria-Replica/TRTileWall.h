@@ -13,13 +13,13 @@ protected:
 	std::wstring k_element;
 	std::wstring k_dropitem;
 
-	CAtlasElement* elements[13][5];
+	CAtlasElement* elements[13][5][16];
 
 public:
 	TRTileWall(std::wstring name, std::wstring k_element, std::wstring k_dropitem);
 
 	void CreateAtlasElements();
-	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask, const RECT& clip);
+	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask, int clip = 0);
 };
 
 class TRTileWallAir : public TRTileWall
