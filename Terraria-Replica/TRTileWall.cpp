@@ -20,19 +20,67 @@ void TRTileWall::CreateAtlasElements()
     for (int i = 0; i < 13; ++i)
     {
         for (int j = 0; j < 5; ++j)
-            elements[i][j] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, { i * 18.0f, j * 18.0f }, { 16.0f, 16.0f });
+        {
+            for (int k = 0; k < 16; ++k)
+            {
+                int lo = k & 0b0011;
+                int hi = (k >> 2) & 0b0011;
+                
+                int x = i * 18;
+                int y = j * 18;
+                int w = 0;
+                int h = 0;
+
+                switch (lo)
+                {
+                case 0:
+                    w = 16;
+                    break;
+                case 1:
+                    x += 4;
+                    w = 12;
+                    break;
+                case 2:
+                    w = 12;
+                    break;
+                case 3:
+                    x += 4;
+                    w = 8;
+                    break;
+                }
+                switch (hi)
+                {
+                case 0:
+                    h = 16;
+                    break;
+                case 1:
+                    y += 4;
+                    h = 12;
+                    break;
+                case 2:
+                    h = 12;
+                    break;
+                case 3:
+                    y += 4;
+                    h = 8;
+                    break;
+                }
+
+                elements[i][j][k] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, Vec2(x, y), Vec2(w, h));
+            }
+        }
     }
 }
 
-void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask, const RECT& clip)
+void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask, int clip)
 {
-	if (k_element == L"")
-		return;
+    if (k_element == L"")
+        return;
 
-	static std::default_random_engine dre;
-	static std::uniform_int_distribution<int> uid;
+    static std::default_random_engine dre;
+    static std::uniform_int_distribution<int> uid;
 
-	int si = 0;
+    int si = 0;
     int sj = 0;
     int sr = uid(dre) % 3;
 
@@ -106,8 +154,47 @@ void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitm
         break;
     }
 
-    Vec2 s_pos = Vec2(clip.left - 1, clip.top - 1) * 8.0f;
-    Vec2 s_size = Vec2((clip.right - clip.left) * 16 - 8, (clip.bottom - clip.top) * 16 - 8);
+    int lo = clip & 0b0011;
+    int hi = (clip >> 2) & 0b0011;
 
-	tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y + 1)) + s_pos, s_size);
+    int sx = 0;
+    int sy = 0;
+    int w = 0;
+    int h = 0;
+
+    if (!(lo & 1))
+        sx = -8;
+    if (!(hi & 1))
+        sy = -8;
+
+    switch (lo)
+    {
+    case 0:
+        w = 32;
+        break;
+    case 1:
+    case 2:
+        w = 24;
+        break;
+    case 3:
+        w = 16;
+        break;
+    }
+
+    switch (hi)
+    {
+    case 0:
+        h = 32;
+        break;
+    case 1:
+    case 2:
+        h = 24;
+        break;
+    case 3:
+        h = 16;
+        break;
+    }
+
+    tilemap_layer->pre_render(elements[sj][si][clip], TRWorld::WorldToGlobal(Vec2(x, y + 1)) + Vec2(sx, sy), Vec2(w, h));
 }
+
