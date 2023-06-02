@@ -60,10 +60,10 @@ pair<Vec2, Vec2> CCamera::GetRenderPos(const CObject* const _pObj) const
 
 void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fSpeed) const
 {	
-	const int iBackWidth = (int)_vLayerScale.x;
-	const int iBackHeight = (int)_vLayerScale.y;
-	const int iLeft = ((int)(m_vDiff.x * _fSpeed) % iBackWidth + iBackWidth) % iBackWidth;
-	const int iTop = (int)(m_vCurLookAt.y - m_vResolution.y/2);
+	const short iBackWidth = (short)_vLayerScale.x;
+	const short iBackHeight = (short)_vLayerScale.y;
+	const short iLeft = ((short)(m_vDiff.x * _fSpeed) % iBackWidth + iBackWidth) % iBackWidth;
+	const short iTop = (short)(m_vCurLookAt.y - m_vResolution.y/2);
 
 
 	/*TransparentBltSafe(_hDest
@@ -97,15 +97,15 @@ void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fS
 	TransparentBltSafe(_hDest
 		, 0
 		, 0
-		, (int)m_vResolution.x
-		, (int)m_vResolution.y
+		, static_cast<short>(m_vResolution.x)
+		, static_cast<short>(m_vResolution.y)
 		, _hSrc
-		, (int)(m_vDiff.x * _fSpeed)
+		, static_cast<short>(m_vDiff.x * _fSpeed)
 		, iTop
-		, (int)m_vResolution.x
-		, (int)(m_vResolution.y / _fSpeed)
-		, (int)1400 * 10
-		, (int)8000
+		, static_cast<short>(m_vResolution.x)
+		, static_cast<short>((m_vResolution.y / _fSpeed))
+		, static_cast<short>(1400 * 10)
+		, static_cast<short>(8000)
 		, RGB(255, 0, 255)); 
 
 }

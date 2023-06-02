@@ -40,7 +40,7 @@ void CThreadMgr::init()
                         return !m_jobQueue.empty() || m_bStopRequest;
                         });
 
-                    if (m_bStopRequest && m_jobQueue.empty()) {
+                    if (m_bStopRequest) {
                         break;
                     }
 

@@ -15,7 +15,7 @@ public:
 protected:
 	vector<unique_ptr<CLayer>> m_vecLayer;
 	vector<unique_ptr<CTileLayer>> m_vecTileLayer;
-	bool m_bDoThreadPool = false;
+	bool m_bDoThreadPool = true;
 private:
 	vector<unique_ptr<CObject>>			m_vecObj[(UINT)GROUP_TYPE::END]; 
 	wstring								m_strName;	

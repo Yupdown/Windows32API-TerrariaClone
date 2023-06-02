@@ -19,6 +19,7 @@
 jthread CCore::m_miniMapThread;
 
 bool g_bStopToken = false;
+extern void miniMapWin();
 
 CCore::CCore()
 {
@@ -62,7 +63,6 @@ CCore::~CCore()
 	{
 		DeleteDCBITMAP(m_hThreadMazentaDC[i], m_hThreadMazentaBit[i]);
 	}
-	m_miniMapThread.join();
 }
 
 void CCore::CreateBrushPen()
@@ -129,7 +129,7 @@ int CCore::init(HWND _hwnd, POINT _ptResolution, HINSTANCE _hInst)
 	CTimeMgr::GetInst()->init();
 	CKeyMgr::GetInst()->init();
 	CCamera::GetInst()->init();
-	CSceneMgr::GetInst()->init();
+	//CSceneMgr::GetInst()->init();
 	Mgr(CEventMgr)->init();	 
 	Mgr(CAtlasMgr)->init();
 	Mgr(CThreadMgr)->init();
@@ -184,7 +184,7 @@ void CCore::progress()
 	{
 		Mgr(CDebugMgr)->init();
 		m_miniMapThread = jthread{ []() {
-			Mgr(CDebugMgr)->progress(); } };
+			miniMapWin(); } };
 		bDebugInit = true;
 	}
 }

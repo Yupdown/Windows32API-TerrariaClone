@@ -56,4 +56,30 @@ void CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit,Vec2 _vBitMapScale);
 
 void DeleteDCBITMAP(HDC& _dc, HBITMAP& _hBit);
 
-BOOL TransparentBltSafe(HDC hdcDest, int xoriginDest, int yoriginDest, int wDest, int hDest, HDC hdcSrc, int xoriginSrc, int yoriginSrc, int wSrc, int hSrc, int wBit, int hBit, UINT crTransparent);
+//BOOL TransparentBltSafe(HDC hdcDest
+//	, int xoriginDest
+//	, int yoriginDest
+//	, int wDest
+//	, int hDest
+//	, HDC hdcSrc
+//	, int xoriginSrc
+//	, int yoriginSrc
+//	, int wSrc
+//	, int hSrc
+//	, int wBit
+//	, int hBit
+//	, UINT crTransparent);
+
+BOOL TransparentBltSafe(HDC hdcDest
+	, const short xoriginDest
+	, const short yoriginDest
+	, const short wDest
+	, const short hDest
+	, HDC hdcSrc
+	, const short xoriginSrc
+	, const short yoriginSrc
+	, const short wSrc
+	, const short hSrc
+	, const short wBit
+	, const short hBit
+	, UINT crTransparent);

@@ -11,9 +11,12 @@ private:
 	std::vector<std::jthread> m_vecThread;
 	std::array<std::atomic<bool>, THREAD::END> m_arrDone;
 	std::queue<std::pair<std::function<void()>, size_t>> m_jobQueue;
+
+
 	std::mutex m_mutexQ;
 	std::condition_variable m_cvQ;
 	bool m_bStopRequest = false;
+
 
 	std::mutex m_mutexMain;
 	std::condition_variable m_cvMain;
