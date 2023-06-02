@@ -10,7 +10,7 @@ void TRWorldGenerationTerrainHeight::GenerateWorld(TRTileMap* tile_map, int widt
     for (int i = 0; i < width; ++i)
     {
         float noise_value = Perlin::Fbm(i * 0.02f, 4);
-        int h = height - RoundToInt((noise_value + 1.0f) * 30.0f);
+        int h = height - 64 + RoundToInt(noise_value * 16.0f);
         for (int j = 0; j < h; ++j)
         {
             TRTile* tile = TRTileManager::GetInst()->GetTileByID(j + 10 >= h ? 2 : 1);

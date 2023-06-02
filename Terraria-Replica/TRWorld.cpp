@@ -21,13 +21,11 @@ void TRWorld::Update()
 	if (Mgr(CKeyMgr)->GetKeyState(KEY::LBTN) == KEY_STATE::TAP)
 	{
 		Vec2Int tile_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
-		tile_map->SetTile(tile_pos.x, tile_pos.y + 1, Mgr(TRTileManager)->GetTileByKey("cobblestone"), true);
+		tile_map->SetTile(tile_pos.x, tile_pos.y, Mgr(TRTileManager)->TileAir(), true);
 
-		/*
-		wchar_t tbuffer[64];
-		wsprintf(tbuffer, L"Clicked Position : {%d, %d}", p.x, p.y);
-		MessageBox(NULL, tbuffer, L"Result", MB_OK);
-		*/
+		/*wchar_t tbuffer[64];
+		wsprintf(tbuffer, L"Clicked Position : {%d, %d}", tile_pos.x, tile_pos.y);
+		MessageBox(NULL, tbuffer, L"Result", MB_OK);*/
 	}
 }
 

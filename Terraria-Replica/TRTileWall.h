@@ -19,7 +19,7 @@ public:
 	TRTileWall(std::wstring name, std::wstring k_element, std::wstring k_dropitem);
 
 	void CreateAtlasElements();
-	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask);
+	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask, const RECT& clip);
 };
 
 class TRTileWallAir : public TRTileWall

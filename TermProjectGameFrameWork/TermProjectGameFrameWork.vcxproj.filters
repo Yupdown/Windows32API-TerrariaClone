@@ -97,12 +97,6 @@
     <Filter Include="Engine\02. Manager\KeyMgr">
       <UniqueIdentifier>{1bcc50ad-b54b-4bbb-ac5e-37ac6f4bbc22}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\04. Scene\Scene_Start">
-      <UniqueIdentifier>{b8490388-4c38-4fe6-acf2-c6b87292682b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\03. Object\Player">
-      <UniqueIdentifier>{0006cbbf-cd0d-48ad-a7ef-89a351ee804e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\02. Manager\Camera">
       <UniqueIdentifier>{27e1c8e0-3057-42ba-9d22-1c4eb3f52ccb}</UniqueIdentifier>
     </Filter>
@@ -216,12 +210,6 @@
     <ClInclude Include="CKeyMgr.h">
       <Filter>Engine\02. Manager\KeyMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CScene_Start.h">
-      <Filter>Engine\04. Scene\Scene_Start</Filter>
-    </ClInclude>
-    <ClInclude Include="CPlayer.h">
-      <Filter>Engine\03. Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>Engine\02. Manager\Camera</Filter>
     </ClInclude>
@@ -322,12 +310,6 @@
     </ClCompile>
     <ClCompile Include="CKeyMgr.cpp">
       <Filter>Engine\02. Manager\KeyMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="CScene_Start.cpp">
-      <Filter>Engine\04. Scene\Scene_Start</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayer.cpp">
-      <Filter>Engine\03. Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>Engine\02. Manager\Camera</Filter>

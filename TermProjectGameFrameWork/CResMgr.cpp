@@ -89,7 +89,7 @@ void CResMgr::renderImg(HDC _dc, const CImage* const _pImg, Vec2 _vLT, Vec2 _vSc
 	 Vec2 vLtPos = _vLT;
 	 Vec2 vScale = _vScale;
 
-	 vLtPos = Mgr(CCamera)->GetRenderPos(vLtPos);
+	 // vLtPos = Mgr(CCamera)->GetRenderPos(vLtPos);
 
 	 _pImg->StretchBlt(m_hBackDC
 		 , (int)vLtPos.x

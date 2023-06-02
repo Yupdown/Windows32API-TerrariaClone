@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "TRWorld.h"
 #include "TRTile.h"
 #include "TRTileMap.h"
 #include "TRTileManager.h"
@@ -7,6 +8,7 @@
 #include "CAtlasElement.h"
 #include "CResMgr.h"
 #include "Vec2Int.hpp"
+#include "CCore.h"
 
 TRTileMap::TRTileMap(int width, int height)
 {
@@ -88,7 +90,8 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 				continue;
 
 			int bitmask = GetTileWallNeighborMask(x, y);
-			tile->OnDrawElement(renderer, x, y, bitmask);
+			RECT r = RECT{ 0, 0, 3, 3 };
+			tile->OnDrawElement(renderer, x, y, bitmask, r);
 		}
 	}
 
@@ -111,6 +114,30 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 
 void TRTileMap::UpdateTileRenderer(int x, int y)
 {
+	static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
+	HDC hdc = renderer->GetTileLayerDC();
+	
+	Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y));
+	RECT r = { p.x - PIXELS_PER_TILE, p.y - PIXELS_PER_TILE * 2, p.x + PIXELS_PER_TILE * 2, p.y + PIXELS_PER_TILE };
+	FillRect(hdc, &r, brush);
+
+	for (int dx = -1; dx <= 1; ++dx)
+	{
+		for (int dy = -1; dy <= 1; ++dy)
+		{
+			int xp = x + dx;
+			int yp = y + dy;
+
+			TRTileWall* tile = GetTileWall(xp, yp);
+			if (tile == nullptr)
+				return;
+
+			int bitmask = GetTileWallNeighborMask(xp, yp);
+			RECT r = RECT{ max(-dx, 0), max(-dy, 0), min(-dx, 0) + 3, min(-dy, 0) + 3};
+			tile->OnDrawElement(renderer, xp, yp, bitmask, r);
+		}
+	}
+
 	for (int dx = -1; dx <= 1; ++dx)
 	{
 		for (int dy = -1; dy <= 1; ++dy)

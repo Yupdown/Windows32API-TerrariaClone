@@ -311,7 +311,11 @@ void TRTile::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
         break;
     }
 
-    tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y)), TILE_PIXEL_XY);
+    // tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y)), TILE_PIXEL_XY);
+
+    HDC hdc = tilemap_layer->GetTileLayerDC();
+    Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y + 1));
+    elements[sj][si]->render(hdc, p, TILE_PIXEL_XY);
 }
 
 int TRTile::StickGroup() const
@@ -603,14 +607,18 @@ void TRTileGrass::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bit
         break;
     }
 
-    tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y)), TILE_PIXEL_XY);
+    // tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y)), TILE_PIXEL_XY);
+
+    HDC hdc = tilemap_layer->GetTileLayerDC();
+    Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y + 1));
+    elements[sj][si]->render(hdc, p, TILE_PIXEL_XY);
 }
 
 void TRTileAir::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
 {
-    static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
-    HDC hdc = tilemap_layer->GetTileLayerDC();
-    Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y));
-    RECT r = { p.x, p.y, p.x + PIXELS_PER_TILE, p.y + PIXELS_PER_TILE };
-    FillRect(hdc, &r, brush);
+    //static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
+    //HDC hdc = tilemap_layer->GetTileLayerDC();
+    //Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y + 1));
+    //RECT r = { p.x, p.y, p.x + PIXELS_PER_TILE, p.y + PIXELS_PER_TILE };
+    //FillRect(hdc, &r, brush);
 }
