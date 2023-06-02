@@ -14,12 +14,15 @@ private:
 	CScene* m_pCurScene{};						
 
 public:
-	void init();
 	void update();
 	void render(HDC _dc);
 	CScene* GetCurScene()const { return m_pCurScene; }	
 private:
 	void ChangeScene(SCENE_TYPE _eNext);
+
+public:
+	void AddScene(SCENE_TYPE _eType, CScene* const _pScene);
+	void init(SCENE_TYPE _eType);
 };
 
 
