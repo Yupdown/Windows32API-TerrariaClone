@@ -1,6 +1,8 @@
 #include "pch.h"
+#include "TRWorld.h"
 #include "TRTileWall.h"
 #include "CAtlasMgr.h"
+#include "CustomMath.hpp"
 #include <random>
 
 TRTileWall::TRTileWall(std::wstring name, std::wstring k_element, std::wstring k_dropitem)
@@ -22,7 +24,7 @@ void TRTileWall::CreateAtlasElements()
     }
 }
 
-void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
+void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask, const RECT& clip)
 {
 	if (k_element == L"")
 		return;
@@ -104,5 +106,8 @@ void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitm
         break;
     }
 
-	tilemap_layer->pre_render(elements[sj][si], Vec2(x * 16.0f, y * 16.0f) - Vec2::one * 8.0f, Vec2::one * 32.0f);
+    Vec2 s_pos = Vec2(clip.left - 1, clip.top - 1) * 8.0f;
+    Vec2 s_size = Vec2((clip.right - clip.left) * 16 - 8, (clip.bottom - clip.top) * 16 - 8);
+
+	tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y + 1)) + s_pos, s_size);
 }

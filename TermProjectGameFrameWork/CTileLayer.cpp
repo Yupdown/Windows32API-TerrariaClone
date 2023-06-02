@@ -38,17 +38,17 @@ void CTileLayer::render(HDC _dc)const
 	const Vec2 vLTpos = Mgr(CCamera)->GetRenderPos(GetPos() - vOriginScale / 2);
 	
 	TransparentBltSafe(_dc
-		, static_cast<short>(vLTpos.x)
-		, static_cast<short>(vLTpos.y + 800.f * 8.f)
-		, static_cast<short>(vOriginScale.x)
-		, static_cast<short>(vOriginScale.y)
+		, (int)vLTpos.x
+		, (int)vLTpos.y
+		, (int)vOriginScale.x
+		, (int)vOriginScale.y
 		, m_hTileLayerDC
 		, 0
 		, 0
-		, static_cast<short>(vOriginScale.x)
-		, static_cast<short>(vOriginScale.y)
-		, static_cast<short>(vOriginScale.x)
-		, static_cast<short>(vOriginScale.y)
+		, (int)vOriginScale.x
+		, (int)vOriginScale.y
+		, (int)vOriginScale.x
+		, (int)vOriginScale.y
 		, RGB(255, 0, 255));
 
 }

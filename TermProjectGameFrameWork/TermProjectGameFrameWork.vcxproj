@@ -166,13 +166,11 @@
     <ClInclude Include="CObject.h" />
     <ClInclude Include="CoRoutine.hpp" />
     <ClInclude Include="CPathMgr.h" />
-    <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CRes.h" />
     <ClInclude Include="CResMgr.h" />
     <ClInclude Include="CRigidBody.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
-    <ClInclude Include="CScene_Start.h" />
     <ClInclude Include="CScene_Tool.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CThreadMgr.h" />
@@ -208,13 +206,11 @@
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
-    <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CRes.cpp" />
     <ClCompile Include="CResMgr.cpp" />
     <ClCompile Include="CRigidBody.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
-    <ClCompile Include="CScene_Start.cpp" />
     <ClCompile Include="CScene_Tool.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CThreadMgr.cpp" />
