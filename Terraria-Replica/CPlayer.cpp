@@ -10,6 +10,7 @@
 #include "CRigidBody.h"
 #include "CAnimation.h"
 #include "TRWorld.h"
+#include "CustomMath.hpp"
 #include "Vec2Int.hpp"
 
 short bitwise_abs(const short x) 
@@ -248,8 +249,8 @@ void CPlayer::updateAnimation()
 void CPlayer::component_update()
 {
 	CObject::component_update();
-	m_pAnimLeg->component_update();
 	updateTileCollision();
+	m_pAnimLeg->component_update();
 }
 
 void CPlayer::OnCollision(CCollider* const _pOther)
@@ -268,76 +269,174 @@ void CPlayer::OnCollisionExit(CCollider* const _pOther)
 
 void CPlayer::updateTileCollision()
 {
-	Vec2 vColScale = Vec2{ 24.f,48.f };
-	Vec2Int vStart = TRWorld::GlobalToWorld(m_vWillPos + vColScale /2.f);
-
-	Vec2Int vEnd = TRWorld::GlobalToWorld(m_vWillPos - vColScale / 2.f);
-	auto vPos = GetPos();
-	const short playerLeft = static_cast<short>(vPos.x - vColScale.x / 2.f);
-	const short playerTop = static_cast<short>(vPos.y - vColScale.y / 2.f);
-	const short playerRight = static_cast<short>(vPos.x + vColScale.x / 2.f);
-	const short playerBottom = static_cast<short>(vPos.y + vColScale.y / 2.f);
-
-
-
 	auto pRigid = GetComp<CRigidBody>();
-	auto vOriginVelocity = pRigid->GetVelocity();
-	bool flag = false;
-		for (int y = vStart.y; y <= vEnd.y; ++y)
+	auto pTileMap = m_pTRWolrd->GetTileMap();
+	Vec2 world_pos = TRWorld::GlobalToWorld(m_vWillPos);
+	Vec2 world_vel = pRigid->GetVelocity();
+
+	float w = 1.8f;
+	float h = 2.8f;
+
+	Vec2 pre_pos = TRWorld::GlobalToWorld(m_vPos);
+	Vec2 post_pos = world_pos;
+	Vec2 post_vel = world_vel;
+
+	bool landed = false;
+	bool collided = false;
+
+	int x_min = FloorToInt(pre_pos.x - w * 0.5f);
+	int x_max = CeilToInt(pre_pos.x + w * 0.5f) - 1;
+	int y_min = FloorToInt(world_pos.y - h * 0.5f);
+	int y_max = CeilToInt(world_pos.y + h * 0.5f) - 1;
+
+	if (x_min >= 0 && x_max < TRWorld::WORLD_WIDTH && y_min >= 0 && y_max < TRWorld::WORLD_HEIGHT)
+	{
+		for (int x = x_min; x <= x_max; ++x)
 		{
-			for (int x = vEnd.x; x <= vStart.x; ++x)
+			if (world_vel.y > 0.0f && pTileMap->GetTile(x, y_min)->Solid())
 			{
-				if (m_pTRWolrd->GetTileMap()->GetTile(x, y)->Solid())
-				{
-					flag = true;
-					auto tilepos = TRWorld::WorldToGlobal(Vec2{ (float)x,(float)y });
-					const short tileLeft = static_cast<short>(tilepos.x);
-					const short tileTop = static_cast<short>(tilepos.y - 16.f);
-					const short tileRight = static_cast<short>(tilepos.x + 16.f);
-					const short tileBottom = static_cast<short>(tilepos.y);
+				post_pos.y = y_min + 1.0f + h * 0.5f;
+				post_vel.y = 0.0f;
 
+				landed = true;
+				collided = true;
+				break;
+			}
+			if (world_vel.y < 0.0f && pTileMap->GetTile(x, y_max)->Solid())
+			{
+				post_pos.y = y_max - h * 0.5f;
+				post_vel.y = 0.0f;
 
-					const short dx = min(bitwise_abs(playerRight - tileLeft), bitwise_abs(playerLeft - tileRight));
-					const short dy = min(bitwise_abs(playerBottom - tileTop), bitwise_abs(playerTop - tileBottom));
-
-					if (dx < dy)
-					{
-						if (playerRight - tileLeft < tileRight - playerLeft)
-						{
-							if (m_pTRWolrd->GetTileMap()->GetTile(x, y + 1)->Solid())
-							{
-								m_vWillPos.x = tileLeft - 24.f / 2.f;
-
-							}
-						}
-						else
-						{
-							if (m_pTRWolrd->GetTileMap()->GetTile(x, y + 1)->Solid())
-							{
-								m_vWillPos.x = tileRight + 24.f / 2.f;
-							}
-
-						}
-					}
-					else
-					{
-
-						if (playerBottom - tileTop < tileBottom - playerTop)
-						{
-							m_vWillPos.y = tileTop - 48.f / 2.f;
-						}
-						else
-						{
-							m_vWillPos.y = tileBottom + 48.f / 2.f;
-						}
-						pRigid->SetVelocity({ vOriginVelocity.x,0 });
-					}
-				}
+				collided = true;
+				break;
 			}
 		}
-		SetPos(m_vWillPos);
-		if (!flag)
+
+		x_min = FloorToInt(world_pos.x - w * 0.5f);
+		x_max = CeilToInt(world_pos.x + w * 0.5f) - 1;
+		y_min = FloorToInt(post_pos.y - h * 0.5f);
+		y_max = CeilToInt(post_pos.y + h * 0.5f) - 1;
+
+		bool collision_x = false;
+		float reform_x = 0.0f;
+
+		for (int y = y_min; y <= y_max; ++y)
 		{
-			pRigid->SetIsGround(false);
+			if (world_vel.x < 0.0f && pTileMap->GetTile(x_min, y)->Solid())
+			{
+				reform_x = x_min + 1.0f + w * 0.5f;
+
+				collided = true;
+				collision_x = true;
+				break;
+			}
+			if (world_vel.x > 0.0f && pTileMap->GetTile(x_max, y)->Solid())
+			{
+				reform_x = x_max - w * 0.5f;
+
+				collided = true;
+				collision_x = true;
+				break;
+			}
 		}
+
+		if (collision_x)
+		{
+			y_min = y_min + 1;
+			y_max = CeilToInt(y_min + h) - 1;
+
+			bool flag = false;
+			for (int x = x_min; x <= x_max; ++x)
+			{
+				for (int y = y_min; y <= y_max; ++y)
+					flag |= pTileMap->GetTile(x, y)->Solid();
+			}
+
+			if (flag)
+			{
+				post_pos.x = reform_x;
+				post_vel.x = 0.0f;
+			}
+			else
+				post_pos.y += 1.0f;
+		}
+	}
+
+	SetPos(TRWorld::WorldToGlobal(post_pos));
+	pRigid->SetVelocity(post_vel);
+	if (!landed)
+		pRigid->SetIsGround(false);
+
+	//Vec2 vColScale = Vec2{ 24.f,48.f };
+	//Vec2Int vStart = TRWorld::GlobalToWorld(m_vWillPos + vColScale /2.f);
+
+	//Vec2Int vEnd = TRWorld::GlobalToWorld(m_vWillPos - vColScale / 2.f);
+	//auto vPos = GetPos();
+	//const short playerLeft = static_cast<short>(vPos.x - vColScale.x / 2.f);
+	//const short playerTop = static_cast<short>(vPos.y - vColScale.y / 2.f);
+	//const short playerRight = static_cast<short>(vPos.x + vColScale.x / 2.f);
+	//const short playerBottom = static_cast<short>(vPos.y + vColScale.y / 2.f);
+
+
+
+	//auto pRigid = GetComp<CRigidBody>();
+	//auto vOriginVelocity = pRigid->GetVelocity();
+	//bool flag = false;
+	//	for (int y = vStart.y; y <= vEnd.y; ++y)
+	//	{
+	//		for (int x = vEnd.x; x <= vStart.x; ++x)
+	//		{
+	//			if (m_pTRWolrd->GetTileMap()->GetTile(x, y)->Solid())
+	//			{
+	//				flag = true;
+	//				auto tilepos = TRWorld::WorldToGlobal(Vec2{ (float)x,(float)y });
+	//				const short tileLeft = static_cast<short>(tilepos.x);
+	//				const short tileTop = static_cast<short>(tilepos.y - 16.f);
+	//				const short tileRight = static_cast<short>(tilepos.x + 16.f);
+	//				const short tileBottom = static_cast<short>(tilepos.y);
+
+
+	//				const short dx = min(bitwise_abs(playerRight - tileLeft), bitwise_abs(playerLeft - tileRight));
+	//				const short dy = min(bitwise_abs(playerBottom - tileTop), bitwise_abs(playerTop - tileBottom));
+
+	//				if (dx < dy)
+	//				{
+	//					if (playerRight - tileLeft < tileRight - playerLeft)
+	//					{
+	//						if (m_pTRWolrd->GetTileMap()->GetTile(x, y + 1)->Solid())
+	//						{
+	//							m_vWillPos.x = tileLeft - 24.f / 2.f;
+
+	//						}
+	//					}
+	//					else
+	//					{
+	//						if (m_pTRWolrd->GetTileMap()->GetTile(x, y + 1)->Solid())
+	//						{
+	//							m_vWillPos.x = tileRight + 24.f / 2.f;
+	//						}
+
+	//					}
+	//				}
+	//				else
+	//				{
+
+	//					if (playerBottom - tileTop < tileBottom - playerTop)
+	//					{
+	//						m_vWillPos.y = tileTop - 48.f / 2.f;
+	//					}
+	//					else
+	//					{
+	//						m_vWillPos.y = tileBottom + 48.f / 2.f;
+	//					}
+	//					pRigid->SetVelocity({ vOriginVelocity.x,0 });
+	//				}
+	//			}
+	//		}
+	//	}
+	//	SetPos(m_vWillPos);
+	//	if (!flag)
+	//	{
+	//		pRigid->SetIsGround(false);
+	//	}
 }
