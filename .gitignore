@@ -6,6 +6,7 @@
 *.idb
 *.lib
 */[Uu]nity/
+[Oo]utput/
 
 # User-specific files
 *.rsuser
