@@ -10,9 +10,9 @@ private:
 	Vec2            m_vForce;   
 	Vec2            m_vAccel;  
 	Vec2            m_vVelocity;   
-	Vec2            m_vMaxVelocity = {1000.f,600.f};
+	Vec2            m_vMaxVelocity = {500.f,1000.f};
 	float            m_fMass = 1.f;
-	float           m_fFriction = 100.f;
+	float           m_fFriction = 300.f;
 	bool            m_bGravity = true;  
 	bool            m_bIsGround = false;
 private:
@@ -40,7 +40,7 @@ public:
 	bool  IsGravity()const { return m_bGravity; }
 	void  SetGravity(bool _b) { m_bGravity = _b; }
 public:
-	Vec2 GetVeloicity()const { return m_vVelocity; }
+	Vec2 GetVelocity()const { return m_vVelocity; }
 	void SetVelocity(Vec2 _v) { m_vVelocity = _v; }
 	void SetMaxVelocity(Vec2 _vMaxVel) { m_vMaxVelocity = _vMaxVel; }
 	void SetMass(float _fMass) { m_fMass = _fMass; }

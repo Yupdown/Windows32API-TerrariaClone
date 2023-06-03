@@ -6,7 +6,7 @@ class CTexture;
 class CAnimation;
 class CAnimator;
 class TRWorld;
-
+class TRTile;
 
 enum class PLAYER_STATE
 {
@@ -17,6 +17,8 @@ enum class PLAYER_STATE
 
     END
 };
+
+
 
 class CPlayer :
     public CObject

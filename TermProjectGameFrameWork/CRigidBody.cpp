@@ -28,21 +28,22 @@ void CRigidBody::Move()
 
 	vPos += m_vVelocity * DT;
 
-	if (vPos.x < vScale.x)
-	{
-		vPos.x = vScale.x;
-	}
-	if (vPos.y > 8000.f - vScale.y)
-	{
-		vPos.y = 8000.f - vScale.y;
-	}
-	if (vPos.x + vScale.x > 8192.f)
-	{
-		vPos.x = 8192.f - vScale.x;
-	}
+	//if (vPos.x < vScale.x)
+	//{
+	//	vPos.x = vScale.x;
+	//}
+	//if (vPos.y > 8000.f - vScale.y)
+	//{
+	//	vPos.y = 8000.f - vScale.y;
+	//}
+	//if (vPos.x + vScale.x > 8192.f)
+	//{
+	//	vPos.x = 8192.f - vScale.x;
+	//}
 
-	m_pOwner->SetPos(vPos);
+	//m_pOwner->SetPos(vPos);
 
+	m_pOwner->m_vWillPos = vPos;
 }
 
 void CRigidBody::component_update()
@@ -85,7 +86,7 @@ void CRigidBody::update_gravity()
 	auto vLow = m_pOwner->GetPos().y + m_pOwner->GetScale().y/2.f;
 	if (vLow >= 7040)
 	{
-		m_bIsGround = true;
+	//	m_bIsGround = true;
 	}
 	if (m_bGravity && !m_bIsGround)
 	{

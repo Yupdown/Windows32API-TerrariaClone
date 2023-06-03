@@ -25,6 +25,7 @@ protected:
 	Vec2		m_vPos{};
 	Vec2		m_vScale{};
 	TRWorld* m_pTRWolrd;
+	
 private:
 	wstring		m_strName = {}; 
 	
@@ -68,5 +69,6 @@ public:
 	virtual void update();
 	virtual void render(HDC _dc)const;
 	virtual void component_update();
+	Vec2 m_vWillPos = {};
 };
 
