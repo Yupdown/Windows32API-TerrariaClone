@@ -7,28 +7,44 @@
 #include "CCamera.h"
 #include "CScene.h"
 
+#include "TRItemManager.h"
+#include "TRItemStack.h"
+
 TRWorld::TRWorld()
 {
 	tile_map = new TRTileMap(TRWorld::WORLD_WIDTH, TRWorld::WORLD_HEIGHT);
 	player = new CPlayer(this);
 	player->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT - 32)));
 	player->SetScale(Vec2{ 40.f, 56.f });
-//	player->SetScale(Vec2{ 32.f, 48.f });
+
+	for (int i = 0; i < 10; ++i)
+		quick_bar[i] = new TRItemContainer();
+	quick_bar[0]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"pickaxe_iron"), 1));
+	quick_bar[1]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"hammer_iron"), 1));
+	quick_bar[2]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"longsword_iron"), 1));
+	quick_bar[3]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_dirt"), 1));
+	quick_bar[4]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_bricks_stone"), 1));
+	quick_bar[5]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"wall_bricks_stone"), 1));
+	quick_bar_index = 5;
 }
 
 TRWorld::~TRWorld()
 {
 	delete tile_map;
+
+	for (int i = 0; i < 10; ++i)
+		delete quick_bar[i];
 }
 
 void TRWorld::Update()
 {
-	Vec2Int tile_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
+	if (!quick_bar[quick_bar_index]->Blank())
+	{
+		Vec2 mouse_world_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
 
-	if (Mgr(CKeyMgr)->GetKeyState(KEY::RBTN) == KEY_STATE::TAP)
-		tile_map->SetTile(tile_pos.x, tile_pos.y, Mgr(TRTileManager)->GetTileByKey("planks_wood"), true);
-	if (Mgr(CKeyMgr)->GetKeyState(KEY::LBTN) == KEY_STATE::TAP)
-		tile_map->SetTile(tile_pos.x, tile_pos.y, Mgr(TRTileManager)->TileAir(), true);
+		if (Mgr(CKeyMgr)->GetKeyState(KEY::LBTN) == KEY_STATE::TAP)
+			quick_bar[quick_bar_index]->GetItemStack().GetItem()->OnUseItem(player, this, mouse_world_pos);
+	}
 }
 
 void TRWorld::CreateWorld(int seed)
@@ -40,10 +56,10 @@ void TRWorld::CreateWorld(int seed)
 		new TRWorldGenerationTerrainHeight(),
 		new TRWorldGenerationAttachWall(),
 		new TRWorldGenerationPinchCaves(),
-		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey("copper_ore"), -20),
-		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey("iron_ore"), 0),
-		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey("silver_ore"), 10),
-		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey("gold_ore"), 30),
+		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey(L"copper_ore"), -20),
+		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey(L"iron_ore"), 0),
+		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey(L"silver_ore"), 10),
+		new TRWorldGenerationGrowOres(Mgr(TRTileManager)->GetTileByKey(L"gold_ore"), 30),
 		new TRWorldGenerationGrowGrass()
 	};
 

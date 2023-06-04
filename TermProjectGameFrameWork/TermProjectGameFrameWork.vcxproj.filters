@@ -91,9 +91,6 @@
     <Filter Include="Default\func">
       <UniqueIdentifier>{864d1aa3-6e03-42b2-952f-e94a7b3f7236}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\04. Scene\Scene">
-      <UniqueIdentifier>{90c0b8ed-0f84-451e-8745-6a154b9749b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\02. Manager\KeyMgr">
       <UniqueIdentifier>{1bcc50ad-b54b-4bbb-ac5e-37ac6f4bbc22}</UniqueIdentifier>
     </Filter>
@@ -112,9 +109,6 @@
     <Filter Include="Engine\02. Manager\EventMgr">
       <UniqueIdentifier>{d28b997a-7d44-4b03-bc51-f8456f5f3322}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\04. Scene\Scene_Tool">
-      <UniqueIdentifier>{2f591532-e24f-493d-8500-c043a110583e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\02. Manager\AtlasMgr">
       <UniqueIdentifier>{e76e6913-a8d0-4e15-9621-165ea50d0b5b}</UniqueIdentifier>
     </Filter>
@@ -132,6 +126,12 @@
     </Filter>
     <Filter Include="Engine\02. Manager\DebugMgr">
       <UniqueIdentifier>{e723a424-1c02-493a-89d7-7ce4cc6b3553}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene">
+      <UniqueIdentifier>{90c0b8ed-0f84-451e-8745-6a154b9749b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Scene_Tool">
+      <UniqueIdentifier>{2f591532-e24f-493d-8500-c043a110583e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -205,7 +205,7 @@
       <Filter>Default\func</Filter>
     </ClInclude>
     <ClInclude Include="CScene.h">
-      <Filter>Engine\04. Scene\Scene</Filter>
+      <Filter>Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="CKeyMgr.h">
       <Filter>Engine\02. Manager\KeyMgr</Filter>
@@ -226,7 +226,7 @@
       <Filter>Engine\02. Manager\EventMgr</Filter>
     </ClInclude>
     <ClInclude Include="CScene_Tool.h">
-      <Filter>Engine\04. Scene\Scene_Tool</Filter>
+      <Filter>Engine\Scene\Scene_Tool</Filter>
     </ClInclude>
     <ClInclude Include="CAtlasMgr.h">
       <Filter>Engine\02. Manager\AtlasMgr</Filter>
@@ -306,7 +306,7 @@
       <Filter>Default\func</Filter>
     </ClCompile>
     <ClCompile Include="CScene.cpp">
-      <Filter>Engine\04. Scene\Scene</Filter>
+      <Filter>Engine\Scene</Filter>
     </ClCompile>
     <ClCompile Include="CKeyMgr.cpp">
       <Filter>Engine\02. Manager\KeyMgr</Filter>
@@ -324,7 +324,7 @@
       <Filter>Engine\02. Manager\EventMgr</Filter>
     </ClCompile>
     <ClCompile Include="CScene_Tool.cpp">
-      <Filter>Engine\04. Scene\Scene_Tool</Filter>
+      <Filter>Engine\Scene\Scene_Tool</Filter>
     </ClCompile>
     <ClCompile Include="CAtlasMgr.cpp">
       <Filter>Engine\02. Manager\AtlasMgr</Filter>

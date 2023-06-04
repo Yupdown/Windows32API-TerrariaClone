@@ -102,6 +102,12 @@
     <ClInclude Include="CPlayer.h">
       <Filter>CObject\Player</Filter>
     </ClInclude>
+    <ClInclude Include="TRItemStack.h">
+      <Filter>Terraria-Replica</Filter>
+    </ClInclude>
+    <ClInclude Include="TRItemContainer.h">
+      <Filter>Terraria-Replica</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -145,6 +151,12 @@
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
       <Filter>CObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="TRItemStack.cpp">
+      <Filter>Terraria-Replica</Filter>
+    </ClCompile>
+    <ClCompile Include="TRItemContainer.cpp">
+      <Filter>Terraria-Replica</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -149,6 +149,8 @@
     <ClInclude Include="CScene_Start.h" />
     <ClInclude Include="CustomMath.hpp" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="TRItemContainer.h" />
+    <ClInclude Include="TRItemStack.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PerlinNoise.hpp" />
     <ClInclude Include="Registry.hpp" />
@@ -171,6 +173,8 @@
   <ItemGroup>
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CScene_Start.cpp" />
+    <ClCompile Include="TRItemContainer.cpp" />
+    <ClCompile Include="TRItemStack.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

@@ -36,8 +36,8 @@ void TRWorldGenerationPinchCaves::GenerateWorld(TRTileMap* tile_map, int width, 
 
 void TRWorldGenerationGrowGrass::GenerateWorld(TRTileMap* tile_map, int width, int height, int seed)
 {
-    TRTile* dirt = TRTileManager::GetInst()->GetTileByKey("dirt");
-    TRTile* grass = TRTileManager::GetInst()->GetTileByKey("dirtgrass");
+    TRTile* dirt = TRTileManager::GetInst()->GetTileByKey(L"dirt");
+    TRTile* grass = TRTileManager::GetInst()->GetTileByKey(L"dirtgrass");
 
     for (int i = 0; i < width; ++i)
     {
@@ -73,7 +73,7 @@ TRWorldGenerationGrowOres::TRWorldGenerationGrowOres(TRTile* _tile, int _seed)
 
 void TRWorldGenerationGrowOres::GenerateWorld(TRTileMap* tile_map, int width, int height, int seed)
 {
-    TRTile* cobblestone = TRTileManager::GetInst()->GetTileByKey("cobblestone");
+    TRTile* cobblestone = TRTileManager::GetInst()->GetTileByKey(L"cobblestone");
 
     for (int i = 0; i < width; ++i)
     {
@@ -95,11 +95,11 @@ void TRWorldGenerationAttachWall::GenerateWorld(TRTileMap* tile_map, int width, 
 {
     int dir[][2] = { 0, -1, 0, 1, -1, 0, 1, 0, 1, -1, -1, 1, -1, -1, 1, 1 };
 
-    TRTile* tile_dirt = Mgr(TRTileManager)->GetTileByKey("dirt");
-    TRTile* tile_stone = Mgr(TRTileManager)->GetTileByKey("cobblestone");
+    TRTile* tile_dirt = Mgr(TRTileManager)->GetTileByKey(L"dirt");
+    TRTile* tile_stone = Mgr(TRTileManager)->GetTileByKey(L"cobblestone");
 
-    TRTileWall* tile_wall_dirt = Mgr(TRTileManager)->GetTileWallByKey("dirt");
-    TRTileWall* tile_wall_stone = Mgr(TRTileManager)->GetTileWallByKey("cobblestone");
+    TRTileWall* tile_wall_dirt = Mgr(TRTileManager)->GetTileWallByKey(L"dirt");
+    TRTileWall* tile_wall_stone = Mgr(TRTileManager)->GetTileWallByKey(L"cobblestone");
 
     for (int i = 0; i < width; ++i)
     {

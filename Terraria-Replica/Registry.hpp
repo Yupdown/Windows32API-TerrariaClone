@@ -9,23 +9,23 @@ class Registry
 {
 private:
 	std::vector<T>* id_container;
-	std::map<std::string, T>* key_container;
+	std::map<std::wstring, T>* key_container;
 
 public:
 	Registry();
 	~Registry();
 
-	size_t Insert(const std::string& key, T item);
+	size_t Insert(const std::wstring& key, T item);
 
 	T operator[](int index) const;
-	T operator[](const std::string& key) const;
+	T operator[](const std::wstring& key) const;
 };
 
 template<typename T>
 inline Registry<T>::Registry()
 {
 	id_container = new std::vector<T>();
-	key_container = new std::map<std::string, T>();
+	key_container = new std::map<std::wstring, T>();
 }
 
 template<typename T>
@@ -36,7 +36,7 @@ inline Registry<T>::~Registry()
 }
 
 template<typename T>
-inline size_t Registry<T>::Insert(const std::string& key, T item)
+inline size_t Registry<T>::Insert(const std::wstring& key, T item)
 {
 	id_container->push_back(item);
 	key_container->insert(make_pair(key, item));
@@ -51,7 +51,7 @@ inline T Registry<T>::operator[](int index) const
 }
 
 template<typename T>
-inline T Registry<T>::operator[](const std::string& key) const
+inline T Registry<T>::operator[](const std::wstring& key) const
 {
 	return key_container->at(key);
 }

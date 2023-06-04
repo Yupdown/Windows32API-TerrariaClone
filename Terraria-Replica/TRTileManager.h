@@ -22,11 +22,11 @@ public:
 	void Initialize();
 
 	TRTile* GetTileByID(int id) const;
-	TRTile* GetTileByKey(const std::string& key) const;
+	TRTile* GetTileByKey(const std::wstring& key) const;
 	TRTile* TileAir() const;
 
 	TRTileWall* GetTileWallByID(int id) const;
-	TRTileWall* GetTileWallByKey(const std::string& key) const;
+	TRTileWall* GetTileWallByKey(const std::wstring& key) const;
 	TRTileWall* TileWallAir() const;
 };
 
