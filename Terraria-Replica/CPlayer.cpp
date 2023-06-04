@@ -46,8 +46,14 @@ CPlayer::CPlayer(TRWorld* const _trWorld)
 	pRigid->SetIsGround(false);
 	//SetScale(Vec2{ 150., 150. });
 
-	m_pWeapon = std::make_unique<CWeapon>(this);
-	m_pWeapon->SetWeaponImg(L"Item_Pickaxe.png",Vec2{32,32});
+	m_pWeapon[0] = std::make_unique<CWeapon>(this);
+	m_pWeapon[0]->SetWeaponImg(L"Item_Pickaxe.png", Vec2{32,32});
+
+	m_pWeapon[1] = std::make_unique<CWeapon>(this);
+	m_pWeapon[1]->SetWeaponImg(L"Item_Hammer.png", Vec2{ 32,32 });
+
+	m_pWeapon[2] = std::make_unique<CWeapon>(this);
+	m_pWeapon[2]->SetWeaponImg(L"Item_Sword.png", Vec2{ 32,32 });
 }
 
 CPlayer::CPlayer(const CPlayer& other)
@@ -67,14 +73,24 @@ void CPlayer::update()
 	
 	updateAnimation();
 	
+	if (Mgr(CKeyMgr)->GetMouseWheelUp())
+	{
+		m_iCurWeapon = (m_iCurWeapon + 1) % 3;
+	}
+	if (Mgr(CKeyMgr)->GetMouseWheelDown())
+	{
+		m_iCurWeapon = max(0, m_iCurWeapon - 1);
+	}
+
 	if (PLAYER_STATE::ATTACK == m_eCurState)
 	{
-		m_pWeapon->update();
+		m_pWeapon[m_iCurWeapon]->update();
 	}
 	else
 	{
-		m_pWeapon->ReForm();
+		m_pWeapon[m_iCurWeapon]->ReForm();
 	}
+	
 }
 
 
@@ -93,7 +109,7 @@ void CPlayer::render(HDC _dc)const
 	m_pAnimLeg->component_render(_dc);
 	if (PLAYER_STATE::ATTACK == m_eCurState)
 	{
-		m_pWeapon->render(_dc);
+		m_pWeapon[m_iCurWeapon]->render(_dc);
 	}
 	
 	//m_pWeapon->render(_dc);

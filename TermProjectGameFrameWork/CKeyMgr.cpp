@@ -2,6 +2,9 @@
 #include "CKeyMgr.h"
 #include "CCore.h"	
 
+
+extern HHOOK hHook;
+
 int g_arrVK[(int)KEY::LAST]		
 {
 	VK_LEFT,	
@@ -20,6 +23,17 @@ int g_arrVK[(int)KEY::LAST]
 	VK_LSHIFT ,
 	VK_CONTROL ,
 	VK_RSHIFT ,
+	'1',
+	'2',
+	'3',
+	'4',
+	'5',
+	'6',
+	'7',
+	'8',
+	'9',
+	'0',
+
 };
 
 CKeyMgr::CKeyMgr()
@@ -95,4 +109,20 @@ void CKeyMgr::update()
 		}
 	}
 
+}
+
+LRESULT CALLBACK LowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+	if (nCode == HC_ACTION)
+	{
+		if (wParam == WM_MOUSEWHEEL)
+		{
+			UnhookWindowsHookEx(hHook);
+			MSLLHOOKSTRUCT* pMouseStruct = (MSLLHOOKSTRUCT*)lParam;
+			Mgr(CKeyMgr)->m_wheelDelta = GET_WHEEL_DELTA_WPARAM(pMouseStruct->mouseData);
+			hHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, NULL, 0);
+		}
+	}
+
+	return CallNextHookEx(NULL, nCode, wParam, lParam);
 }

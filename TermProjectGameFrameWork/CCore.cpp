@@ -180,6 +180,8 @@ void CCore::progress()
 	//Clear();
 	Mgr(CEventMgr)->update();
 
+	Mgr(CKeyMgr)->ReSetWheel();
+
 	if (!bDebugInit)
 	{
 		Mgr(CDebugMgr)->init();

@@ -25,7 +25,8 @@ class CPlayer :
 {
 private:
 
-    unique_ptr<CWeapon> m_pWeapon;
+    int m_iCurWeapon = 0;
+    unique_ptr<CWeapon> m_pWeapon[3];
 
     CAnimation* m_pPrevAnim = {};
     unique_ptr<CAnimator> m_pAnimLeg;
