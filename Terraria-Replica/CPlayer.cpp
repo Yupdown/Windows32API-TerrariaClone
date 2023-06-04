@@ -30,11 +30,11 @@ CPlayer::CPlayer(TRWorld* const _trWorld)
 	auto pAnim = GetComp<CAnimator>();
 	m_pAnimLeg = make_unique<CAnimator>();
 	m_pAnimLeg->SetOwner(this);
-	pAnim->CreateAnimation(L"Player_Torso_WALK", L"Player_Torso.png", Vec2{ 20,28 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.2f, 4);
+	pAnim->CreateAnimation(L"Player_Torso_WALK", L"Player_Torso.png", Vec2{ 20 * 2, 28 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.04f, 13);
 	pAnim->CreateAnimation(L"Player_Torso_IDLE", L"Player_Torso.png", Vec2{ 0,0 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.2f, 1);
 	pAnim->CreateAnimation(L"Player_Torso_JUMP", L"Player_Torso.png", Vec2{ 0,28 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.5f, 1);
 	pAnim->CreateAnimation(L"Player_Torso_ATTACK", L"Player_Torso.png", Vec2{ 0,0 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.07f, 5);
-	m_pAnimLeg->CreateAnimation(L"Player_Leg_WALK", L"Player_Leg.png", Vec2{ 0,28 * 5 }, Vec2{ 20,28 }, Vec2{ 0,28 },0.1f, 15);
+	m_pAnimLeg->CreateAnimation(L"Player_Leg_WALK", L"Player_Leg.png", Vec2{ 0,28 * 7 }, Vec2{ 20,28 }, Vec2{ 0,28 },0.04f, 13);
 	m_pAnimLeg->CreateAnimation(L"Player_Leg_IDLE", L"Player_Leg.png", Vec2{ 0,0}, Vec2{ 20,28 }, Vec2{ 0,28 }, 0.1f, 4);
 	m_pAnimLeg->CreateAnimation(L"Player_Leg_JUMP", L"Player_Leg.png", Vec2{ 0,28 * 5 }, Vec2{ 20,28 }, Vec2{ 0,28 }, 0.5f, 1);
 	pAnim->Play(L"Player_Torso_IDLE",true);
@@ -86,21 +86,16 @@ void CPlayer::updateState()
 	auto pAnim = GetComp<CAnimator>();
 	auto pRigid = GetComp<CRigidBody>();
 	
+	if (KEY_TAP(KEY::SPACE) && abs(pRigid->GetVelocity().y) == 0)
+	{
+		pRigid->SetIsGround(false);
 
-	
-		if (KEY_TAP(KEY::SPACE) && abs(pRigid->GetVelocity().y) == 0)
-		{
-			pRigid->SetIsGround(false);
-			
-			pRigid->AddVelocity(Vec2{ 0,-500 });
-			pRigid->SetForce(Vec2{ 0,-500 });
-			m_eCurState = PLAYER_STATE::JUMP;
-			m_bIsIDLE = false;
-			
-		}
-	
+		pRigid->AddVelocity(Vec2{ 0, -720.0f });
+		//pRigid->SetForce(Vec2{ 0, -1000.0f });
+		m_eCurState = PLAYER_STATE::JUMP;
+		m_bIsIDLE = false;
 
-
+	}
 
 	if (m_ePrevState == PLAYER_STATE::ATTACK && pAnim->IsFinish())
 	{
@@ -156,24 +151,15 @@ void CPlayer::updateMove()
 {
 	auto pRigid = GetComp<CRigidBody>();
 	auto vPos = GetPos();
-	if (KEY_TAP(KEY::A))
-	{
-		pRigid->AddVelocity(Vec2{ -300,0 });
-	}
 	
 	if (KEY_HOLD(KEY::A))
 	{
-		pRigid->AddForce(Vec2{ -300,0 });
-	}
-
-	if (KEY_TAP(KEY::D))
-	{
-		pRigid->AddVelocity(Vec2{ 300,0 });
+		pRigid->AddVelocity(Vec2{ -20.0f, 0.0f });
 	}
 
 	if (KEY_HOLD(KEY::D))
 	{
-		pRigid->AddForce(Vec2{ 300,0 });
+		pRigid->AddVelocity(Vec2{ 20.0f, 0.0f });
 	}
 
 	if (KEY_HOLD(KEY::W))
@@ -274,8 +260,8 @@ void CPlayer::updateTileCollision()
 	Vec2 world_pos = TRWorld::GlobalToWorld(m_vWillPos);
 	Vec2 world_vel = pRigid->GetVelocity();
 
-	float w = 1.8f;
-	float h = 2.8f;
+	float w = 1.5f;
+	float h = 3.0f;
 
 	Vec2 pre_pos = TRWorld::GlobalToWorld(m_vPos);
 	Vec2 post_pos = world_pos;
@@ -311,12 +297,26 @@ void CPlayer::updateTileCollision()
 				break;
 			}
 		}
+	}
 
-		x_min = FloorToInt(world_pos.x - w * 0.5f);
-		x_max = CeilToInt(world_pos.x + w * 0.5f) - 1;
-		y_min = FloorToInt(post_pos.y - h * 0.5f);
-		y_max = CeilToInt(post_pos.y + h * 0.5f) - 1;
+	if (world_pos.x - w * 0.5f < 0.0f)
+	{
+		post_pos.x = w * 0.5f;
+		post_vel.x = 0.0f;
+	}
+	if (world_pos.x + w * 0.5f > TRWorld::WORLD_WIDTH)
+	{
+		post_pos.x = TRWorld::WORLD_WIDTH - w * 0.5f;
+		post_vel.x = 0.0f;
+	}
 
+	x_min = FloorToInt(post_pos.x - w * 0.5f);
+	x_max = CeilToInt(post_pos.x + w * 0.5f) - 1;
+	y_min = FloorToInt(post_pos.y - h * 0.5f);
+	y_max = CeilToInt(post_pos.y + h * 0.5f) - 1;
+
+	if (x_min >= 0 && x_max < TRWorld::WORLD_WIDTH && y_min >= 0 && y_max < TRWorld::WORLD_HEIGHT)
+	{
 		bool collision_x = false;
 		float reform_x = 0.0f;
 
@@ -351,14 +351,13 @@ void CPlayer::updateTileCollision()
 				for (int y = y_min; y <= y_max; ++y)
 					flag |= pTileMap->GetTile(x, y)->Solid();
 			}
-
 			if (flag)
 			{
 				post_pos.x = reform_x;
 				post_vel.x = 0.0f;
 			}
-			else
-				post_pos.y += 1.0f;
+			else if (post_vel.y >= 0.0f)
+				post_pos.y = y_min + h * 0.5f;
 		}
 	}
 

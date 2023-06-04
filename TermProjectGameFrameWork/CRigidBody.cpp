@@ -90,7 +90,7 @@ void CRigidBody::update_gravity()
 	}
 	if (m_bGravity && !m_bIsGround)
 	{
-		AddForce(Vec2{ 0.,1000. });
+		AddForce(Vec2{ 0.0f,2000.0f });
 	}
 }
 

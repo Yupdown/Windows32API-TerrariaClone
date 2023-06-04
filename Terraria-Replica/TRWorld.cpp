@@ -11,7 +11,7 @@ TRWorld::TRWorld()
 {
 	tile_map = new TRTileMap(TRWorld::WORLD_WIDTH, TRWorld::WORLD_HEIGHT);
 	player = new CPlayer(this);
-	player->SetPos(Vec2{ 100.0f, 100.0f });
+	player->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT - 32)));
 	player->SetScale(Vec2{ 40.f, 56.f });
 //	player->SetScale(Vec2{ 32.f, 48.f });
 }
