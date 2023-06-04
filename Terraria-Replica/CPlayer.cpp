@@ -111,7 +111,7 @@ void CPlayer::updateState()
 	{
 		pRigid->SetIsGround(false);
 
-		pRigid->AddVelocity(Vec2{ 0, -720.0f });
+		pRigid->AddVelocity(Vec2::down * 720.0f);
 		//pRigid->SetForce(Vec2{ 0, -1000.0f });
 		m_eCurState = PLAYER_STATE::JUMP;
 		m_bIsIDLE = false;

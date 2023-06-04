@@ -116,7 +116,7 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 	static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
 	HDC hdc = renderer->GetTileLayerDC();
 	
-	Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y));
+	Vec2Int p = TRWorld::WorldToGlobal(Vec2(static_cast<float>(x), static_cast<float>(y)));
 	RECT r = { p.x - PIXELS_PER_TILE, p.y - PIXELS_PER_TILE * 2, p.x + PIXELS_PER_TILE * 2, p.y + PIXELS_PER_TILE };
 	FillRect(hdc, &r, brush);
 

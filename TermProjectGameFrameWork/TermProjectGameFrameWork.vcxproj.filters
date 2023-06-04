@@ -344,14 +344,14 @@
     <ClCompile Include="CTileLayer.cpp">
       <Filter>Engine\10. Layer</Filter>
     </ClCompile>
-    <ClCompile Include="Vec2.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CThreadMgr.cpp">
       <Filter>Engine\02. Manager\ThreadMgr</Filter>
     </ClCompile>
     <ClCompile Include="CDebugMgr.cpp">
       <Filter>Engine\02. Manager\DebugMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
+      <Filter>Default</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

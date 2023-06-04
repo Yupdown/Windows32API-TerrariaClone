@@ -2,6 +2,7 @@
 #include "TRWorld.h"
 #include "TRTileWall.h"
 #include "CAtlasMgr.h"
+#include "Vec2Int.hpp"
 #include "CustomMath.hpp"
 #include <random>
 
@@ -31,7 +32,7 @@ void TRTileWall::CreateAtlasElements()
                         {
                             int w = m - k;
                             int h = n - l;
-                            elements[i][j][k][l][w][h] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, Vec2(i, j) * 18.0f + Vec2(k, l) * 4.0f, Vec2(w, h) * 4.0f);
+                            elements[i][j][k][l][w][h] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, Vec2Int(i, j) * 18 + Vec2Int(k, l) * 4, Vec2Int(w, h) * 4);
                         }
                     }
                 }
@@ -127,6 +128,6 @@ void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitm
         break;
     }
 
-    Vec2 offset = Vec2(min((sx - 1) * 8, 0), min((sy - 1) * 8, 0));
-    tilemap_layer->pre_render(elements[sj][si][sx][sy][sw][sh], TRWorld::WorldToGlobal(Vec2(x, y + 1)) + offset, Vec2(sw, sh) * 8.0f);
+    Vec2Int offset = Vec2Int(min((sx - 1) * 8, 0), min((sy - 1) * 8, 0));
+    tilemap_layer->pre_render(elements[sj][si][sx][sy][sw][sh], TRWorld::WorldToGlobal(Vec2Int(x, y + 1)) + offset, Vec2Int(sw, sh) * 8);
 }

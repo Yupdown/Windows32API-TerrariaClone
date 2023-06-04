@@ -2,6 +2,7 @@
 #include "TRItem.h"
 #include "CResMgr.h"
 #include "TRTileManager.h"
+#include "CustomMath.hpp"
 
 TRItem::TRItem(std::wstring name, std::wstring k_element)
 {
@@ -44,8 +45,8 @@ TRItemTile::~TRItemTile()
 
 bool TRItemTile::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
-	int x = floor(target_pos.x);
-	int y = floor(target_pos.y);
+	int x = FloorToInt(target_pos.x);
+	int y = FloorToInt(target_pos.y);
 	world->GetTileMap()->SetTile(x, y, Mgr(TRTileManager)->GetTileByKey(k_tile), true);
 	return true;
 }
@@ -62,8 +63,8 @@ TRItemTileWall::~TRItemTileWall()
 
 bool TRItemTileWall::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
-	int x = floor(target_pos.x);
-	int y = floor(target_pos.y);
+	int x = FloorToInt(target_pos.x);
+	int y = FloorToInt(target_pos.y);
 	world->GetTileMap()->SetTileWall(x, y, Mgr(TRTileManager)->GetTileWallByKey(k_tilewall), true);
 	return true;
 }
@@ -87,8 +88,8 @@ TRItemPickaxe::~TRItemPickaxe()
 
 bool TRItemPickaxe::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
-	int x = floor(target_pos.x);
-	int y = floor(target_pos.y);
+	int x = FloorToInt(target_pos.x);
+	int y = FloorToInt(target_pos.y);
 	world->GetTileMap()->SetTile(x, y, Mgr(TRTileManager)->TileAir(), true);
 	return false;
 }
@@ -103,8 +104,8 @@ TRItemHammer::~TRItemHammer()
 
 bool TRItemHammer::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
-	int x = floor(target_pos.x);
-	int y = floor(target_pos.y);
+	int x = FloorToInt(target_pos.x);
+	int y = FloorToInt(target_pos.y);
 	world->GetTileMap()->SetTileWall(x, y, Mgr(TRTileManager)->TileWallAir(), true);
 	return false;
 }
