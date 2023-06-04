@@ -25,7 +25,7 @@ CLayer* CLayer::CreateLayer(wstring_view _wstrFileName,Vec2 _vLayerStartPos, Vec
 	for (int i = 0; i < (int)_iLayerCount; ++i)
 	{
 		pLayer->m_pLayerImg->StretchBlt(pLayer->m_hLayerDC
-			, (int)_vLayerStartPos.x + (int)((float)i * vRes.x)
+			, (int)_vLayerStartPos.x + (int)((float)i * _vLayerSlice.x)
 			, (int)_vLayerStartPos.y
 			, (int)_vLayerSlice.x
 			, (int)_vLayerSlice.y);

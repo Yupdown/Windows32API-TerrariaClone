@@ -63,7 +63,7 @@ void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fS
 	const short iBackWidth = (short)_vLayerScale.x;
 	const short iBackHeight = (short)_vLayerScale.y;
 	const short iLeft = ((short)(m_vDiff.x * _fSpeed) % iBackWidth + iBackWidth) % iBackWidth;
-	const short iTop = (short)(m_vCurLookAt.y - m_vResolution.y/2);
+	const short iTop = (short)(m_vCurLookAt.y * _fSpeed - m_vResolution.y/2);
 
 
 	/*TransparentBltSafe(_hDest
@@ -93,7 +93,7 @@ void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fS
 		, (int)_vLayerScale.x * 2
 		, (int)_vLayerScale.y 
 		, RGB(255, 0, 255));*/
-
+	
 	TransparentBltSafe(_hDest
 		, 0
 		, 0
@@ -101,11 +101,11 @@ void CCamera::renderBackGround(HDC _hDest,HDC _hSrc,Vec2 _vLayerScale, float _fS
 		, static_cast<short>(m_vResolution.y)
 		, _hSrc
 		, static_cast<short>(m_vDiff.x * _fSpeed)
-		, iTop
+		, static_cast<short>(m_vDiff.y * _fSpeed)
 		, static_cast<short>(m_vResolution.x)
-		, static_cast<short>((m_vResolution.y / _fSpeed))
-		, static_cast<short>(1400 * 10)
-		, static_cast<short>(8000)
+		, static_cast<short>((m_vResolution.y))//static_cast<short>((m_vResolution.y / _fSpeed))
+		, static_cast<short>(_vLayerScale.x * 10.f)
+		, static_cast<short>(_vLayerScale.y)
 		, RGB(255, 0, 255)); 
 
 }
