@@ -11,7 +11,7 @@
 #include "CTileLayer.h"
 #include "CThreadMgr.h"
 
-jthread CScene::m_rednerThread;
+//jthread CScene::m_rednerThread;
 
 CScene::CScene()
 {
@@ -54,11 +54,11 @@ void CScene::Exit()
 {
 	if (m_bDoThreadPool)
 	{
-		Mgr(CThreadMgr)->join_all();
+	//	Mgr(CThreadMgr)->join_all();
 	}
 	else
 	{
-		m_rednerThread.join();
+		//m_rednerThread.join();
 	}
 }
 
@@ -205,12 +205,17 @@ void CScene::render(HDC _dc)
 	else
 	{
 	
-		m_rednerThread = jthread{ [this]() {
+		/*m_rednerThread = jthread{ [this]() {
 			for (auto& layer : m_vecLayer)
 			{
 				layer->render(m_hSceneThreadDC[0]);
 			}
-		} };
+		} };*/
+
+		for (auto& layer : m_vecLayer)
+		{
+			layer->render(m_hSceneThreadDC[1]);
+		}
 
 		for (auto& tilelayer : m_vecTileLayer)
 		{
@@ -236,7 +241,7 @@ void CScene::render(HDC _dc)
 			}
 		};
 
-		m_rednerThread.join();
+		//m_rednerThread.join();
 		
 		
 		TransparentBlt(m_hSceneThreadDC[0]
@@ -252,7 +257,7 @@ void CScene::render(HDC _dc)
 			, RGB(255, 0, 255));
 
 
-		m_rednerThread = jthread{ &CCore::MaznetaClear,Mgr(CCore),m_hSceneThreadDC[1],0 };
+		//m_rednerThread = jthread{ &CCore::MaznetaClear,Mgr(CCore),m_hSceneThreadDC[1],0 };
 
 		Mgr(CCamera)->SetNowLookAt(vRes / 2.f );
 
@@ -264,7 +269,7 @@ void CScene::render(HDC _dc)
 			, 0
 			, (int)vRes.x
 			, (int)vRes.y
-			, m_hSceneThreadDC[THREAD::T0]
+			, m_hSceneThreadDC[0]
 			, 0
 			, 0
 			, SRCCOPY);

@@ -16,7 +16,7 @@
 #include "CThreadMgr.h"
 #include "CDebugMgr.h"
 
-jthread CCore::m_miniMapThread;
+//jthread CCore::m_miniMapThread;
 
 bool g_bStopToken = false;
 
@@ -132,7 +132,7 @@ int CCore::init(HWND _hwnd, POINT _ptResolution, HINSTANCE _hInst)
 	//CSceneMgr::GetInst()->init();
 	Mgr(CEventMgr)->init();	 
 	Mgr(CAtlasMgr)->init();
-	Mgr(CThreadMgr)->init();
+	//Mgr(CThreadMgr)->init();
 	CreateBrushPen();
 	
 	Clear();
@@ -182,10 +182,10 @@ void CCore::progress()
 
 	if (!bDebugInit)
 	{
-		Mgr(CDebugMgr)->init();
+		/*Mgr(CDebugMgr)->init();
 		m_miniMapThread = jthread{ []() {
 			Mgr(CDebugMgr)->progress(); } };
-		bDebugInit = true;
+		bDebugInit = true;*/
 	}
 }
 
