@@ -18,12 +18,15 @@ enum class PLAYER_STATE
     END
 };
 
-
+class CWeapon;
 
 class CPlayer :
     public CObject
 {
 private:
+
+    unique_ptr<CWeapon> m_pWeapon;
+
     CAnimation* m_pPrevAnim = {};
     unique_ptr<CAnimator> m_pAnimLeg;
     mutable int m_iDegree = 0;

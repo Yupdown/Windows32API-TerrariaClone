@@ -12,6 +12,7 @@
 #include "TRWorld.h"
 #include "CustomMath.hpp"
 #include "Vec2Int.hpp"
+#include "CWeapon.h"
 
 short bitwise_abs(const short x) 
 {
@@ -33,7 +34,7 @@ CPlayer::CPlayer(TRWorld* const _trWorld)
 	pAnim->CreateAnimation(L"Player_Torso_WALK", L"Player_Torso.png", Vec2{ 20 * 2, 28 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.04f, 13);
 	pAnim->CreateAnimation(L"Player_Torso_IDLE", L"Player_Torso.png", Vec2{ 0,0 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.2f, 1);
 	pAnim->CreateAnimation(L"Player_Torso_JUMP", L"Player_Torso.png", Vec2{ 0,28 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.5f, 1);
-	pAnim->CreateAnimation(L"Player_Torso_ATTACK", L"Player_Torso.png", Vec2{ 0,0 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.07f, 5);
+	pAnim->CreateAnimation(L"Player_Torso_ATTACK", L"Player_Torso.png", Vec2{ 0,0 }, Vec2{ 20,28 }, Vec2{ 20,0 }, 0.05f, 5);
 	m_pAnimLeg->CreateAnimation(L"Player_Leg_WALK", L"Player_Leg.png", Vec2{ 0,28 * 7 }, Vec2{ 20,28 }, Vec2{ 0,28 },0.04f, 13);
 	m_pAnimLeg->CreateAnimation(L"Player_Leg_IDLE", L"Player_Leg.png", Vec2{ 0,0}, Vec2{ 20,28 }, Vec2{ 0,28 }, 0.1f, 4);
 	m_pAnimLeg->CreateAnimation(L"Player_Leg_JUMP", L"Player_Leg.png", Vec2{ 0,28 * 5 }, Vec2{ 20,28 }, Vec2{ 0,28 }, 0.5f, 1);
@@ -44,6 +45,9 @@ CPlayer::CPlayer(TRWorld* const _trWorld)
 	auto pRigid = GetComp<CRigidBody>();
 	pRigid->SetIsGround(false);
 	//SetScale(Vec2{ 150., 150. });
+
+	m_pWeapon = std::make_unique<CWeapon>(this);
+	m_pWeapon->SetWeaponImg(L"Item_Pickaxe.png",Vec2{32,32});
 }
 
 CPlayer::CPlayer(const CPlayer& other)
@@ -55,15 +59,22 @@ void CPlayer::update()
 	CObject::update();
 	auto pAnim = GetComp<CAnimator>();
 	
+	m_ePrevState = m_eCurState;
+
 	updateMove();
 
 	updateState();
 	
 	updateAnimation();
 	
-	m_ePrevState = m_eCurState;
-
-	//updateTileCollision();
+	if (PLAYER_STATE::ATTACK == m_eCurState)
+	{
+		m_pWeapon->update();
+	}
+	else
+	{
+		m_pWeapon->ReForm();
+	}
 }
 
 
@@ -72,10 +83,20 @@ void CPlayer::render(HDC _dc)const
 	Vec2 vPos = GetPos();
 	vPos = Mgr(CCamera)->GetRenderPos(vPos);
 	auto [vLT, vScale] = Mgr(CCamera)->GetRenderPos(this);
+	//Mgr(CCore)->RotateTransform(_dc,m_iDegree,vLT + vScale/2);
+	//Mgr(CResMgr)->renderImg(_dc, m_pWeapon, this, Vec2{ 0,0 }, Vec2{ 16,16 });
+	//Mgr(CCore)->ResetTransform(_dc);
+	//m_iDegree = (m_iDegree + 5)%360;
 	//Mgr(CCore)->RotateTransform(m_iDegree,vLT + vScale/2);
-	
+	//m_pWeapon->render(_dc);
 	CObject::component_render(_dc);
 	m_pAnimLeg->component_render(_dc);
+	if (PLAYER_STATE::ATTACK == m_eCurState)
+	{
+		m_pWeapon->render(_dc);
+	}
+	
+	//m_pWeapon->render(_dc);
 	//Mgr(CCore)->ResetTransform();
 	//m_iDegree = (m_iDegree + 1);
 }

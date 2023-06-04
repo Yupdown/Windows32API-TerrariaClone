@@ -36,6 +36,7 @@ public:
 		pNewComp->SetOwner(_pOwner);
 		return pNewComp;
 	}
+	int GetAnimDir()const { return m_iAnimDir; }
 	void LoadAnimation(wstring_view _strRelativePath);
 	void SaveAnimation(wstring_view _strRelativePath);
 };
