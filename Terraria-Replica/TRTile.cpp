@@ -307,6 +307,10 @@ void TRTile::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
             si = 8 + sr;
             sj = 11;
             break;
+        case 0b00001111:
+            si = 11;
+            sj = 6 + sr;
+            break;
         }
         break;
     }

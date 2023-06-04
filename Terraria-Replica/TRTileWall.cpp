@@ -21,58 +21,31 @@ void TRTileWall::CreateAtlasElements()
     {
         for (int j = 0; j < 5; ++j)
         {
-            for (int k = 0; k < 16; ++k)
+            for (int k = 0; k < 4; ++k)
             {
-                int lo = k & 0b0011;
-                int hi = (k >> 2) & 0b0011;
-                
-                int x = i * 18;
-                int y = j * 18;
-                int w = 0;
-                int h = 0;
-
-                switch (lo)
+                for (int l = 0; l < 4; ++l)
                 {
-                case 0:
-                    w = 16;
-                    break;
-                case 1:
-                    x += 4;
-                    w = 12;
-                    break;
-                case 2:
-                    w = 12;
-                    break;
-                case 3:
-                    x += 4;
-                    w = 8;
-                    break;
+                    for (int m = k + 1; m <= 4; ++m)
+                    {
+                        for (int n = l + 1; n <= 4; ++n)
+                        {
+                            int w = m - k;
+                            int h = n - l;
+                            elements[i][j][k][l][w][h] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, Vec2(i, j) * 18.0f + Vec2(k, l) * 4.0f, Vec2(w, h) * 4.0f);
+                        }
+                    }
                 }
-                switch (hi)
-                {
-                case 0:
-                    h = 16;
-                    break;
-                case 1:
-                    y += 4;
-                    h = 12;
-                    break;
-                case 2:
-                    h = 12;
-                    break;
-                case 3:
-                    y += 4;
-                    h = 8;
-                    break;
-                }
-
-                elements[i][j][k] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, Vec2(x, y), Vec2(w, h));
             }
         }
     }
 }
 
-void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask, int clip)
+void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
+{
+    OnDrawElement(tilemap_layer, x, y, bitmask, 0, 0, 4, 4);
+}
+
+void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask, int sx, int sy, int sw, int sh)
 {
     if (k_element == L"")
         return;
@@ -154,47 +127,6 @@ void TRTileWall::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitm
         break;
     }
 
-    int lo = clip & 0b0011;
-    int hi = (clip >> 2) & 0b0011;
-
-    int sx = 0;
-    int sy = 0;
-    int w = 0;
-    int h = 0;
-
-    if (!(lo & 1))
-        sx = -8;
-    if (!(hi & 1))
-        sy = -8;
-
-    switch (lo)
-    {
-    case 0:
-        w = 32;
-        break;
-    case 1:
-    case 2:
-        w = 24;
-        break;
-    case 3:
-        w = 16;
-        break;
-    }
-
-    switch (hi)
-    {
-    case 0:
-        h = 32;
-        break;
-    case 1:
-    case 2:
-        h = 24;
-        break;
-    case 3:
-        h = 16;
-        break;
-    }
-
-    tilemap_layer->pre_render(elements[sj][si][clip], TRWorld::WorldToGlobal(Vec2(x, y + 1)) + Vec2(sx, sy), Vec2(w, h));
+    Vec2 offset = Vec2(min((sx - 1) * 8, 0), min((sy - 1) * 8, 0));
+    tilemap_layer->pre_render(elements[sj][si][sx][sy][sw][sh], TRWorld::WorldToGlobal(Vec2(x, y + 1)) + offset, Vec2(sw, sh) * 8.0f);
 }
-

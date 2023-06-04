@@ -120,9 +120,9 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 	RECT r = { p.x - PIXELS_PER_TILE, p.y - PIXELS_PER_TILE * 2, p.x + PIXELS_PER_TILE * 2, p.y + PIXELS_PER_TILE };
 	FillRect(hdc, &r, brush);
 
-	for (int dx = -1; dx <= 1; ++dx)
+	for (int dx = -2; dx <= 2; ++dx)
 	{
-		for (int dy = -1; dy <= 1; ++dy)
+		for (int dy = -2; dy <= 2; ++dy)
 		{
 			int xp = x + dx;
 			int yp = y + dy;
@@ -132,12 +132,13 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 				return;
 
 			int bitmask = GetTileWallNeighborMask(xp, yp);
-			int clip = 0;
-			clip |= (dx < 0);
-			clip |= (dx > 0) << 1;
-			clip |= (dy > 0) << 2;
-			clip |= (dy < 0) << 3;
-			tile->OnDrawElement(renderer, xp, yp, bitmask, clip);
+
+			int sx = max(dx * -2 - 1, 0);
+			int sy = max(dy * 2 - 1, 0);
+			int sw = min(abs(dx) * -2 + 5, 4);
+			int sh = min(abs(dy) * -2 + 5, 4);
+
+			tile->OnDrawElement(renderer, x + max(dx, -1), y + min(dy, 1), bitmask, sx, sy, sw, sh);
 		}
 	}
 
