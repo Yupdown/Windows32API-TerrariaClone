@@ -34,6 +34,9 @@
     <Filter Include="CObject\Player">
       <UniqueIdentifier>{4501b799-b9b7-4e63-961d-3ef5901f2802}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Terraria-Replica\Weapon">
+      <UniqueIdentifier>{4dec4fa3-33a8-4343-9e18-8dcc35a060b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -102,6 +105,9 @@
     <ClInclude Include="CPlayer.h">
       <Filter>CObject\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CWeapon.h">
+      <Filter>Terraria-Replica\Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -145,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
       <Filter>CObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeapon.cpp">
+      <Filter>Terraria-Replica\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

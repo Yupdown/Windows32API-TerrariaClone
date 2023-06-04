@@ -205,7 +205,7 @@ HPEN CCore::ChangePen(PEN_TYPE _eType)
 }
 
 
-void CCore::RotateTransform(int _iDegree, Vec2 centerPt)
+void CCore::RotateTransform(float _fDegree, Vec2 centerPt)
 {
 	if (centerPt.x == 0 && centerPt.y == 0)
 	{
@@ -215,7 +215,7 @@ void CCore::RotateTransform(int _iDegree, Vec2 centerPt)
 		centerPt.y = (float)(rect.bottom - rect.top) / 2.f;
 	}
 	XFORM xform;
-	float fangle = (float)_iDegree / 180.f * 3.1415926f;
+	float fangle = (float)_fDegree / 180.f * 3.1415926f;
 	xform.eM11 = (float)cosf(fangle);
 	xform.eM12 = (float)sinf(fangle);
 	xform.eM21 = (float)-sinf(fangle);
@@ -305,7 +305,7 @@ void CCore::XFlipTransform(Vec2 vCenter)
 	SetWorldTransform(m_hMemDC, &m_xform);
 }
 
-void CCore::RotateTransform(HDC dc, int _iDegree, Vec2 centerPt)
+void CCore::RotateTransform(HDC dc, float _fDegree, Vec2 centerPt)
 {
 	if (centerPt.x == 0 && centerPt.y == 0)
 	{
@@ -315,7 +315,7 @@ void CCore::RotateTransform(HDC dc, int _iDegree, Vec2 centerPt)
 		centerPt.y = (float)(rect.bottom - rect.top) / 2;
 	}
 	XFORM xform;
-	float fangle = (float)_iDegree / 180.f * 3.1415926f;
+	float fangle = (float)_fDegree / 180.f * 3.1415926f;
 	xform.eM11 = (float)cosf(fangle);
 	xform.eM12 = (float)sinf(fangle);
 	xform.eM21 = (float)-sinf(fangle);

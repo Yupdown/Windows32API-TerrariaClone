@@ -121,7 +121,7 @@ void CResMgr::renderImg(HDC _dc, const CImage* const _pImg, Vec2 _vLT, Vec2 _vSc
 
 }
 
-void CResMgr::renderImg(HDC _dc,const CImage* const _pImg, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice)const
+void CResMgr::renderImg(HDC _dc,const CImage* const _pImg, const CObject* const _pObj, Vec2 _vBitPos, Vec2 _vSlice, bool _bIsFlip)const
 {
 	static Vec2 vLtPos;
 	static Vec2 vScale;
@@ -136,14 +136,16 @@ void CResMgr::renderImg(HDC _dc,const CImage* const _pImg, const CObject* const 
 		vScale = _pObj->GetScale();
 	}
 
+	const float i = _bIsFlip ? 1.f : 0.f;
+
 	_pImg->StretchBlt(m_hBackDC
-		, (int)vLtPos.x
+		, (int)vLtPos.x 
 		, (int)vLtPos.y
 		, (int)vScale.x
 		, (int)vScale.y
-		, (int)_vBitPos.x
-		, (int)_vBitPos.y
-		, (int)_vSlice.x
+		, (int)_vBitPos.x + (int)(i * (_vSlice.x - 1.f) )
+		, (int)_vBitPos.y 
+		, (int)_vSlice.x - (int)(i * _vSlice.x * 2.f)
 		, (int)_vSlice.y
 		, SRCCOPY);
 
@@ -224,4 +226,38 @@ void CResMgr::renderDC(HDC _dest, HDC _src, const CObject* const _pObj, Vec2 _vB
 		, RGB(255, 0, 255));
 
 	
+}
+
+void CResMgr::renderPNG(HDC _dc, const CImage* const _pImg, Vec2 _vGlobalLTpos, bool _bIsFlip) const
+{
+	const float i = _bIsFlip ? 1.f : 0.f;
+	Vec2 vScale = Vec2{(float)_pImg->GetWidth(),(float)_pImg->GetHeight() };
+
+	_pImg->StretchBlt(m_hBackDC
+		, (int)_vGlobalLTpos.x
+		, (int)_vGlobalLTpos.y
+		, (int)vScale.x
+		, (int)vScale.y
+		, (int)(i * (vScale.x - 1.f))
+		,  0
+		, (int)vScale.x - (int)(i * vScale.x * 2.f)
+		, (int)vScale.y
+		, SRCCOPY);
+
+	vScale.x = min(vScale.x, vScale.x + _vGlobalLTpos.x);
+	vScale.y = min(vScale.y, vScale.y + _vGlobalLTpos.y);
+	_vGlobalLTpos.x = max(_vGlobalLTpos.x, 0);
+	_vGlobalLTpos.y = max(_vGlobalLTpos.y, 0);
+
+	TransparentBlt(_dc
+		, (int)_vGlobalLTpos.x
+		, (int)_vGlobalLTpos.y
+		, (int)vScale.x
+		, (int)vScale.y
+		, m_hBackDC
+		, (int)_vGlobalLTpos.x
+		, (int)_vGlobalLTpos.y
+		, (int)vScale.x
+		, (int)vScale.y
+		, RGB(255, 0, 255));
 }

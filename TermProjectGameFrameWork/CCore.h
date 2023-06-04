@@ -56,14 +56,14 @@ public:
 	HBRUSH ChangeBrush(BRUSH_TYPE _eType);
 	HPEN ChangePen(PEN_TYPE _eType);
 	HDC GetMemDC()const { return m_hMemDC; }
-	void RotateTransform(int _iDegree, Vec2 centerPt = {});
+	void RotateTransform(float _fDegree, Vec2 centerPt = {});
 	void ResetTransform();
 	void ScaleTransform(float _fScale);
 	void TranslateTransform(Vec2 vDist);
 	void YFlipTransform(Vec2 vCenter = {});
 	void XFlipTransform(Vec2 vCenter = {});
 
-	void RotateTransform(HDC dc, int _iDegree, Vec2 centerPt = {});
+	void RotateTransform(HDC dc, float _fDegree, Vec2 centerPt = {});
 	void ResetTransform(HDC dc);
 	void YFlipTransform(HDC dc, Vec2 vCenter = {});
 	void XFlipTransform(HDC dc, Vec2 vCenter = {});
