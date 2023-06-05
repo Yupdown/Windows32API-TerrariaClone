@@ -28,6 +28,11 @@ int TRItem::GetMaxStacksize() const
 	return max_stacksize;
 }
 
+CImage* TRItem::GetItemElement() const
+{
+	return element;
+}
+
 bool TRItem::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
 	return false;

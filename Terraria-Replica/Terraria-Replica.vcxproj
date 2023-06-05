@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CItemContainerVisualizer.h" />
     <ClInclude Include="CEyeMonster.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CPlayer.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Vector3D.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CItemContainerVisualizer.cpp" />
     <ClCompile Include="CEyeMonster.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CPlayer.cpp" />

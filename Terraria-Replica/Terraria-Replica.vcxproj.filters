@@ -37,6 +37,9 @@
     <Filter Include="Terraria-Replica\Weapon">
       <UniqueIdentifier>{4dec4fa3-33a8-4343-9e18-8dcc35a060b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CObject\ItemContainerVisualizer">
+      <UniqueIdentifier>{255c3c2a-8129-4953-bf7b-4402afab907a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="CObject\Monster">
       <UniqueIdentifier>{49451fee-7f97-4847-b6d9-4c584e61af76}</UniqueIdentifier>
     </Filter>
@@ -138,6 +141,9 @@
     <ClInclude Include="CEyeMonster.h">
       <Filter>CObject\Monster\CEyeMonster</Filter>
     </ClInclude>
+    <ClInclude Include="CItemContainerVisualizer.h">
+      <Filter>CObject\ItemContainerVisualizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -202,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="CEyeMonster.cpp">
       <Filter>CObject\Monster\CEyeMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemContainerVisualizer.cpp">
+      <Filter>CObject\ItemContainerVisualizer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
