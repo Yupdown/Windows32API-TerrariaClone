@@ -115,7 +115,7 @@ CoRoutine DelayCoRoutine(function<void(void)> _fp, float _fDelayTime)
 //	return TransparentBlt(hdcDest, xoriginDest + od_left, yoriginDest + od_top, wDest - od_left - od_right, hDest - od_top - od_bottom, hdcSrc, xoriginSrc + os_left, yoriginSrc + os_top, wSrc - os_left - os_right, hSrc - os_top - os_bottom, crTransparent);
 //}
 
-BOOL TransparentBltSafe(HDC hdcDest, const short xoriginDest, const short yoriginDest, const short wDest, const short hDest,
+inline BOOL TransparentBltSafe(HDC hdcDest, const short xoriginDest, const short yoriginDest, const short wDest, const short hDest,
 	HDC hdcSrc, const short xoriginSrc, const short yoriginSrc, const short wSrc, const short hSrc,
 	const short wBit, const short hBit, UINT crTransparent)
 {

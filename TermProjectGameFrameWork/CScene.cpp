@@ -11,7 +11,7 @@
 #include "CTileLayer.h"
 #include "CThreadMgr.h"
 
-//jthread CScene::m_rednerThread;
+extern bool g_bDoMultiThread;
 
 CScene::CScene()
 {
@@ -32,15 +32,16 @@ CScene::~CScene()
 
 void CScene::update()
 {
-	for (const auto& i : m_vecObj)
+	for (const auto& vecObj : m_vecObj)
 	{
-		for (auto& j : i)
+		const auto vecPtr = vecObj.data();
+		for (size_t i = 0, size = vecObj.size(); i < size; ++i)
 		{
-			if (j->IsDead())
+			if (vecPtr[i]->IsDead())
 			{
 				continue;
 			}
-			j->update();
+			vecPtr[i]->update();
 		}
 	}
 }
@@ -52,14 +53,11 @@ void CScene::Enter()
 
 void CScene::Exit()
 {
-	if (m_bDoThreadPool)
+	if (g_bDoMultiThread)
 	{
-	//	Mgr(CThreadMgr)->join_all();
+		Mgr(CThreadMgr)->join_all();
 	}
-	else
-	{
-		//m_rednerThread.join();
-	}
+	
 }
 
 void CScene::AddTileLayer(CTileLayer* const _pTileLayer)
@@ -84,11 +82,12 @@ vector<unique_ptr<CObject>>& CScene::GetUIGroup()
 
 void CScene::component_update()const
 {
-	for (const auto& i : m_vecObj)
+	for (const auto& vecObj : m_vecObj)
 	{
-		for (auto& j : i)
+		const auto vecPtr = vecObj.data();
+		for (size_t i = 0, size = vecObj.size(); i < size; ++i)
 		{
-			j->component_update();
+			vecPtr[i]->component_update();
 		}
 	}
 }
@@ -97,7 +96,7 @@ void CScene::render(HDC _dc)
 {
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	
-	if (m_bDoThreadPool)
+	if (g_bDoMultiThread)
 	{
 		Mgr(CThreadMgr)->join_all();
 
@@ -205,13 +204,6 @@ void CScene::render(HDC _dc)
 	else
 	{
 	
-		/*m_rednerThread = jthread{ [this]() {
-			for (auto& layer : m_vecLayer)
-			{
-				layer->render(m_hSceneThreadDC[0]);
-			}
-		} };*/
-
 		for (auto& layer : m_vecLayer)
 		{
 			layer->render(m_hSceneThreadDC[1]);
@@ -241,9 +233,7 @@ void CScene::render(HDC _dc)
 			}
 		};
 
-		//m_rednerThread.join();
-		
-		
+	
 		TransparentBlt(m_hSceneThreadDC[0]
 			, 0
 			, 0
@@ -255,9 +245,6 @@ void CScene::render(HDC _dc)
 			, (int)vRes.x
 			, (int)vRes.y
 			, RGB(255, 0, 255));
-
-
-		//m_rednerThread = jthread{ &CCore::MaznetaClear,Mgr(CCore),m_hSceneThreadDC[1],0 };
 
 		Mgr(CCamera)->SetNowLookAt(vRes / 2.f );
 

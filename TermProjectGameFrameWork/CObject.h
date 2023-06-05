@@ -6,12 +6,13 @@ class CComponent;
 class CTexture;
 class CCollider;
 class CRigidBody;
-
+class CCollisionMgr;
 class TRWorld;
 
 class CObject
 {
 	friend void DeleteObj(CObject* const _pDeadObj);
+	friend class CCollisionMgr;
 protected:
 	CObject(const CObject& _other);
 public:
@@ -24,8 +25,8 @@ protected:
 	bool				m_bIsCamAffected = true;
 	Vec2		m_vPos{};
 	Vec2		m_vScale{};
-	TRWorld* m_pTRWolrd;
-	
+	TRWorld* m_pTRWolrd = nullptr;
+	Vec2 m_vWillPos = {};
 private:
 	wstring		m_strName = {}; 
 	
@@ -33,6 +34,7 @@ private:
 	bool					m_bAlive = true;
 private:
 	void	SetDead() { m_bAlive = false; } 
+	void updateTileCollision();
 public:
 	bool IsDead()const { return !m_bAlive; } 
 	bool IsCamAffect()const { return m_bIsCamAffected; }
@@ -56,10 +58,10 @@ public:
 	}
 	void AddComponent(COMPONENT_TYPE _eCompType, CComponent* const _pComp);
 	void CreateComponent(COMPONENT_TYPE _eCompType, Vec2 _vScale = {}, Vec2 _vPos = {});
-	constexpr void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
-	constexpr void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
-	constexpr Vec2 GetPos()const { return m_vPos; }
-	constexpr Vec2 GetScale()const { return m_vScale; }
+	constexpr inline void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
+	constexpr inline void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
+	constexpr inline Vec2 GetPos()const { return m_vPos; }
+	constexpr inline Vec2 GetScale()const { return m_vScale; }
 public:
 	virtual void OnCollision(CCollider* const _pOther) {}	
 	virtual void OnCollisionEnter(CCollider* const _pOther) {}
@@ -69,6 +71,9 @@ public:
 	virtual void update();
 	virtual void render(HDC _dc)const;
 	virtual void component_update();
-	Vec2 m_vWillPos = {};
+	
+	constexpr inline void SetWillPos(Vec2 _vPos) { m_vWillPos = _vPos; }
+	constexpr inline Vec2 GetWillPos() const { return m_vWillPos; }
+
 };
 

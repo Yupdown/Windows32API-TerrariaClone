@@ -26,6 +26,8 @@ enum class KEY
 	LSHIFT, 
 	CTRL, 
 	RSHIFT,
+	M,
+
 	LAST,		
 
 };

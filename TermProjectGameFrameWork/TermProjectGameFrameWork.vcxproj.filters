@@ -252,6 +252,9 @@
     <ClInclude Include="CDebugMgr.h">
       <Filter>Engine\02. Manager\DebugMgr</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleMath.hpp">
+      <Filter>Default\func</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

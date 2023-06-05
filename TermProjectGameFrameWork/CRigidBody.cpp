@@ -43,7 +43,7 @@ void CRigidBody::Move()
 
 	//m_pOwner->SetPos(vPos);
 
-	m_pOwner->m_vWillPos = vPos;
+	m_pOwner->SetWillPos(vPos);
 }
 
 void CRigidBody::component_update()

@@ -179,6 +179,7 @@
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SimpleMath.hpp" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Singleton.hpp" />

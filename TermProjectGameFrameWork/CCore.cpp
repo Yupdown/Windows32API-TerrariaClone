@@ -16,9 +16,15 @@
 #include "CThreadMgr.h"
 #include "CDebugMgr.h"
 
-//jthread CCore::m_miniMapThread;
+jthread CCore::m_miniMapThread;
+
+extern void miniMapWin();
 
 bool g_bStopToken = false;
+
+bool g_bDoMultiThread = true;
+
+static bool bShowMiniMap = false;
 
 CCore::CCore()
 {
@@ -62,7 +68,7 @@ CCore::~CCore()
 	{
 		DeleteDCBITMAP(m_hThreadMazentaDC[i], m_hThreadMazentaBit[i]);
 	}
-	// m_miniMapThread.join();
+	 m_miniMapThread.join();
 }
 
 void CCore::CreateBrushPen()
@@ -132,7 +138,10 @@ int CCore::init(HWND _hwnd, POINT _ptResolution, HINSTANCE _hInst)
 	//CSceneMgr::GetInst()->init();
 	Mgr(CEventMgr)->init();	 
 	Mgr(CAtlasMgr)->init();
-	//Mgr(CThreadMgr)->init();
+	if (g_bDoMultiThread)
+	{
+		Mgr(CThreadMgr)->init();
+	}
 	CreateBrushPen();
 	
 	Clear();
@@ -146,7 +155,7 @@ int CCore::init(HWND _hwnd, POINT _ptResolution, HINSTANCE _hInst)
 }
 
 
-static bool bDebugInit = true;
+static bool bDebugInit = false;
 
 void CCore::progress()
 {
@@ -182,10 +191,22 @@ void CCore::progress()
 
 	if (!bDebugInit)
 	{
-		/*Mgr(CDebugMgr)->init();
-		m_miniMapThread = jthread{ []() {
-			Mgr(CDebugMgr)->progress(); } };
-		bDebugInit = true;*/
+		Mgr(CDebugMgr)->init();
+		m_miniMapThread = jthread{ miniMapWin };
+		bDebugInit = true;
+	}
+
+	if (KEY_TAP(KEY::M))
+	{
+		bShowMiniMap = !bShowMiniMap;
+		if (bShowMiniMap)
+		{
+			ShowWindow(Mgr(CDebugMgr)->m_hWnd, SW_SHOW);
+		}
+		else
+		{
+			ShowWindow(Mgr(CDebugMgr)->m_hWnd, SW_HIDE);
+		}
 	}
 }
 

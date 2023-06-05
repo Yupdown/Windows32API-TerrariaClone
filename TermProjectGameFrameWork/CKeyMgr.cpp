@@ -20,6 +20,7 @@ int g_arrVK[(int)KEY::LAST]
 	VK_LSHIFT ,
 	VK_CONTROL ,
 	VK_RSHIFT ,
+	'M'
 };
 
 CKeyMgr::CKeyMgr()

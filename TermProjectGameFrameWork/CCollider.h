@@ -27,11 +27,11 @@ public:
 		pNewComp->SetOwner(_pOwner);
 		return pNewComp;
 	}
-	constexpr Vec2 GetFinalPos()const { return m_vFinalPos; }
-	constexpr void SetOffsetPos(Vec2 _vPos) { m_vOffsetPos = _vPos; }
-	constexpr void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
-	constexpr Vec2 GetOffsetPos()const { return m_vOffsetPos; }
-	constexpr Vec2 GetScale()const { return m_vScale; }
+	constexpr inline Vec2 GetFinalPos()const { return m_vFinalPos; }
+	constexpr inline void SetOffsetPos(Vec2 _vPos) { m_vOffsetPos = _vPos; }
+	constexpr inline void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
+	constexpr inline Vec2 GetOffsetPos()const { return m_vOffsetPos; }
+	constexpr inline Vec2 GetScale()const { return m_vScale; }
 public:
 	void component_update()override;
 	void component_render(HDC _dc)const override;

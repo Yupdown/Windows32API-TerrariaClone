@@ -4,6 +4,7 @@
 class CDebugMgr
 	:public Singleton<CDebugMgr>
 {
+	friend class CCore;
 	friend void miniMapWin();
 	friend class Singleton;
 	CDebugMgr();

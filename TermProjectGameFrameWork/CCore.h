@@ -8,7 +8,7 @@ class CTexture;
 class CCore
 	:public Singleton<CCore>
 {
-	//static jthread m_miniMapThread;
+	static jthread m_miniMapThread;
 	friend class Singleton;
 	CCore();
 	~CCore();
