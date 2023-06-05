@@ -129,6 +129,8 @@ int CCore::init(HWND _hwnd, POINT _ptResolution, HINSTANCE _hInst)
 	DeleteObject(SelectObject(m_hMemDC, m_hBackBuffer));
 	
 	SetGraphicsMode(m_hMemDC, GM_ADVANCED);
+	SetBkMode(m_hMemDC, TRANSPARENT);
+	SetBkMode(m_hDC, TRANSPARENT);
 	CPathMgr::GetInst()->init();
 	//Mgr(CSoundMgr)->init();
 	Mgr(CResMgr)->init();

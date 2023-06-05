@@ -54,6 +54,7 @@ using std::multimap;
 #include <type_traits>
 #include <bitset>
 #include <future>
+#include <cfloat>
 using std::wofstream;
 using std::wifstream;
 using std::list;

@@ -2,6 +2,7 @@
 #include "CRigidBody.h"
 #include "CObject.h"
 #include "CTimeMgr.h"
+#include "SimpleMath.hpp"
 
 CRigidBody::CRigidBody()
 {
@@ -64,13 +65,13 @@ void CRigidBody::component_update()
 			m_vVelocity -= vFriction;
 		}
 	}
-	if (abs(m_vMaxVelocity.x) < abs(m_vVelocity.x))
+	if (bitwise_absf(m_vMaxVelocity.x) < bitwise_absf(m_vVelocity.x))
 	{
-		m_vVelocity.x = m_vVelocity.x / abs(m_vVelocity.x) * abs(m_vMaxVelocity.x);
+		m_vVelocity.x = m_vVelocity.x / bitwise_absf(m_vVelocity.x) * bitwise_absf(m_vMaxVelocity.x);
 	}
-	if (abs(m_vMaxVelocity.y) < abs(m_vVelocity.y))
+	if (bitwise_absf(m_vMaxVelocity.y) < bitwise_absf(m_vVelocity.y))
 	{
-		m_vVelocity.y = m_vVelocity.y / abs(m_vVelocity.y) * abs(m_vMaxVelocity.y);
+		m_vVelocity.y = m_vVelocity.y / bitwise_absf(m_vVelocity.y) * bitwise_absf(m_vMaxVelocity.y);
 	}
 	Move();
 	m_vForce = Vec2{ 0.,0. };

@@ -19,6 +19,7 @@ CScene::CScene()
 	for (int i = 0; i < THREAD::END + 1; ++i)
 	{
 		CreateDCBITMAP(m_hSceneThreadDC[i], m_hSceneThreadBit[i], Mgr(CCore)->GetResolutionV());
+		SetBkMode(m_hSceneThreadDC[i], TRANSPARENT);
 	}
 }
 

@@ -149,3 +149,8 @@ BOOL TransparentBltSafe(HDC hdcDest, const short xoriginDest, const short yorigi
 		, srcHeight
 		, crTransparent);
 }
+
+void renderText(HDC _dc, Vec2 _vGlobalLT, wstring_view _wstrText)
+{
+	TextOutW(_dc, (int)_vGlobalLT.x, (int)_vGlobalLT.y, _wstrText.data(), (int)_wstrText.size());
+}

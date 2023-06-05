@@ -1,4 +1,5 @@
 #pragma once
+#include "SimpleMath.hpp"
 
 struct Vec2
 {
@@ -14,9 +15,9 @@ public:
 	static const Vec2 down;
 
 public:
-	constexpr bool IsZero() const
+	bool IsZero() const
 	{
-		if (x == 0.f && y == 0.f)
+		if (IsFloatZero(x) && IsFloatZero(y))
 		{
 			return true;
 		}
@@ -25,7 +26,7 @@ public:
 	
 	float length() const
 	{
-		return sqrtf(x * x + y * y);
+		return Q_sqrt(x * x + y * y);
 	}
 
 	constexpr Vec2() = default;
@@ -46,7 +47,7 @@ public:
 	Vec2 Normalize() const
 	{
 		const float fLen = length();
-		if (0.f == fLen)
+		if (IsFloatZero(fLen))
 		{
 			return Vec2{ 0.f,0.f };
 		}
