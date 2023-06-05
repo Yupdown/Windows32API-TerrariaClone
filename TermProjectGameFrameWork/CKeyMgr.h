@@ -26,8 +26,6 @@ enum class KEY
 	LSHIFT, 
 	CTRL, 
 	RSHIFT,
-<<<<<<< HEAD
-
 	ONE,
 	TWO,
 	THREE,
@@ -38,10 +36,7 @@ enum class KEY
 	EIGHT,
 	NINE,
 	ZERO,
-=======
 	M,
->>>>>>> origin/main
-
 	LAST,		
 
 };

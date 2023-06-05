@@ -9,15 +9,12 @@
 #include "Terraria-Replica.h"
 #include "CSceneMgr.h"
 #include "CScene_Start.h"
-<<<<<<< HEAD
 #include "CKeyMgr.h"
-=======
 #include "CObject.h"
 #include "CRigidBody.h"
 #include "CustomMath.hpp"
 
 void updateTileCollision(CObject* const _pObj, TRWorld* const _pTRWorld);
->>>>>>> origin/main
 
 HHOOK hHook;
 #define MAX_LOADSTRING 100
