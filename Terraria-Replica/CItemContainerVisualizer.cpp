@@ -27,7 +27,7 @@ void CItemContainerVisualizer::update()
 
 void CItemContainerVisualizer::render(HDC _dc) const
 {
-    CObject::render(_dc);
+    //CObject::render(_dc);
     
     Mgr(CResMgr)->renderImg(_dc, container_background[container_selected ? 1 : 0], m_vPos - m_vScale * 0.5f, m_vScale, Vec2Int::zero, Vec2Int::one * 26);
 

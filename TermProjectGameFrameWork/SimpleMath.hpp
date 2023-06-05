@@ -35,13 +35,13 @@ inline float Q_rsqrt(float number)
 	return y;
 }
 
-inline float Q_sqrt(float number)
-{
-	const float invSqrt = Q_rsqrt(number);
-	return 1.0f / invSqrt;
-}
-
 inline bool IsFloatZero(float number)
 {
 	return (number >= -FLT_EPSILON && number <= FLT_EPSILON);
+}
+
+inline float Q_sqrt(float number)
+{
+	const float invSqrt = Q_rsqrt(number);
+	return IsFloatZero(number) ? 0.f : 1.0f / invSqrt;
 }

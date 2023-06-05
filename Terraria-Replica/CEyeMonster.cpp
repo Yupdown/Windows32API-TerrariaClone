@@ -2,6 +2,11 @@
 #include "CEyeMonster.h"
 #include "CAnimator.h"
 #include "CRigidBody.h"
+#include "CSceneMgr.h"
+#include "CScene.h"
+#include "CCore.h"
+#include "CCamera.h"
+#include "CustomMath.hpp"
 
 CEyeMonster::CEyeMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 	:CMonster{ _trWorld,_wstrMonName,_wstrMonImgName }
@@ -25,7 +30,15 @@ void CEyeMonster::update()
 
 void CEyeMonster::render(HDC _dc) const
 {
+	auto vPlayerPos = Mgr(CSceneMgr)->GetCurScene()->GetPlayer()->GetPrevPos();
+	auto vCurPos = GetPos();
+	auto pAnim = GetComp<CAnimator>();
+	auto vDir = (vPlayerPos - vCurPos).Normalize();
+	float fDeg = pAnim->GetAnimDir() == 0 ? acosf(-1 * vDir.x) : acosf(1 * vDir.x);
+	const auto [vLT, vScale] = Mgr(CCamera)->GetRenderPos(this);
+	Mgr(CCore)->RotateTransform(_dc, fDeg * F_RAD2DEG, vLT + vScale/2.f);
 	CMonster::render(_dc);
+	Mgr(CCore)->ResetTransform(_dc);
 }
 
 void CEyeMonster::OnCollision(CCollider* const _pOther)
