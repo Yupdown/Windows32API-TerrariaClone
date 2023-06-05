@@ -70,7 +70,7 @@ void DeleteDCBITMAP(HDC& _dc, HBITMAP& _hBit);
 //	, int hBit
 //	, UINT crTransparent);
 
-inline BOOL TransparentBltSafe(HDC hdcDest
+BOOL TransparentBltSafe(HDC hdcDest
 	, const short xoriginDest
 	, const short yoriginDest
 	, const short wDest

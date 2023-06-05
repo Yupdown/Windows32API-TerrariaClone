@@ -37,6 +37,18 @@
     <Filter Include="Terraria-Replica\Weapon">
       <UniqueIdentifier>{4dec4fa3-33a8-4343-9e18-8dcc35a060b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CObject\Monster">
+      <UniqueIdentifier>{49451fee-7f97-4847-b6d9-4c584e61af76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CObject\Monster\CZombie">
+      <UniqueIdentifier>{d8a6f69a-08ec-40d9-afed-ba96d3044dfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CObject\Monster\CSlime">
+      <UniqueIdentifier>{ce8177a2-3344-4f0a-b551-da53afc1fa1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CObject\Monster\CEyeMonster">
+      <UniqueIdentifier>{b6fda34a-8617-4c5b-9d0c-b59fc51c87f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -114,6 +126,18 @@
     <ClInclude Include="TRItemStack.h">
       <Filter>Terraria-Replica</Filter>
     </ClInclude>
+    <ClInclude Include="CMonster.h">
+      <Filter>CObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CZombie.h">
+      <Filter>CObject\Monster\CZombie</Filter>
+    </ClInclude>
+    <ClInclude Include="CSlime.h">
+      <Filter>CObject\Monster\CSlime</Filter>
+    </ClInclude>
+    <ClInclude Include="CEyeMonster.h">
+      <Filter>CObject\Monster\CEyeMonster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -166,6 +190,18 @@
     </ClCompile>
     <ClCompile Include="TRItemStack.cpp">
       <Filter>Terraria-Replica</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster.cpp">
+      <Filter>CObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CZombie.cpp">
+      <Filter>CObject\Monster\CZombie</Filter>
+    </ClCompile>
+    <ClCompile Include="CSlime.cpp">
+      <Filter>CObject\Monster\CSlime</Filter>
+    </ClCompile>
+    <ClCompile Include="CEyeMonster.cpp">
+      <Filter>CObject\Monster\CEyeMonster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

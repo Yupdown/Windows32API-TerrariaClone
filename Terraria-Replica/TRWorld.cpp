@@ -6,9 +6,13 @@
 #include "CKeyMgr.h"
 #include "CCamera.h"
 #include "CScene.h"
-
+#include "CMonster.h"
 #include "TRItemManager.h"
 #include "TRItemStack.h"
+#include "CCollisionMgr.h"
+#include "CZombie.h"
+#include "CSlime.h"
+#include "CEyeMonster.h"
 
 TRWorld::TRWorld()
 {
@@ -16,6 +20,8 @@ TRWorld::TRWorld()
 	player = new CPlayer(this);
 	player->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT - 32)));
 	player->SetScale(Vec2{ 40.f, 56.f });
+
+
 
 	for (int i = 0; i < 10; ++i)
 		quick_bar[i] = new TRItemContainer();
@@ -77,6 +83,29 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	scene->AddObject(player, GROUP_TYPE::PLAYER);
 	Mgr(CCamera)->SetTarget(player);
 	scene->RegisterPlayer(player);
+
+	{
+		auto pMon = new CZombie{ this,L"Zombie",L"NPC_3.png" };
+		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
+		pMon->SetScale(Vec2{ 40.f, 56.f });
+		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	}
+
+	{
+		auto pMon = new CSlime{ this,L"Slime",L"NPC_1.png" };
+		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
+		pMon->SetScale(Vec2{ 40.f, 56.f });
+		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	}
+
+	{
+		auto pMon = new CEyeMonster{ this,L"EyeMonster",L"NPC_2.png" };
+		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 10, TRWorld::WORLD_HEIGHT)));
+		pMon->SetScale(Vec2{ 40.f, 56.f });
+		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	}
+
+	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER); 
 }
 
 Vec2 TRWorld::WorldToGlobal(const Vec2& v)

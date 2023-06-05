@@ -27,9 +27,9 @@ protected:
 	Vec2		m_vScale{};
 	TRWorld* m_pTRWolrd = nullptr;
 	Vec2 m_vWillPos = {};
+	int m_iHP = 0;
 private:
 	wstring		m_strName = {}; 
-	
 	array<unique_ptr<CComponent>, (UINT)COMPONENT_TYPE::END>		m_arrComp; 
 	bool					m_bAlive = true;
 private:
@@ -75,5 +75,7 @@ public:
 	constexpr inline void SetWillPos(Vec2 _vPos) { m_vWillPos = _vPos; }
 	constexpr inline Vec2 GetWillPos() const { return m_vWillPos; }
 
+	void SetHP(int _iHP) { m_iHP = _iHP; }
+	int GetHP()const { return m_iHP; }
 };
 

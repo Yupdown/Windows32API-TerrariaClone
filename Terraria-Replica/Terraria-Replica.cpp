@@ -73,7 +73,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TERMPROJECTGAMEFRAMEWORK));
 
     MSG msg;
-    hHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, NULL, 0);
+   // hHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, NULL, 0);
     while (true)
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -94,7 +94,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
     Mgr(CEventMgr)->ResetTRupdate();
-    UnhookWindowsHookEx(hHook);
+  //  UnhookWindowsHookEx(hHook);
     return (int)msg.wParam;
 }
 
@@ -263,6 +263,13 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 void updateTileCollision(CObject* const _pObj,TRWorld* const _pTRWorld)
 {
 	auto pRigid = _pObj->GetComp<CRigidBody>();
+
+    if (!pRigid->IsGravity())
+    {
+        _pObj->SetPos(_pObj->GetWillPos());
+        return;
+    }
+
 	auto pTileMap = _pTRWorld->GetTileMap();
 	Vec2 world_pos = TRWorld::GlobalToWorld(_pObj->GetWillPos());
 	Vec2 world_vel = pRigid->GetVelocity();

@@ -97,9 +97,6 @@
     <Filter Include="Engine\02. Manager\Camera">
       <UniqueIdentifier>{27e1c8e0-3057-42ba-9d22-1c4eb3f52ccb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\03. Object\Monster">
-      <UniqueIdentifier>{06547a9d-436b-4b60-8342-717fa1103fbb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\03. Object\Tile">
       <UniqueIdentifier>{ff847272-3cc0-420d-b96c-bf234eb229bc}</UniqueIdentifier>
     </Filter>
@@ -213,9 +210,6 @@
     <ClInclude Include="CCamera.h">
       <Filter>Engine\02. Manager\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="CMonster.h">
-      <Filter>Engine\03. Object\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="CTile.h">
       <Filter>Engine\03. Object\Tile</Filter>
     </ClInclude>
@@ -316,9 +310,6 @@
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>Engine\02. Manager\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonster.cpp">
-      <Filter>Engine\03. Object\Monster</Filter>
     </ClCompile>
     <ClCompile Include="CTile.cpp">
       <Filter>Engine\03. Object\Tile</Filter>

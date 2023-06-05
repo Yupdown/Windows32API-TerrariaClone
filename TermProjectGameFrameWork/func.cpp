@@ -36,7 +36,7 @@ CoRoutine ChangeScene(SCENE_TYPE _eNext)
 
 void CreateObj(CObject* const _pObj, GROUP_TYPE _eGroup)
 {
-	Mgr(CEventMgr)->AddEvent([&_pObj, &_eGroup]() {
+	Mgr(CEventMgr)->AddEvent([_pObj, _eGroup]() {
 		Mgr(CSceneMgr)->GetCurScene()->AddObject(_pObj, _eGroup);
 		});
 }
@@ -48,7 +48,7 @@ void DeleteObj(CObject* const _pDeadObj)
 		return;
 	}
 	//Mgr(CEventMgr)->AddEvent(&CObject::SetDead, _pDeadObj);
-	Mgr(CEventMgr)->AddEvent([&_pDeadObj]() {_pDeadObj->SetDead(); });
+	Mgr(CEventMgr)->AddEvent([_pDeadObj]() {_pDeadObj->SetDead(); });
 }
 
 void ChangeAIState(AI* const _pAI, MON_STATE _eNextState) 
@@ -115,7 +115,7 @@ CoRoutine DelayCoRoutine(function<void(void)> _fp, float _fDelayTime)
 //	return TransparentBlt(hdcDest, xoriginDest + od_left, yoriginDest + od_top, wDest - od_left - od_right, hDest - od_top - od_bottom, hdcSrc, xoriginSrc + os_left, yoriginSrc + os_top, wSrc - os_left - os_right, hSrc - os_top - os_bottom, crTransparent);
 //}
 
-inline BOOL TransparentBltSafe(HDC hdcDest, const short xoriginDest, const short yoriginDest, const short wDest, const short hDest,
+BOOL TransparentBltSafe(HDC hdcDest, const short xoriginDest, const short yoriginDest, const short wDest, const short hDest,
 	HDC hdcSrc, const short xoriginSrc, const short yoriginSrc, const short wSrc, const short hSrc,
 	const short wBit, const short hBit, UINT crTransparent)
 {
