@@ -40,15 +40,15 @@ public:
 	bool  IsGravity()const { return m_bGravity; }
 	void  SetGravity(bool _b) { m_bGravity = _b; }
 public:
-	Vec2 GetVelocity()const { return m_vVelocity; }
-	void SetVelocity(Vec2 _v) { m_vVelocity = _v; }
-	void SetMaxVelocity(Vec2 _vMaxVel) { m_vMaxVelocity = _vMaxVel; }
-	void SetMass(float _fMass) { m_fMass = _fMass; }
-	float GetMass()const { return m_fMass; }
-	void AddForce(Vec2 _vF) { m_vForce += _vF; }
-	void AddVelocity(Vec2 _v) { m_vVelocity += _v; }
-	Vec2 GetForce()const { return m_vForce; }
-	void SetForce(Vec2 _v) { m_vForce = _v; }
+	constexpr inline Vec2 GetVelocity()const { return m_vVelocity; }
+	constexpr inline void SetVelocity(Vec2 _v) { m_vVelocity = _v; }
+	constexpr inline void SetMaxVelocity(Vec2 _vMaxVel) { m_vMaxVelocity = _vMaxVel; }
+	constexpr inline void SetMass(float _fMass) { m_fMass = _fMass; }
+	constexpr inline float GetMass()const { return m_fMass; }
+	constexpr inline void AddForce(Vec2 _vF) { m_vForce += _vF; }
+	constexpr inline void AddVelocity(Vec2 _v) { m_vVelocity += _v; }
+	constexpr inline Vec2 GetForce()const { return m_vForce; }
+	constexpr inline void SetForce(Vec2 _v) { m_vForce = _v; }
 public:
 	void component_update()override;
 	void component_render(HDC _dc)const override;

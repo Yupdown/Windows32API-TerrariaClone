@@ -6,7 +6,8 @@
 *.idb
 *.lib
 */[Uu]nity/
-[Oo]utput/
+bin_Debug/
+bin_Release/
 
 # User-specific files
 *.rsuser

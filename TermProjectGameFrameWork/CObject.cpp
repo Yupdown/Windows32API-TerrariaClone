@@ -7,6 +7,8 @@
 #include "CComponent.h"
 #include "CCamera.h"
 
+extern void updateTileCollision(CObject* const _pObj, TRWorld* const _pTRWorld);
+
 CObject::CObject()
 {
 }
@@ -76,5 +78,13 @@ void CObject::component_update()
 		{
 			component->component_update();
 		}
+	}
+}
+
+void CObject::updateTileCollision()
+{
+	if (m_pTRWolrd && m_arrComp[etoi(COMPONENT_TYPE::RIGIDBODY)])
+	{
+		::updateTileCollision(this, m_pTRWolrd);
 	}
 }

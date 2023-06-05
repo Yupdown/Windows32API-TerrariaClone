@@ -4,6 +4,7 @@
 #include "CObject.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
+#include "SimpleMath.hpp"
 
 CCollisionMgr::CCollisionMgr()
 {
@@ -25,8 +26,8 @@ bool CCollisionMgr::IsCollision(const CCollider* const _pLeftCol, const CCollide
 	const Vec2 vRightPos = _pRightCol->GetFinalPos();
 	const Vec2 vRightScale = _pRightCol->GetScale();
 
-	if (abs(vLeftPos.x - vRightPos.x) <= (vLeftScale.x + vRightScale.x) / 2.f
-		&& abs(vLeftPos.y - vRightPos.y) <= (vLeftScale.y + vRightScale.y) / 2.f)
+	if (bitwise_absf(vLeftPos.x - vRightPos.x) <= (vLeftScale.x + vRightScale.x) / 2.f
+		&& bitwise_absf(vLeftPos.y - vRightPos.y) <= (vLeftScale.y + vRightScale.y) / 2.f)
 	{
 		return true;
 	}
@@ -47,6 +48,23 @@ void CCollisionMgr::update()
 			}
 		}
 	}
+
+	const auto& arrCurSceneObj = Mgr(CSceneMgr)->GetCurScene()->GetSceneObj();
+
+	for (const auto& vecObj : arrCurSceneObj)
+	{
+		const auto vecPtr = vecObj.data();
+		for (size_t i = 0, size = vecObj.size(); i < size; ++i)
+		{
+			vecPtr[i]->updateTileCollision();
+		}
+	}
+
+	/*std::for_each(std::execution::par, std::begin(arrCurSceneObj), std::end(arrCurSceneObj), [](const auto& _vecObj) {
+		std::for_each(std::execution::par_unseq, _vecObj.begin(), _vecObj.end(), [](auto& _pObj) {
+			_pObj->updateTileCollision();
+			});
+		});*/
 }
 
 void CCollisionMgr::RegisterGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)

@@ -318,7 +318,7 @@ void TRTile::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
     // tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y)), TILE_PIXEL_XY);
 
     HDC hdc = tilemap_layer->GetTileLayerDC();
-    Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y + 1));
+    Vec2Int p = TRWorld::WorldToGlobal(Vec2Int(x, y + 1));
     elements[sj][si]->render(hdc, p, TILE_PIXEL_XY);
 }
 
@@ -614,7 +614,7 @@ void TRTileGrass::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bit
     // tilemap_layer->pre_render(elements[sj][si], TRWorld::WorldToGlobal(Vec2(x, y)), TILE_PIXEL_XY);
 
     HDC hdc = tilemap_layer->GetTileLayerDC();
-    Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y + 1));
+    Vec2Int p = TRWorld::WorldToGlobal(Vec2Int(x, y + 1));
     elements[sj][si]->render(hdc, p, TILE_PIXEL_XY);
 }
 

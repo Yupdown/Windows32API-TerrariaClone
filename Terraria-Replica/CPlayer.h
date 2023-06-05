@@ -56,6 +56,6 @@ public:
     virtual void OnCollisionExit(CCollider* const _pOther);
 
 
-    void updateTileCollision();
+    //void updateTileCollision();
 };
 

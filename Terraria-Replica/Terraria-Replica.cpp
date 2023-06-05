@@ -9,7 +9,15 @@
 #include "Terraria-Replica.h"
 #include "CSceneMgr.h"
 #include "CScene_Start.h"
+<<<<<<< HEAD
 #include "CKeyMgr.h"
+=======
+#include "CObject.h"
+#include "CRigidBody.h"
+#include "CustomMath.hpp"
+
+void updateTileCollision(CObject* const _pObj, TRWorld* const _pTRWorld);
+>>>>>>> origin/main
 
 HHOOK hHook;
 #define MAX_LOADSTRING 100
@@ -253,4 +261,118 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+void updateTileCollision(CObject* const _pObj,TRWorld* const _pTRWorld)
+{
+	auto pRigid = _pObj->GetComp<CRigidBody>();
+	auto pTileMap = _pTRWorld->GetTileMap();
+	Vec2 world_pos = TRWorld::GlobalToWorld(_pObj->GetWillPos());
+	Vec2 world_vel = pRigid->GetVelocity();
+
+	float w = 1.5f;
+	float h = 3.0f;
+
+	Vec2 pre_pos = TRWorld::GlobalToWorld(_pObj->GetPos());
+	Vec2 post_pos = world_pos;
+	Vec2 post_vel = world_vel;
+
+	bool landed = false;
+	bool collided = false;
+
+	int x_min = FloorToInt(pre_pos.x - w * 0.5f);
+	int x_max = CeilToInt(pre_pos.x + w * 0.5f) - 1;
+	int y_min = FloorToInt(world_pos.y - h * 0.5f);
+	int y_max = CeilToInt(world_pos.y + h * 0.5f) - 1;
+
+	if (x_min >= 0 && x_max < TRWorld::WORLD_WIDTH && y_min >= 0 && y_max < TRWorld::WORLD_HEIGHT)
+	{
+		for (int x = x_min; x <= x_max; ++x)
+		{
+			if (world_vel.y > 0.0f && pTileMap->GetTile(x, y_min)->Solid())
+			{
+				post_pos.y = y_min + 1.0f + h * 0.5f;
+				post_vel.y = 0.0f;
+
+				landed = true;
+				collided = true;
+				break;
+			}
+			if (world_vel.y < 0.0f && pTileMap->GetTile(x, y_max)->Solid())
+			{
+				post_pos.y = y_max - h * 0.5f;
+				post_vel.y = 0.0f;
+
+				collided = true;
+				break;
+			}
+		}
+	}
+
+	if (world_pos.x - w * 0.5f < 0.0f)
+	{
+		post_pos.x = w * 0.5f;
+		post_vel.x = 0.0f;
+	}
+	if (world_pos.x + w * 0.5f > TRWorld::WORLD_WIDTH)
+	{
+		post_pos.x = TRWorld::WORLD_WIDTH - w * 0.5f;
+		post_vel.x = 0.0f;
+	}
+
+	x_min = FloorToInt(post_pos.x - w * 0.5f);
+	x_max = CeilToInt(post_pos.x + w * 0.5f) - 1;
+	y_min = FloorToInt(post_pos.y - h * 0.5f);
+	y_max = CeilToInt(post_pos.y + h * 0.5f) - 1;
+
+	if (x_min >= 0 && x_max < TRWorld::WORLD_WIDTH && y_min >= 0 && y_max < TRWorld::WORLD_HEIGHT)
+	{
+		bool collision_x = false;
+		float reform_x = 0.0f;
+
+		for (int y = y_min; y <= y_max; ++y)
+		{
+			if (world_vel.x < 0.0f && pTileMap->GetTile(x_min, y)->Solid())
+			{
+				reform_x = x_min + 1.0f + w * 0.5f;
+
+				collided = true;
+				collision_x = true;
+				break;
+			}
+			if (world_vel.x > 0.0f && pTileMap->GetTile(x_max, y)->Solid())
+			{
+				reform_x = x_max - w * 0.5f;
+
+				collided = true;
+				collision_x = true;
+				break;
+			}
+		}
+
+		if (collision_x)
+		{
+			y_min = y_min + 1;
+			y_max = CeilToInt(y_min + h) - 1;
+
+			bool flag = false;
+			for (int x = x_min; x <= x_max; ++x)
+			{
+				for (int y = y_min; y <= y_max; ++y)
+					flag |= pTileMap->GetTile(x, y)->Solid();
+			}
+			if (flag)
+			{
+				post_pos.x = reform_x;
+				post_vel.x = 0.0f;
+			}
+			else if (post_vel.y >= 0.0f)
+				post_pos.y = y_min + h * 0.5f;
+		}
+	}
+
+    _pObj->SetPos(TRWorld::WorldToGlobal(post_pos));
+	pRigid->SetVelocity(post_vel);
+	if (!landed)
+		pRigid->SetIsGround(false);
 }

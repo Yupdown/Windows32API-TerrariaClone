@@ -6,6 +6,10 @@
 #include "CPlayer.h"
 #include "CScene.h"
 
+#include "TRItemContainer.h"
+
+class TRItemContainer;
+
 class TRWorld
 {
 public:
@@ -15,6 +19,9 @@ public:
 private:
 	TRTileMap* tile_map;
 	CPlayer* player;
+
+	TRItemContainer* quick_bar[10];
+	int quick_bar_index;
 
 public:
 	TRWorld();

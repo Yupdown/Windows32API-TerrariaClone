@@ -18,6 +18,6 @@ public:
 	void Initialize();
 
 	TRItem* GetItemByID(int id) const;
-	TRItem* GetItemByKey(const std::string& key) const;
+	TRItem* GetItemByKey(const std::wstring& key) const;
 };
 

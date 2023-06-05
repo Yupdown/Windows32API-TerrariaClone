@@ -23,6 +23,7 @@ int g_arrVK[(int)KEY::LAST]
 	VK_LSHIFT ,
 	VK_CONTROL ,
 	VK_RSHIFT ,
+<<<<<<< HEAD
 	'1',
 	'2',
 	'3',
@@ -34,6 +35,9 @@ int g_arrVK[(int)KEY::LAST]
 	'9',
 	'0',
 
+=======
+	'M'
+>>>>>>> origin/main
 };
 
 CKeyMgr::CKeyMgr()

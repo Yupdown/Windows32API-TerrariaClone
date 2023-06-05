@@ -157,7 +157,9 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Terraria-Replica.h" />
     <ClInclude Include="TRItem.h" />
+    <ClInclude Include="TRItemContainer.h" />
     <ClInclude Include="TRItemManager.h" />
+    <ClInclude Include="TRItemStack.h" />
     <ClInclude Include="TRMain.h" />
     <ClInclude Include="TRTile.h" />
     <ClInclude Include="TRTileManager.h" />
@@ -179,7 +181,9 @@
     </ClCompile>
     <ClCompile Include="Terraria-Replica.cpp" />
     <ClCompile Include="TRItem.cpp" />
+    <ClCompile Include="TRItemContainer.cpp" />
     <ClCompile Include="TRItemManager.cpp" />
+    <ClCompile Include="TRItemStack.cpp" />
     <ClCompile Include="TRMain.cpp" />
     <ClCompile Include="TRTile.cpp" />
     <ClCompile Include="TRTileManager.cpp" />
