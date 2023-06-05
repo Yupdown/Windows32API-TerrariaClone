@@ -7,6 +7,7 @@
 #include "CCore.h"
 #include "CCamera.h"
 #include "CustomMath.hpp"
+#include "SimpleMath.hpp"
 
 CEyeMonster::CEyeMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 	:CMonster{ _trWorld,_wstrMonName,_wstrMonImgName }
@@ -31,10 +32,9 @@ void CEyeMonster::update()
 void CEyeMonster::render(HDC _dc) const
 {
 	auto vPlayerPos = Mgr(CSceneMgr)->GetCurScene()->GetPlayer()->GetPrevPos();
-	auto vCurPos = GetPos();
-	auto pAnim = GetComp<CAnimator>();
+	auto vCurPos = GetPrevPos();
 	auto vDir = (vPlayerPos - vCurPos).Normalize();
-	float fDeg = pAnim->GetAnimDir() == 0 ? atan2f(-vDir.y, -vDir.x) : atan2f(-vDir.y, -vDir.x) + F_PI;
+	const float fDeg = IsFloatZero(vDir.x) ? 0.f : atanf(vDir.y / vDir.x);
 	const auto [vLT, vScale] = Mgr(CCamera)->GetRenderPos(this);
 	Mgr(CCore)->RotateTransform(_dc, fDeg * F_RAD2DEG, vLT + vScale/2.f);
 	CMonster::render(_dc);

@@ -26,6 +26,7 @@ CMonster::~CMonster()
 
 void CMonster::update()
 {
+	CObject::update();
 	auto vPlayerPos = Mgr(CSceneMgr)->GetCurScene()->GetPlayer()->GetPos();
 	auto pAnim = GetComp<CAnimator>();
 	auto vCurPos = GetPos();
