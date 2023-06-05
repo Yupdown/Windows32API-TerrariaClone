@@ -37,6 +37,9 @@
     <Filter Include="Terraria-Replica\Weapon">
       <UniqueIdentifier>{4dec4fa3-33a8-4343-9e18-8dcc35a060b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CObject\ItemContainerVisualizer">
+      <UniqueIdentifier>{255c3c2a-8129-4953-bf7b-4402afab907a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -114,6 +117,9 @@
     <ClInclude Include="TRItemStack.h">
       <Filter>Terraria-Replica</Filter>
     </ClInclude>
+    <ClInclude Include="CItemContainerVisualizer.h">
+      <Filter>CObject\ItemContainerVisualizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -166,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="TRItemStack.cpp">
       <Filter>Terraria-Replica</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemContainerVisualizer.cpp">
+      <Filter>CObject\ItemContainerVisualizer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
