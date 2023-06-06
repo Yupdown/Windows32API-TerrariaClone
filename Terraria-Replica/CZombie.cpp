@@ -6,7 +6,7 @@ CZombie::CZombie(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_vie
 	:CMonster{_trWorld,_wstrMonName,_wstrMonImgName}
 {
 	auto pAnim = GetComp<CAnimator>();
-	pAnim->CreateAnimation(GetName() + L"Walk", _wstrMonImgName, Vec2{0,0}, Vec2{18,24}, Vec2{0,24}, 0.2f, 3);
+	pAnim->CreateAnimation(GetName() + L"Walk", _wstrMonImgName, Vec2{0,0}, Vec2{19,23}, Vec2{0,24}, 0.2f, 3);
 	pAnim->Play(GetName() + L"Walk", true);
 }
 

@@ -47,6 +47,7 @@ public:
         auto p = new CPlayer{ *this };
         return p;
     }
+
     void updateState();
     void updateMove();
     void updateAnimation();

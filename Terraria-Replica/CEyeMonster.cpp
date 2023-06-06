@@ -33,8 +33,8 @@ void CEyeMonster::render(HDC _dc) const
 {
 	auto vPlayerPos = Mgr(CSceneMgr)->GetCurScene()->GetPlayer()->GetPrevPos();
 	auto vCurPos = GetPrevPos();
-	auto vDir = (vPlayerPos - vCurPos).Normalize();
-	const float fDeg = IsFloatZero(vDir.x) ? 0.f : atanf(vDir.y / vDir.x);
+	auto vDir = (GetPos() - GetPrevPos()).Normalize();
+	const float fDeg = atan2f(vDir.y, vDir.x) + (GetComp<CAnimator>()->GetAnimDir() ? 0.0f : F_PI);
 	const auto [vLT, vScale] = Mgr(CCamera)->GetRenderPos(this);
 	Mgr(CCore)->RotateTransform(_dc, fDeg * F_RAD2DEG, vLT + vScale/2.f);
 	CMonster::render(_dc);

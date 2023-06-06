@@ -22,6 +22,14 @@ void CWeapon::SetWeaponImg(wstring_view _wstrFileName, Vec2 _vScale)
 	SetScale(_vScale);
 }
 
+void CWeapon::SetWeaponImg(CImage* _cImage)
+{
+	m_pWeaponImg = _cImage;
+
+	SetName(L"Weapon_Image");
+	SetScale(Vec2((float)_cImage->GetWidth(), (float)_cImage->GetHeight()) * 2.0f);
+}
+
 void CWeapon::update()
 {
 	const auto vPos = m_pPlayer->GetPos();
@@ -43,15 +51,15 @@ void CWeapon::update()
 	
 	const auto vtempLT = vLTpos - vPos;
 	
-	float x = vtempLT.x * cosf((m_fDeg1) * F_DEG2RAD) - vtempLT.y * sinf((m_fDeg1)*F_DEG2RAD);
-	float y = vtempLT.y * cosf((m_fDeg1)*F_DEG2RAD) + vtempLT.x * sinf((m_fDeg1)*F_DEG2RAD);
+	float x = vtempLT.x * cosf((m_fDeg1) * F_DEG2RAD) - vtempLT.y * sinf((m_fDeg1) * F_DEG2RAD);
+	float y = vtempLT.y * cosf((m_fDeg1) * F_DEG2RAD) + vtempLT.x * sinf((m_fDeg1) * F_DEG2RAD);
 
 
 	x += vPos.x;
 	y += vPos.y;
 
-	m_AccfDeg1 += 90.f / 0.18f * DT;
-	m_AccfDeg2 += 90.f / 0.2f * DT;
+	m_AccfDeg1 += 180.f / 0.25f * DT;
+	m_AccfDeg2 += 180.f / 0.28f * DT;
 	
 
 	if (m_iFlip)

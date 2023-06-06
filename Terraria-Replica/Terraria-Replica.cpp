@@ -264,11 +264,11 @@ void updateTileCollision(CObject* const _pObj,TRWorld* const _pTRWorld)
 {
 	auto pRigid = _pObj->GetComp<CRigidBody>();
 
-    if (!pRigid->IsGravity())
-    {
-        _pObj->SetPos(_pObj->GetWillPos());
-        return;
-    }
+    //if (!pRigid->IsGravity())
+    //{
+    //    _pObj->SetPos(_pObj->GetWillPos());
+    //    return;
+    //}
 
 	auto pTileMap = _pTRWorld->GetTileMap();
 	Vec2 world_pos = TRWorld::GlobalToWorld(_pObj->GetWillPos());

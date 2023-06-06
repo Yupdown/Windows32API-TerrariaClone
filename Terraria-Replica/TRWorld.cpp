@@ -28,8 +28,6 @@ TRWorld::TRWorld()
 	player->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT - 32)));
 	player->SetScale(Vec2{ 40.f, 56.f });
 
-
-
 	for (int i = 0; i < 10; ++i)
 	{
 		quick_bar[i] = new TRItemContainer();
@@ -43,7 +41,7 @@ TRWorld::TRWorld()
 	quick_bar[3]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_dirt"), 1));
 	quick_bar[4]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_bricks_stone"), 1));
 	quick_bar[5]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"wall_bricks_stone"), 1));
-	quick_bar_index = 5;
+	quick_bar_index = 0;
 }
 
 TRWorld::~TRWorld()
@@ -143,21 +141,21 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	{
 		auto pMon = new CZombie{ this,L"Zombie",L"NPC_3.png" };
 		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 40.f, 56.f });
+		pMon->SetScale(Vec2{ 38.0f, 46.0f });
 		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
 	}
 
 	{
 		auto pMon = new CSlime{ this,L"Slime",L"NPC_1.png" };
 		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 40.f, 56.f });
+		pMon->SetScale(Vec2{ 32.0f, 24.0f });
 		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
 	}
 
 	{
 		auto pMon = new CEyeMonster{ this,L"EyeMonster",L"NPC_2.png" };
 		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 10, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 40.f, 56.f });
+		pMon->SetScale(Vec2{ 38.0f, 22.0f });
 		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
 	}
 

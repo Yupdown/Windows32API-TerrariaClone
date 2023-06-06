@@ -27,6 +27,7 @@ public:
     }
 
     void SetWeaponImg(wstring_view _wstrFileName,Vec2 _vScale);
+    void SetWeaponImg(CImage* _cImage);
     void update()override;
     void render(HDC _dc)const override;
     void ReForm()
