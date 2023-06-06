@@ -81,6 +81,13 @@ void CObject::component_update()
 	}
 }
 
+void CObject::SetColliderScale(Vec2 _vScale)
+{
+	auto pCollider = GetComp<CCollider>();
+	assert(pCollider);
+	pCollider->SetScale(_vScale);
+}
+
 void CObject::updateTileCollision()
 {
 	if (m_pTRWolrd && m_arrComp[etoi(COMPONENT_TYPE::RIGIDBODY)])

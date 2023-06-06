@@ -6,6 +6,7 @@
 #include "CScene.h"
 #include "CRigidBody.h"
 #include "CPlayer.h"
+#include "CWeapon.h"
 
 CMonster::CMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 {
@@ -55,7 +56,8 @@ void CMonster::update()
 
 void CMonster::render(HDC _dc) const
 {
-	GetComp<CAnimator>()->component_render(_dc);
+	//GetComp<CAnimator>()->component_render(_dc);
+	CObject::component_render(_dc);
 }
 
 void CMonster::OnCollision(CCollider* const _pOther)
@@ -64,21 +66,19 @@ void CMonster::OnCollision(CCollider* const _pOther)
 	if (L"Player" == pObj->GetName())
 	{
 		auto pPlayer = (CPlayer*)pObj;
-		auto iCurHP = pPlayer->GetHP();
-		//pPlayer->SetHP(iCurHP - 30);
 		auto vDir = GetComp<CRigidBody>()->GetVelocity().Normalize();
 		vDir.y = 0;
 		
-		
-		//pPlayer->GetComp<CRigidBody>()->AddForce(vDir * 500);
-		//pPlayer->GetComp<CRigidBody>()->component_update();
+		pPlayer->GetComp<CRigidBody>()->AddForce(vDir * 500);
+		pPlayer->GetComp<CRigidBody>()->component_update();
 	}
 }
 
 void CMonster::OnCollisionEnter(CCollider* const _pOther)
 {
 	auto pObj = _pOther->GetOwner();
-	if (L"Player" == pObj->GetName())
+	const wstring wstrObjName = pObj->GetName().substr(0, pObj->GetName().find(L'_'));
+	if (L"Player" == wstrObjName)
 	{
 		auto pPlayer = (CPlayer*)pObj;
 		auto iCurHP = pPlayer->GetHP();
@@ -86,7 +86,7 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 		auto vDir = GetComp<CRigidBody>()->GetVelocity().Normalize();
 		vDir.y = 0;
 		pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
-		
+		pPlayer->GetComp<CRigidBody>()->SetVelocity({});
 		pPlayer->GetComp<CRigidBody>()->AddVelocity(vDir * 500 );
 		pPlayer->GetComp<CRigidBody>()->AddForce(vDir*500 );
 		pPlayer->GetComp<CRigidBody>()->component_update();

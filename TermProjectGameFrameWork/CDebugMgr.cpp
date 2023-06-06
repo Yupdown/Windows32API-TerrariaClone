@@ -31,7 +31,7 @@ void CDebugMgr::init()
 	/*m_hWnd = CreateWindow(L"DebugMgr", NULL, WS_POPUP,
 		1050, 50, 264-15, 264-17, Mgr(CCore)->GetMainHwnd(), NULL, Mgr(CCore)->GethInst(), nullptr);*/
 	m_hWnd = CreateWindow(L"DebugMgr", NULL, WS_POPUP,
-		1050, 50, 264 - 10 , 264 - 10  , Mgr(CCore)->GetMainHwnd(), NULL, Mgr(CCore)->GethInst(), nullptr);
+		1120, 120, 264 - 10 , 264 - 10  , Mgr(CCore)->GetMainHwnd(), NULL, Mgr(CCore)->GethInst(), nullptr);
 	//m_hWnd = CreateWindow(L"DebugMgr", L"ChildClass", WS_CHILD | WS_VISIBLE, 100, 0, 720, 720, Mgr(CCore)->GetMainHwnd(), NULL, Mgr(CCore)->GethInst(), MiniMapProc);
 
 	//RECT rt{ 0,0,static_cast<LONG>(300),static_cast<LONG>(300) };

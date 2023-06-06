@@ -71,35 +71,8 @@ void CScene_Start::Enter()
 {
 	CScene::Enter();
 
-	/*auto p = new CPlayer;
-	p->SetPos(Vec2{ 100.0f, 100.0f });
-	p->SetScale(Vec2{ 40.f, 56.f });
-	AddObject(p, GROUP_TYPE::PLAYER);
-	Mgr(CCamera)->SetTarget(p);
-	RegisterPlayer(p);*/
-
+	static_cast<CPlayer*>(GetPlayer())->AddPlayerWeapon();
 	
-	/*for (int i = 0; i < 100 ;++i)
-	{
-		for (int j = 0; j < 100; ++j)
-		{
-			AddTile(L"Bullet.bmp", Vec2{ 0 + (double)j * 10,0 + (double)i * 10 }, Vec2{ 10,10 }, Vec2{ 0,0 }, Vec2{ 64,64 });
-		}
-	}
-	
-	for (int i = 0; i < 1000; ++i) {
-		auto pMon = new CMonster;
-		AddObject(pMon, GROUP_TYPE::MONSTER);
-	}
-	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER);*/
-	//auto a = new CPlayer;
-//	pMon->SetPos(Vec2{ 150., 150. });
-//	pMon->SetScale(Vec2{ 100., 100. });
-	//AddObject(pMon, GROUP_TYPE::MONSTER);
-
-	//Mgr(CCollisionMgr)->RegisterCollision(p, a);
-	//Mgr(CCamera)->SetTarget(p);
-	//Mgr(CCollisionMgr)->RegisterCollision(p, pMon);
 }
 
 void CScene_Start::Exit()

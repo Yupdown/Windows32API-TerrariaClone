@@ -66,7 +66,7 @@ bool CThreadMgr::isDone(const size_t _idx) const
 void CThreadMgr::Join(const size_t _idx)
 {
     std::unique_lock<std::mutex> lock{ m_mutexMain };
-    m_cvMain.wait_for(lock, std::chrono::milliseconds(8),[this, _idx] {
+    m_cvMain.wait_for(lock, std::chrono::milliseconds(16),[this, _idx] {
         return isDone(_idx);
     });
     m_cvMain.notify_all();

@@ -58,6 +58,9 @@
     <Filter Include="CObject\QuickBarVisualizer">
       <UniqueIdentifier>{3c225038-1b73-429f-a296-1775ae31c55b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Terraria-Replica\TRMonGenerator">
+      <UniqueIdentifier>{f4a67f20-5d3e-49e3-87b0-ad6ce6d0bd53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -156,6 +159,9 @@
     <ClInclude Include="CQuickBarVisualizer.h">
       <Filter>CObject\QuickBarVisualizer</Filter>
     </ClInclude>
+    <ClInclude Include="TRMonGenerator.h">
+      <Filter>Terraria-Replica\TRMonGenerator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -229,6 +235,9 @@
     </ClCompile>
     <ClCompile Include="CQuickBarVisualizer.cpp">
       <Filter>CObject\QuickBarVisualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="TRMonGenerator.cpp">
+      <Filter>Terraria-Replica\TRMonGenerator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

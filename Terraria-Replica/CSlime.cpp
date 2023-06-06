@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CSlime.h"
 #include "CAnimator.h"
+#include "CCollider.h"
 
 CSlime::CSlime(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 	:CMonster{ _trWorld,_wstrMonName,_wstrMonImgName }

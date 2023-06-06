@@ -15,15 +15,17 @@
 #include "CWeapon.h"
 #include "SimpleMath.hpp"
 #include "CCollider.h"
+#include "CSceneMgr.h"
+#include "CScene.h"
 
 CPlayer::CPlayer(TRWorld* const _trWorld)
 {
 	m_pTRWolrd = _trWorld;
 	m_bIsCamAffected = true;
-	CreateComponent(COMPONENT_TYPE::COLLIDER);
+	CreateComponent(COMPONENT_TYPE::COLLIDER, Vec2{ 40.f, 56.f });
 	CreateComponent(COMPONENT_TYPE::ANIMATOR);
 	CreateComponent(COMPONENT_TYPE::RIGIDBODY);
-	SetName(L"Player");
+	SetName(L"Player_");
 	auto pAnim = GetComp<CAnimator>();
 	m_pAnimLeg = make_unique<CAnimator>();
 	m_pAnimLeg->SetOwner(this);
@@ -40,16 +42,7 @@ CPlayer::CPlayer(TRWorld* const _trWorld)
 
 	auto pRigid = GetComp<CRigidBody>();
 	pRigid->SetIsGround(false);
-	//SetScale(Vec2{ 150., 150. });
-
-	m_pWeapon[0] = std::make_unique<CWeapon>(this);
-	m_pWeapon[0]->SetWeaponImg(L"Item_Pickaxe.png", Vec2{32,32});
-
-	m_pWeapon[1] = std::make_unique<CWeapon>(this);
-	m_pWeapon[1]->SetWeaponImg(L"Item_Hammer.png", Vec2{ 32,32 });
-
-	m_pWeapon[2] = std::make_unique<CWeapon>(this);
-	m_pWeapon[2]->SetWeaponImg(L"Item_Sword.png", Vec2{ 32,32 });
+	
 }
 
 CPlayer::CPlayer(const CPlayer& other)
@@ -81,11 +74,11 @@ void CPlayer::update()
 
 	if (PLAYER_STATE::ATTACK == m_eCurState)
 	{
-		m_pWeapon[m_iCurWeapon]->update();
+		m_vecWeapon[m_iCurWeapon]->update_weapon();
 	}
 	else
 	{
-		m_pWeapon[m_iCurWeapon]->ReForm();
+		m_vecWeapon[m_iCurWeapon]->ReForm();
 	}
 	
 }
@@ -106,7 +99,7 @@ void CPlayer::render(HDC _dc)const
 	m_pAnimLeg->component_render(_dc);
 	if (PLAYER_STATE::ATTACK == m_eCurState)
 	{
-		m_pWeapon[m_iCurWeapon]->render(_dc);
+		m_vecWeapon[m_iCurWeapon]->render_weapon(_dc);
 	}
 	
 	//m_pWeapon->render(_dc);
@@ -289,4 +282,13 @@ void CPlayer::OnCollisionExit(CCollider* const _pOther)
 	auto pCollider = GetComp<CCollider>();
 	auto pRigid = GetComp<CRigidBody>();
 	
+}
+
+void CPlayer::AddPlayerWeapon()
+{
+	auto& vecWeapon = Mgr(CSceneMgr)->GetCurScene()->GetPlayerWeapon();
+	for (auto& pWeapon : vecWeapon)
+	{
+		m_vecWeapon.emplace_back(static_cast<CWeapon*>(pWeapon.get()));
+	}
 }

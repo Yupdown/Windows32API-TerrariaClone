@@ -77,5 +77,7 @@ public:
 
 	void SetHP(int _iHP) { m_iHP = _iHP; }
 	int GetHP()const { return m_iHP; }
+
+	void SetColliderScale(Vec2 _vScale);
 };
 

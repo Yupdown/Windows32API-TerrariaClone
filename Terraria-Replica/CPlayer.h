@@ -26,7 +26,7 @@ class CPlayer :
 private:
 
     int m_iCurWeapon = 0;
-    unique_ptr<CWeapon> m_pWeapon[3];
+    vector<CWeapon*>  m_vecWeapon;
 
     CAnimation* m_pPrevAnim = {};
     unique_ptr<CAnimator> m_pAnimLeg;
@@ -56,5 +56,6 @@ public:
     virtual void OnCollisionEnter(CCollider* const _pOther);
     virtual void OnCollisionExit(CCollider* const _pOther);
 
+    void AddPlayerWeapon();
 };
 

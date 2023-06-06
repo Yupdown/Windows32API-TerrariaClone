@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CZombie.h"
 #include "CAnimator.h"
+#include "CCollider.h"
 
 CZombie::CZombie(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 	:CMonster{_trWorld,_wstrMonName,_wstrMonImgName}

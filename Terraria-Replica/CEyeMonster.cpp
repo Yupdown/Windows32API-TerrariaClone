@@ -8,6 +8,7 @@
 #include "CCamera.h"
 #include "CustomMath.hpp"
 #include "SimpleMath.hpp"
+#include "CCollider.h"
 
 CEyeMonster::CEyeMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 	:CMonster{ _trWorld,_wstrMonName,_wstrMonImgName }
@@ -16,7 +17,6 @@ CEyeMonster::CEyeMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wst
 	pAnim->CreateAnimation(GetName() + L"Walk", _wstrMonImgName, Vec2{ 0,0 }, Vec2{ 19,11 }, Vec2{ 0,12 }, 0.1f, 2);
 	pAnim->Play(GetName() + L"Walk", true);
 	auto pRigid = GetComp<CRigidBody>();
-
 	pRigid->SetGravity(false);
 }
 

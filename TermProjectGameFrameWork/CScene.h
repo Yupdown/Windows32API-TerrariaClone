@@ -31,6 +31,7 @@ public:
 	void AddObject(CObject* const _pObj, GROUP_TYPE _eType);
 	const vector<unique_ptr<CObject>>& GetGroupObject(GROUP_TYPE _eType)const;
 	vector<unique_ptr<CObject>>& GetUIGroup();
+	auto& GetPlayerWeapon() { return m_vecObj[etoi(GROUP_TYPE::PLAYER_WEAPON)]; }
 public:
 	
 	void component_update()const;

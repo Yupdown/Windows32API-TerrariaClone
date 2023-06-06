@@ -57,6 +57,7 @@ using std::wofstream;
 using std::wifstream;
 using std::list;
 #include <initializer_list>
+#include <random>
 using std::initializer_list;
 #pragma comment(lib,"Msimg32.lib")	
 using std::pair;

@@ -23,8 +23,6 @@ void CItemContainerVisualizer::update()
 
 void CItemContainerVisualizer::render(HDC _dc) const
 {
-    CObject::render(_dc);
-
     if (item_container->Blank())
         return;
 

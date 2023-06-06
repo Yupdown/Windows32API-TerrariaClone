@@ -168,6 +168,7 @@
     <ClInclude Include="TRItemManager.h" />
     <ClInclude Include="TRItemStack.h" />
     <ClInclude Include="TRMain.h" />
+    <ClInclude Include="TRMonGenerator.h" />
     <ClInclude Include="TRTile.h" />
     <ClInclude Include="TRTileManager.h" />
     <ClInclude Include="TRTileMap.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="TRItemManager.cpp" />
     <ClCompile Include="TRItemStack.cpp" />
     <ClCompile Include="TRMain.cpp" />
+    <ClCompile Include="TRMonGenerator.cpp" />
     <ClCompile Include="TRTile.cpp" />
     <ClCompile Include="TRTileManager.cpp" />
     <ClCompile Include="TRTileMap.cpp" />

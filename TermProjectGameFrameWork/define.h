@@ -30,6 +30,8 @@ enum class GROUP_TYPE
 	PROJ_PLAYER, 
 	PROJ_MONSTER, 
 
+	PLAYER_WEAPON,
+
 	UI = 31,		
 	
 	END = 32, 
