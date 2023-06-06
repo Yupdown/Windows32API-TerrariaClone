@@ -52,6 +52,12 @@
     <Filter Include="CObject\Monster\CEyeMonster">
       <UniqueIdentifier>{b6fda34a-8617-4c5b-9d0c-b59fc51c87f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CObject\HealthIndicator">
+      <UniqueIdentifier>{54e3b887-4a57-4393-8832-2a94994b3a6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CObject\QuickBarVisualizer">
+      <UniqueIdentifier>{3c225038-1b73-429f-a296-1775ae31c55b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -144,6 +150,12 @@
     <ClInclude Include="CItemContainerVisualizer.h">
       <Filter>CObject\ItemContainerVisualizer</Filter>
     </ClInclude>
+    <ClInclude Include="CHealthIndicator.h">
+      <Filter>CObject\HealthIndicator</Filter>
+    </ClInclude>
+    <ClInclude Include="CQuickBarVisualizer.h">
+      <Filter>CObject\QuickBarVisualizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -211,6 +223,12 @@
     </ClCompile>
     <ClCompile Include="CItemContainerVisualizer.cpp">
       <Filter>CObject\ItemContainerVisualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="CHealthIndicator.cpp">
+      <Filter>CObject\HealthIndicator</Filter>
+    </ClCompile>
+    <ClCompile Include="CQuickBarVisualizer.cpp">
+      <Filter>CObject\QuickBarVisualizer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

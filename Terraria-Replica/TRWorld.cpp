@@ -8,7 +8,8 @@
 #include "CKeyMgr.h"
 #include "CCamera.h"
 #include "CScene.h"
-#include "CItemContainerVisualizer.h"
+#include "CQuickBarVisualizer.h"
+#include "CHealthIndicator.h"
 
 #include "CMonster.h"
 #include "TRItemManager.h"
@@ -29,12 +30,12 @@ TRWorld::TRWorld()
 	player->SetScale(Vec2{ 40.f, 56.f });
 
 	for (int i = 0; i < 10; ++i)
-	{
 		quick_bar[i] = new TRItemContainer();
-		container_visualizers[i] = new CItemContainerVisualizer(quick_bar[i]);
-		container_visualizers[i]->SetPos(Vec2Int(56 * i + 36, 42));
-		container_visualizers[i]->SetScale(Vec2Int(52, 52));
-	}
+	quick_bar_visualizer = new CQuickBarVisualizer(quick_bar);
+	quick_bar_visualizer->SetPos(Vec2Int(10, 24));
+	health_indicator = new CHealthIndicator();
+	health_indicator->SetPos(Vec2Int(1120, 10));
+
 	quick_bar[0]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"pickaxe_iron"), 1));
 	quick_bar[1]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"hammer_iron"), 1));
 	quick_bar[2]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"longsword_iron"), 1));
@@ -74,29 +75,7 @@ void TRWorld::Update()
 		quick_bar_index = 8;
 	else if (KEY_TAP(KEY::ZERO))
 		quick_bar_index = 9;
-
-	float vSize_normal = 52.0f;
-	float vSize_select = 64.0f;
-
-	for (int i = 0; i < 10; ++i)
-	{
-		bool selected = i == quick_bar_index;
-		Vec2 position = container_visualizers[i]->GetPos();
-		Vec2 scale = container_visualizers[i]->GetScale();
-
-		float x_delta = 36.0f + 56.0f * i;
-		if (i > quick_bar_index)
-			x_delta += vSize_select - vSize_normal;
-		else if (i == quick_bar_index)
-			x_delta += (vSize_select - vSize_normal) * 0.5f;
-
-		container_visualizers[i]->SetSelected(selected);
-		container_visualizers[i]->SetPos(Vec2(Lerp(position.x, x_delta, DT * 16.0f), position.y));
-		container_visualizers[i]->SetScale(Vec2(
-			Lerp(scale.x, selected ? vSize_select : vSize_normal, DT * 16.0f),
-			Lerp(scale.y, selected ? vSize_select : vSize_normal, DT * 16.0f)
-		));
-	}
+	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
 
 	if (!quick_bar[quick_bar_index]->Blank())
 	{
@@ -161,8 +140,9 @@ void TRWorld::OnSceneCreate(CScene* scene)
 
 	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER); 
 
-	for (int i = 0; i < 10; ++i)
-		scene->AddObject(container_visualizers[i], GROUP_TYPE::UI);
+	scene->AddObject(quick_bar_visualizer, GROUP_TYPE::UI);
+	quick_bar_visualizer->AddContainerVisualizers(scene);
+	scene->AddObject(health_indicator, GROUP_TYPE::UI);
 }
 
 Vec2 TRWorld::WorldToGlobal(const Vec2& v)
