@@ -167,9 +167,6 @@
     <ClCompile Include="TRWorldGenerationProcess.cpp">
       <Filter>Terraria-Replica</Filter>
     </ClCompile>
-    <ClCompile Include="Terraria-Replica.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>pch</Filter>
     </ClCompile>
@@ -211,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="CItemContainerVisualizer.cpp">
       <Filter>CObject\ItemContainerVisualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Terraria-Replica.cpp">
+      <Filter>Terraria-Replica</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

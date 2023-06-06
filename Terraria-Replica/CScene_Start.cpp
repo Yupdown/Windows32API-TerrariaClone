@@ -19,7 +19,7 @@ CScene_Start::CScene_Start()
 	SetName(L"Scene_Start");
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	float ground_level = 64 * PIXELS_PER_TILE;
-
+	
 	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_0.png",Vec2{ 0, 0 }, Vec2{ vRes.x,vRes.y * 10.f },Vec2{ vRes.x,vRes.y * 10.f }, 10,0.1f));
 	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_1.png",Vec2{ 0, ground_level },vRes,Vec2{ vRes.x,vRes.y * 10.f }, 10,0.3f));
 	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_2.png",Vec2{ 0, ground_level },vRes,Vec2{ vRes.x,vRes.y * 10.f }, 10,0.4f));
@@ -109,4 +109,9 @@ void CScene_Start::Exit()
 void CScene_Start::update()
 {
 	CScene::update();
+}
+
+void CScene_Start::render(HDC _dc)
+{
+	CScene::render(_dc);
 }

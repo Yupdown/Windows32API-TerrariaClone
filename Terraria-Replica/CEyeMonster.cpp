@@ -43,12 +43,15 @@ void CEyeMonster::render(HDC _dc) const
 
 void CEyeMonster::OnCollision(CCollider* const _pOther)
 {
+	CMonster::OnCollision(_pOther);
 }
 
-void CEyeMonster::OnCollisionEnter(CCollider* const _pOther)
+void  CEyeMonster::OnCollisionEnter(CCollider* const _pOther)
 {
+	CMonster::OnCollisionEnter(_pOther);
 }
 
-void CEyeMonster::OnCollisionExit(CCollider* const _pOther)
+void  CEyeMonster::OnCollisionExit(CCollider* const _pOther)
 {
+	CMonster::OnCollisionExit(_pOther);
 }

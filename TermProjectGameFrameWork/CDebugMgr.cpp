@@ -7,6 +7,8 @@
 #include "CTileLayer.h"
 #include "CCamera.h"
 #include "CKeyMgr.h"
+#include "CResMgr.h"
+#include "CThreadMgr.h"
 
 extern bool g_bStopToken;
 
@@ -26,12 +28,13 @@ CDebugMgr::~CDebugMgr()
 
 void CDebugMgr::init()
 {
+	/*m_hWnd = CreateWindow(L"DebugMgr", NULL, WS_POPUP,
+		1050, 50, 264-15, 264-17, Mgr(CCore)->GetMainHwnd(), NULL, Mgr(CCore)->GethInst(), nullptr);*/
 	m_hWnd = CreateWindow(L"DebugMgr", NULL, WS_POPUP,
-		1000, 50, 400, 200, Mgr(CCore)->GetMainHwnd(), NULL, Mgr(CCore)->GethInst(), nullptr);
-
+		1050, 50, 264 - 10 , 264 - 10  , Mgr(CCore)->GetMainHwnd(), NULL, Mgr(CCore)->GethInst(), nullptr);
 	//m_hWnd = CreateWindow(L"DebugMgr", L"ChildClass", WS_CHILD | WS_VISIBLE, 100, 0, 720, 720, Mgr(CCore)->GetMainHwnd(), NULL, Mgr(CCore)->GethInst(), MiniMapProc);
 
-	RECT rt{ 0,0,static_cast<LONG>(400),static_cast<LONG>(200) };
+	//RECT rt{ 0,0,static_cast<LONG>(300),static_cast<LONG>(300) };
 	//AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW,false);
 	//SetWindowPos(m_hWnd, nullptr, 1000, 10, rt.right - rt.left, rt.bottom - rt.top, 0);
 
@@ -39,12 +42,12 @@ void CDebugMgr::init()
 
 	m_hDC = GetDC(m_hWnd);
 	m_hMemDC = CreateCompatibleDC(m_hDC);
-	m_hMemBit = CreateCompatibleBitmap(m_hDC, 400, 200);
+	m_hMemBit = CreateCompatibleBitmap(m_hDC, 264 , 264 );
 	DeleteObject(SelectObject(m_hMemDC, m_hMemBit));
 
 
 	m_hMemDC2 = CreateCompatibleDC(m_hDC);
-	m_hMemBit2 = CreateCompatibleBitmap(m_hDC, 400, 200);
+	m_hMemBit2 = CreateCompatibleBitmap(m_hDC, 264, 264 );
 	DeleteObject(SelectObject(m_hMemDC2, m_hMemBit2));
 
 
@@ -80,10 +83,10 @@ void CDebugMgr::init()
 		if (i == 0)
 		{
 			TransparentBlt(m_hMemDC2
+				, 0 
 				, 0
-				, 0
-				, 400
-				, 200
+				, 264 
+				, 264
 				, pCurScene->m_vecLayer[i]->GetLayerDC()
 				, 0
 				, 0
@@ -94,10 +97,10 @@ void CDebugMgr::init()
 		else
 		{
 			TransparentBlt(m_hMemDC2
-				, 0
-				, (int)((400.f + float(cnt) * 100.f) * 200.f / 4096.f)
-				, 400
-				, 200
+				, 0 
+				, (int)((400.f + float(cnt) * 100.f) * 264.f / 4096.f) 
+				, 264
+				, 264
 				, pCurScene->m_vecLayer[i]->GetLayerDC()
 				, 0
 				, 0
@@ -111,14 +114,14 @@ void CDebugMgr::init()
 	for (auto& layer : pCurScene->m_vecTileLayer)
 	{
 		const Vec2 vLTpos = (layer->GetPos() - layer->GetScale() / 2.f);
-		float scaleX = layer->GetScale().x * (400.f / 8192.f);
-		float scaleY = layer->GetScale().y * (200.f / 4096.f);
+		float scaleX = layer->GetScale().x * (264.f / 8192.f);
+		float scaleY = layer->GetScale().y * (264.f / 4096.f);
 
 		TransparentBlt(m_hMemDC2
-			, 0
-			, 0
-			, 400
-			, 200
+			, 0 
+			, 0 
+			, 264 
+			, 264
 			, layer->GetTileLayerDC()
 			, 0
 			, 0
@@ -129,16 +132,19 @@ void CDebugMgr::init()
 
 	
 	StretchBlt(m_hMemDC
-		, 0
-		, 0
-		, 400
-		, 200
+		, 0 
+		, 0 
+		, 264
+		, 264
 		, m_hMemDC2
-		, 0
-		, 0
-		, 400
-		, 200
+		, 10
+		, 10
+		, 264
+		, 264
 		, SRCCOPY);
+
+	m_pMinimapImg = Mgr(CResMgr)->GetImg(L"Minimap_Frame.png");
+
 }
 
 void CDebugMgr::update()
@@ -150,14 +156,27 @@ void CDebugMgr::render()
 	BitBlt(m_hMemDC
 		, 0
 		, 0
-		, 400
-		, 200
+		, 264 - 10
+		, 264 - 10
 		, m_hMemDC2
 		, 0
 		, 0
 		, SRCCOPY);
 
 	auto pCurScene = Mgr(CSceneMgr)->GetCurScene();
+	
+	m_pMinimapImg->TransparentBlt(m_hMemDC
+		, 0
+		, 0
+		, 264
+		, 264
+		, 10
+		, 10
+		, 264 - 10
+		, 264 - 10
+		, RGB(255, 0, 255));
+
+//	auto pCurScene = Mgr(CSceneMgr)->GetCurScene();
 
 	for (auto& vec : pCurScene->m_vecObj)
 	{
@@ -166,27 +185,29 @@ void CDebugMgr::render()
 			auto vPos = obj->GetPos();
 			auto vScale = obj->GetScale();
 			Rectangle(m_hMemDC
-				,(int)((vPos.x - vScale.x/2.f) * 400.f / 8192.f)
-				,(int)((vPos.y - vScale.y/2.f) * 200.f / 4098.f)
-				,(int)((vPos.x + vScale.x/2.f) * 400.f / 8192.f)
-				,(int)((vPos.y + vScale.y/2.f) * 200.f / 4098.f));
+				,(int)((vPos.x - vScale.x/2.f) * 264.f / 8192.f)
+				,(int)((vPos.y - vScale.y/2.f) * 264.f / 4098.f)
+				,(int)((vPos.x + vScale.x/2.f) * 264.f / 8192.f)
+				,(int)((vPos.y + vScale.y/2.f) * 264.f / 4098.f));
 		}
 	}
 	auto hOld = SelectObject(m_hMemDC, GetStockObject(HOLLOW_BRUSH));
 	const auto CamRect = Mgr(CCamera)->GetCamRect();
 
 	Rectangle(m_hMemDC
-		,(int)(CamRect.vLT.x * 400.f / 8192.f)
-		,(int)(CamRect.vLT.y * 200.f / 4098.f )
-		,(int)(CamRect.vRB.x * 400.f / 8192.f)
-		,(int)(CamRect.vRB.y * 200.f / 4098.f ));
+		,(int)(CamRect.vLT.x * 264.f / 8192.f)
+		,(int)(CamRect.vLT.y * 264.f / 4098.f )
+		,(int)(CamRect.vRB.x * 264.f / 8192.f)
+		,(int)(CamRect.vRB.y * 264.f / 4098.f ));
 
 	SelectObject(m_hMemDC, hOld);
+
+
 	BitBlt(m_hDC
 		, 0
 		, 0
-		, 400
-		, 200
+		, 264 - 10
+		, 264 - 10
 		, m_hMemDC
 		, 0
 		, 0
@@ -195,8 +216,11 @@ void CDebugMgr::render()
 
 void CDebugMgr::progress()
 {
-	update();
-	render();
+	if (!g_bStopToken)
+	{
+		update();
+		render();
+	}
 }
 
 void miniMapWin()

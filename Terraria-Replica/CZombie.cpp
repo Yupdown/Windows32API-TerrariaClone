@@ -26,12 +26,15 @@ void CZombie::render(HDC _dc) const
 
 void CZombie::OnCollision(CCollider* const _pOther)
 {
+	CMonster::OnCollision(_pOther);
 }
 
 void CZombie::OnCollisionEnter(CCollider* const _pOther)
 {
+	CMonster::OnCollisionEnter(_pOther);
 }
 
 void CZombie::OnCollisionExit(CCollider* const _pOther)
 {
+	CMonster::OnCollisionExit(_pOther);
 }

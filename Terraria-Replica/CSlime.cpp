@@ -26,12 +26,15 @@ void CSlime::render(HDC _dc) const
 
 void CSlime::OnCollision(CCollider* const _pOther)
 {
+	CMonster::OnCollision(_pOther);
 }
 
-void CSlime::OnCollisionEnter(CCollider* const _pOther)
+void  CSlime::OnCollisionEnter(CCollider* const _pOther)
 {
+	CMonster::OnCollisionEnter(_pOther);
 }
 
-void CSlime::OnCollisionExit(CCollider* const _pOther)
+void  CSlime::OnCollisionExit(CCollider* const _pOther)
 {
+	CMonster::OnCollisionExit(_pOther);
 }

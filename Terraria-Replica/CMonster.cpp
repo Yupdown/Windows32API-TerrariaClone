@@ -5,6 +5,7 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "CRigidBody.h"
+#include "CPlayer.h"
 
 CMonster::CMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 {
@@ -59,7 +60,19 @@ void CMonster::render(HDC _dc) const
 
 void CMonster::OnCollision(CCollider* const _pOther)
 {
-
+	auto pObj = _pOther->GetOwner();
+	if (L"Player" == pObj->GetName())
+	{
+		auto pPlayer = (CPlayer*)pObj;
+		auto iCurHP = pPlayer->GetHP();
+		//pPlayer->SetHP(iCurHP - 30);
+		auto vDir = GetComp<CRigidBody>()->GetVelocity().Normalize();
+		vDir.y = 0;
+		
+		
+		//pPlayer->GetComp<CRigidBody>()->AddForce(vDir * 500);
+		//pPlayer->GetComp<CRigidBody>()->component_update();
+	}
 }
 
 void CMonster::OnCollisionEnter(CCollider* const _pOther)
@@ -67,11 +80,20 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 	auto pObj = _pOther->GetOwner();
 	if (L"Player" == pObj->GetName())
 	{
-		DeleteObj(this);
+		auto pPlayer = (CPlayer*)pObj;
+		auto iCurHP = pPlayer->GetHP();
+		pPlayer->SetHP(iCurHP - 30);
+		auto vDir = GetComp<CRigidBody>()->GetVelocity().Normalize();
+		vDir.y = 0;
+		pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
+		
+		pPlayer->GetComp<CRigidBody>()->AddVelocity(vDir * 500 );
+		pPlayer->GetComp<CRigidBody>()->AddForce(vDir*500 );
+		pPlayer->GetComp<CRigidBody>()->component_update();
 	}
 }
 
 void CMonster::OnCollisionExit(CCollider* const _pOther)
 {
-
+	
 }

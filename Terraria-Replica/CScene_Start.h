@@ -7,7 +7,7 @@ class CScene_Start
 	:public CScene
 {
 private:
-
+	
 public:
 	CScene_Start();
 	~CScene_Start();
@@ -15,5 +15,6 @@ public:
 	void Enter()override;
 	void Exit()override;
 	void update()override;
+	void render(HDC _dc)override;
 };
 

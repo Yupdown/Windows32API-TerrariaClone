@@ -15,7 +15,7 @@
 #include "CustomMath.hpp"
 
 void updateTileCollision(CObject* const _pObj, TRWorld* const _pTRWorld);
-
+extern bool g_bStopToken;
 HHOOK hHook;
 #define MAX_LOADSTRING 100
 
@@ -80,6 +80,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             if (WM_QUIT == msg.message)
             {
+                g_bStopToken = true;
+                CCore::m_miniMapThread.join();
                 break;
             }
             if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))

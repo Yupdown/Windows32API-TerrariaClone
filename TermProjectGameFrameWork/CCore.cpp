@@ -68,7 +68,6 @@ CCore::~CCore()
 	{
 		DeleteDCBITMAP(m_hThreadMazentaDC[i], m_hThreadMazentaBit[i]);
 	}
-	 m_miniMapThread.join();
 }
 
 void CCore::CreateBrushPen()

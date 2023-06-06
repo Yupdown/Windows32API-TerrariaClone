@@ -21,6 +21,7 @@ private:
 	HDC m_hMemDC2;
 	HBITMAP m_hMemBit2;
 
+	const CImage* m_pMinimapImg = nullptr;
 
 public:
 	void init();

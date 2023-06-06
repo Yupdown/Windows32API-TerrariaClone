@@ -32,6 +32,9 @@ public:
 	constexpr inline void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
 	constexpr inline Vec2 GetOffsetPos()const { return m_vOffsetPos; }
 	constexpr inline Vec2 GetScale()const { return m_vScale; }
+
+	int GetColCnt()const { return m_iColCnt; }
+
 public:
 	void component_update()override;
 	void component_render(HDC _dc)const override;

@@ -14,6 +14,7 @@
 #include "Vec2Int.hpp"
 #include "CWeapon.h"
 #include "SimpleMath.hpp"
+#include "CCollider.h"
 
 CPlayer::CPlayer(TRWorld* const _trWorld)
 {
@@ -284,4 +285,8 @@ void CPlayer::OnCollisionEnter(CCollider* const _pOther)
 
 void CPlayer::OnCollisionExit(CCollider* const _pOther)
 {
+	
+	auto pCollider = GetComp<CCollider>();
+	auto pRigid = GetComp<CRigidBody>();
+	
 }

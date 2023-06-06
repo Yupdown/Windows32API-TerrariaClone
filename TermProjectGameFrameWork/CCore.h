@@ -8,6 +8,11 @@ class CTexture;
 class CCore
 	:public Singleton<CCore>
 {
+	friend int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+		_In_opt_ HINSTANCE hPrevInstance,
+		_In_ LPWSTR    lpCmdLine,
+		_In_ int       nCmdShow);
+
 	static jthread m_miniMapThread;
 	friend class Singleton;
 	CCore();
