@@ -9,6 +9,7 @@
 #include "CResMgr.h"
 #include "Vec2Int.hpp"
 #include "CCore.h"
+#include "CDebugMgr.h"
 
 TRTileMap::TRTileMap(int width, int height)
 {
@@ -115,7 +116,8 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 {
 	static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
 	HDC hdc = renderer->GetTileLayerDC();
-	
+	HDC miniMapHDC = Mgr(CDebugMgr)->GetMiniMapTileLayer()->GetTileLayerDC();
+	auto minimapRenderer = Mgr(CDebugMgr)->GetMiniMapTileLayer();
 	Vec2Int p = TRWorld::WorldToGlobal(Vec2(static_cast<float>(x), static_cast<float>(y)));
 	RECT r = { p.x - PIXELS_PER_TILE, p.y - PIXELS_PER_TILE * 2, p.x + PIXELS_PER_TILE * 2, p.y + PIXELS_PER_TILE };
 	FillRect(hdc, &r, brush);
@@ -139,6 +141,7 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 			int sh = min(abs(dy) * -2 + 5, 4);
 
 			tile->OnDrawElement(renderer, x + max(dx, -1), y + min(dy, 1), bitmask, sx, sy, sw, sh);
+			tile->OnDrawElement(minimapRenderer, x + max(dx, -1), y + min(dy, 1), bitmask, sx, sy, sw, sh);
 		}
 	}
 
@@ -155,6 +158,7 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 
 			int bitmask = GetTileNeighborMask(xp, yp);
 			tile->OnDrawElement(renderer, xp, yp, bitmask);
+			tile->OnDrawElement(minimapRenderer, xp, yp, bitmask);
 		}
 	}
 }

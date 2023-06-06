@@ -145,6 +145,23 @@ void CDebugMgr::init()
 
 	m_pMinimapImg = Mgr(CResMgr)->GetImg(L"Minimap_Frame.png");
 
+	m_pTileLayer = std::make_unique<CTileLayer>(Vec2{ 0,0 }, 8192, 4096);
+
+	for (auto& layer : pCurScene->m_vecTileLayer)
+	{
+		TransparentBlt(m_pTileLayer->GetTileLayerDC()
+			, 0
+			, 0
+			, 8192
+			, 4096
+			, layer->GetTileLayerDC()
+			, 0
+			, 0
+			, 8192
+			, 4096
+			, RGB(255, 0, 255));
+	}
+
 }
 
 void CDebugMgr::update()
@@ -164,7 +181,19 @@ void CDebugMgr::render()
 		, SRCCOPY);
 
 	auto pCurScene = Mgr(CSceneMgr)->GetCurScene();
-	
+
+	TransparentBlt(m_hMemDC
+		, 0
+		, 0
+		, 264
+		, 264
+		, m_pTileLayer->GetTileLayerDC()
+		, 0
+		, 0
+		, static_cast<int>(m_pTileLayer->GetScale().x)
+		, static_cast<int>(m_pTileLayer->GetScale().y)
+		, RGB(255, 0, 255));
+
 	m_pMinimapImg->TransparentBlt(m_hMemDC
 		, 0
 		, 0
@@ -185,10 +214,10 @@ void CDebugMgr::render()
 			auto vPos = obj->GetPos();
 			auto vScale = obj->GetScale();
 			Rectangle(m_hMemDC
-				,(int)((vPos.x - vScale.x/2.f) * 264.f / 8192.f)
-				,(int)((vPos.y - vScale.y/2.f) * 264.f / 4098.f)
-				,(int)((vPos.x + vScale.x/2.f) * 264.f / 8192.f)
-				,(int)((vPos.y + vScale.y/2.f) * 264.f / 4098.f));
+				,(int)((vPos.x - vScale.x/2.f) * 264.f / 8192.f)-2
+				,(int)((vPos.y - vScale.y/2.f) * 264.f / 4098.f)-2
+				,(int)((vPos.x + vScale.x/2.f) * 264.f / 8192.f)+2
+				,(int)((vPos.y + vScale.y/2.f) * 264.f / 4098.f)+2);
 		}
 	}
 	auto hOld = SelectObject(m_hMemDC, GetStockObject(HOLLOW_BRUSH));
