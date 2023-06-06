@@ -22,6 +22,7 @@ public:
 	~TRItem();
 
 	void CreateAtlasElements();
+	std::wstring GetName() const;
 	int GetMaxStacksize() const;
 	CImage* GetItemElement() const;
 	virtual bool OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos);

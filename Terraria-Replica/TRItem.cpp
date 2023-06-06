@@ -23,6 +23,11 @@ void TRItem::CreateAtlasElements()
 	element = Mgr(CResMgr)->GetImg(k_element);
 }
 
+std::wstring TRItem::GetName() const
+{
+	return name;
+}
+
 int TRItem::GetMaxStacksize() const
 {
 	return max_stacksize;

@@ -8,11 +8,7 @@
 CItemContainerVisualizer::CItemContainerVisualizer(TRItemContainer* _item_container)
 {
     item_container = _item_container;
-    container_selected = false;
     m_bIsCamAffected = false;
-
-    container_background[0] = Mgr(CResMgr)->GetImg(L"Inventory_Back.png");
-    container_background[1] = Mgr(CResMgr)->GetImg(L"Inventory_Back_Select.png");
 }
 
 CItemContainerVisualizer::CItemContainerVisualizer(const CItemContainerVisualizer& other) : CObject(other)
@@ -27,25 +23,27 @@ void CItemContainerVisualizer::update()
 
 void CItemContainerVisualizer::render(HDC _dc) const
 {
-    //CObject::render(_dc);
-    
-    Mgr(CResMgr)->renderImg(_dc, container_background[container_selected ? 1 : 0], m_vPos - m_vScale * 0.5f, m_vScale, Vec2Int::zero, Vec2Int::one * 26);
+    CObject::render(_dc);
 
-    if (!item_container->Blank())
-    {
-        CImage* image_item = item_container->GetItemStack().GetItem()->GetItemElement();
-        Vec2Int image_size = Vec2Int(image_item->GetWidth(), image_item->GetHeight());
-        Mgr(CResMgr)->renderImg(_dc, image_item, m_vPos - image_size, image_size * 2, Vec2Int::zero, image_size);
-    }
-}
+    if (item_container->Blank())
+        return;
 
-void CItemContainerVisualizer::SetSelected(bool value)
-{
-    container_selected = value;
+    CImage* image_item = item_container->GetItemStack().GetItem()->GetItemElement();
+    Vec2Int image_size = Vec2Int(image_item->GetWidth(), image_item->GetHeight());
+    Mgr(CResMgr)->renderImg(_dc, image_item, m_vPos - image_size, image_size * 2, Vec2Int::zero, image_size);
+
+    static wchar_t buffer[64];
+    wsprintf(buffer, L"%d", item_container->GetItemStack().GetStackSize());
+    renderText(_dc, m_vPos + Vec2::one * 8.0f, buffer);
 }
 
 CItemContainerVisualizer* CItemContainerVisualizer::Clone() const
 {
     auto p = new CItemContainerVisualizer{ *this };
     return p;
+}
+
+TRItemContainer* CItemContainerVisualizer::GetItemContainer() const
+{
+    return item_container;
 }

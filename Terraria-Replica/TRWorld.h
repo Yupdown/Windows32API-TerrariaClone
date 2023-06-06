@@ -9,7 +9,8 @@
 #include "TRItemContainer.h"
 
 class TRItemContainer;
-class CItemContainerVisualizer;
+class CQuickBarVisualizer;
+class CHealthIndicator;
 
 class TRWorld
 {
@@ -22,7 +23,8 @@ private:
 	CPlayer* player;
 
 	TRItemContainer* quick_bar[10];
-	CItemContainerVisualizer* container_visualizers[10];
+	CQuickBarVisualizer* quick_bar_visualizer;
+	CHealthIndicator* health_indicator;
 	int quick_bar_index;
 
 public:
