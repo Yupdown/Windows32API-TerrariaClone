@@ -77,6 +77,8 @@ void TRWorld::Update()
 		quick_bar_index = 9;
 	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
 
+	health_indicator->SetHealthValue(player->GetHP());
+
 	if (!quick_bar[quick_bar_index]->Blank())
 	{
 		Vec2 mouse_world_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));

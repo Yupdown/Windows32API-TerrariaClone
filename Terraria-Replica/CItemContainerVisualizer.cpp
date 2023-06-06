@@ -34,7 +34,7 @@ void CItemContainerVisualizer::render(HDC _dc) const
 
     static wchar_t buffer[64];
     wsprintf(buffer, L"%d", item_container->GetItemStack().GetStackSize());
-    renderText(_dc, m_vPos + Vec2::one * 8.0f, buffer);
+    renderText(_dc,RGB(255,0,0), m_vPos + Vec2::one * 8.0f, buffer);
 }
 
 CItemContainerVisualizer* CItemContainerVisualizer::Clone() const

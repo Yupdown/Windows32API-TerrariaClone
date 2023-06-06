@@ -27,7 +27,7 @@ protected:
 	Vec2		m_vScale{};
 	TRWorld* m_pTRWolrd = nullptr;
 	Vec2 m_vWillPos = {};
-	int m_iHP = 0;
+	int m_iHP = 200;
 private:
 	wstring		m_strName = {}; 
 	array<unique_ptr<CComponent>, (UINT)COMPONENT_TYPE::END>		m_arrComp; 

@@ -49,8 +49,7 @@ void CRigidBody::Move()
 
 void CRigidBody::component_update()
 {
-	if (bitwise_absf(m_vVelocity.x) <= bitwise_absf(m_vMaxVelocityOrigin.x) &&
-		bitwise_absf(m_vVelocity.y) <= bitwise_absf(m_vMaxVelocityOrigin.y))
+	if (bitwise_absf(m_vVelocity.x) <= bitwise_absf(m_vMaxVelocityOrigin.x))
 	{
 		SetLimitOrigin();
 	}

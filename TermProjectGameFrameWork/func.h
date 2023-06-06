@@ -84,5 +84,5 @@ BOOL TransparentBltSafe(HDC hdcDest
 	, const short hBit
 	, UINT crTransparent);
 
-void renderText(HDC _dc, Vec2 _vGlobalLT, wstring_view _wstrText);
+void renderText(HDC _dc,COLORREF _rgb ,Vec2 _vGlobalLT, wstring_view _wstrText);
 

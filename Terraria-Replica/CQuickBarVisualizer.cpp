@@ -77,7 +77,7 @@ void CQuickBarVisualizer::render(HDC _dc) const
 	{
 		static wchar_t buffer[64];
 		wsprintf(buffer, L"%s", item_container->GetItemStack().GetItem()->GetName().c_str());
-		renderText(_dc, m_vPos + Vec2::down * 22.0f, buffer);
+		renderText(_dc,RGB(255,0,0), m_vPos + Vec2::down * 22.0f, buffer);
 	}
 
 	for (int i = 0; i < 10; ++i)
