@@ -152,9 +152,9 @@ void CCamera::update()
 			}
 			else
 			{
-				Vec2 vRes = CCore::GetInst()->GetResolution();
-				SetLookAt(vRes / 2.f);
-				//SetLookAt(vPrev);
+				//Vec2 vRes = CCore::GetInst()->GetResolution();
+				//SetLookAt(vRes / 2.f);
+				SetNowLookAt(vPrev);
 				//SetCamRect(Mgr(CCore)->GetResolutionV()/2.f);
 			}
 		}
@@ -216,14 +216,14 @@ CoRoutine CCamera::ZoomInBoss(const Vec2 _vBossPos)
 	StartCoEvent(CamMoveCoRoutine(_vBossPos));
 	while (m_bMoveFlag)
 	{
-		m_fCamZoom += 0.005f;
+		m_fCamZoom += 0.002f;
 		co_await std::suspend_always{};
 	}
 	m_bMoveFlag = true;
 	StartCoEvent(CamMoveCoRoutine(vReturnPos));
 	while (m_bMoveFlag)
 	{
-		m_fCamZoom -= 0.005f;
+		m_fCamZoom -= 0.002f;
 		co_await std::suspend_always{};
 	}
 	m_fCamZoom = 1.f;

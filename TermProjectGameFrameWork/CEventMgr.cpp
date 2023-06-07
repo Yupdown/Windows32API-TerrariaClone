@@ -61,3 +61,11 @@ void CEventMgr::AddDeadObj(unique_ptr<CObject>& _pDeadObj)
 {
 	m_vecDeadObj.emplace_back(std::move(_pDeadObj));
 }
+
+void CEventMgr::Reset()
+{
+	m_vecEvent.clear();
+	m_fpTRupdate = nullptr;
+	m_listCoRoutine.clear();
+	m_mapCoRoutine.clear();
+}

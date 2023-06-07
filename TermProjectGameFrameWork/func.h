@@ -43,7 +43,7 @@ CoRoutine DelayCoRoutine( function<void(void)> _fp, float _fDelayTime);
 //	StartCoRoutine(_pObj, DelayCoRoutine(std::bind(std::forward<Func>(fp), _pObj, std::forward<Args>(args)...), _fElapsedTime));
 //}
 
-CoRoutine DelayCoRoutine(CObject* const _pObj, CoRoutine* _pDelayCoEvn, float _fDelayTime);
+CoRoutine DelayCoRoutine(CObject* const _pObj, CoRoutine _delayCoEvn, float _fDelayTime);
 
 
 void StartDelayCoRoutine(CObject* const _pObj, CoRoutine&& _delayCoEvn, float _fDelayTime);
@@ -79,7 +79,7 @@ void CreateObj(CObject* const _pObj, GROUP_TYPE _eGroup);
 
 void DeleteObj(CObject* const _pDeadObj);
 
-CoRoutine ChangeScene(SCENE_TYPE _eNext);
+void ChangeScene(SCENE_TYPE _eNext);
 
 void ChangeAIState(AI* const _pAI, MON_STATE _eNextState);
 

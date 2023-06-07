@@ -24,15 +24,12 @@ void StartCoEvent(CoRoutine&& _co)
 	Mgr(CEventMgr)->AddCoRoutineWithOutObj(std::move(_co));
 }
 
-CoRoutine ChangeScene(SCENE_TYPE _eNext)
+
+void ChangeScene(SCENE_TYPE _eNext)
 {
-	while (Mgr(CEventMgr)->GetCoRoutineSize() > 1)
-	{
-		co_await std::suspend_always{};
-	}
-	CSceneMgr::GetInst()->ChangeScene(_eNext);
-	co_return;
+	Mgr(CEventMgr)->AddEvent(&CSceneMgr::ChangeScene, Mgr(CSceneMgr),_eNext);
 }
+
 
 void CreateObj(CObject* const _pObj, GROUP_TYPE _eGroup)
 {
@@ -156,7 +153,7 @@ void renderText(HDC _dc,COLORREF _rgb,Vec2 _vGlobalLT, wstring_view _wstrText)
 	TextOutW(_dc, (int)_vGlobalLT.x, (int)_vGlobalLT.y, _wstrText.data(), (int)_wstrText.size());
 }
 
-CoRoutine DelayCoRoutine(CObject* const _pObj, CoRoutine* _pDelayCoEvn, float _fDelayTime)
+CoRoutine DelayCoRoutine(CObject* const _pObj, CoRoutine _delayCoEvn, float _fDelayTime)
 {
 	float fAccTime = 0.f;
 	while (fAccTime < _fDelayTime)
@@ -164,12 +161,11 @@ CoRoutine DelayCoRoutine(CObject* const _pObj, CoRoutine* _pDelayCoEvn, float _f
 		fAccTime += DT;
 		co_await std::suspend_always{};
 	}
-	StartCoRoutine(_pObj, CoRoutine{ std::move(*_pDelayCoEvn) });
-	delete _pDelayCoEvn;
+	StartCoRoutine(_pObj, CoRoutine{ std::move(_delayCoEvn) });
 	co_return;
 }
 
 void StartDelayCoRoutine(CObject* const _pObj, CoRoutine&& _delayCoEvn, float _fDelayTime)
 {
-	StartCoEvent(DelayCoRoutine(_pObj, new CoRoutine{ std::move(_delayCoEvn) }, _fDelayTime));
+	StartCoEvent(DelayCoRoutine(_pObj, CoRoutine{ std::move(_delayCoEvn) }, _fDelayTime));
 }

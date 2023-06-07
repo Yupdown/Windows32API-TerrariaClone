@@ -328,6 +328,7 @@ CoRoutine CPlayer::PlayerRebirthProcess()
 		co_await std::suspend_always{};
 	}
 	SetHP(200);
+	SetWillPos(vPlayerDeadPos);
 	SetPos(vPlayerDeadPos);
 	m_eCurState = PLAYER_STATE::IDLE;
 	m_bSlane = false;

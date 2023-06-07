@@ -5,7 +5,7 @@ class CScene;
 class CSceneMgr
 	:public Singleton<CSceneMgr>
 {
-	friend CoRoutine ChangeScene(SCENE_TYPE _eNext);
+	friend void ChangeScene(SCENE_TYPE _eNext);
 	friend class Singleton;
 	CSceneMgr();
 	~CSceneMgr();

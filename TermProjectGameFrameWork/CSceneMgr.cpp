@@ -3,6 +3,7 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "CScene_Tool.h"
+#include "CEventMgr.h"
 
 CSceneMgr::CSceneMgr()
 {
@@ -41,6 +42,14 @@ void CSceneMgr::render(HDC _dc)
 
 void CSceneMgr::ChangeScene(SCENE_TYPE _eNext)
 {
+	Mgr(CEventMgr)->Reset();
+
+	m_pCurScene->Exit();
+
+	m_pCurScene = m_arrScene[etoi(_eNext)].get();
+
+	m_pCurScene->Enter();
+
 }
 
 void CSceneMgr::AddScene(SCENE_TYPE _eType, CScene* const _pScene)

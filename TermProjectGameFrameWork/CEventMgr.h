@@ -25,7 +25,7 @@ public:
 	template<typename Func, typename... Args> requires std::invocable<Func,Args...>
 	void AddEvent(Func&& fp,Args&&... args) 
 	{ 
-		m_vecEvent.emplace_back(std::bind(std::forward<Func>(fp),std::forward<Args>(args)...));
+		m_vecEvent.emplace_back([fp, args...]()mutable{std::invoke(std::forward<Func>(fp), std::forward<Args>(args)...); });
 	}
 	void AddDeadObj(unique_ptr<CObject>& _pDeadObj);
 
@@ -35,5 +35,7 @@ public:
 		m_fpTRupdate = std::bind(std::forward<Func>(fp), std::forward<Args>(args)...);
 	}
 	void ResetTRupdate() { m_fpTRupdate = nullptr; }
+
+	void Reset();
 };
 
