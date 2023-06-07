@@ -142,7 +142,8 @@ void CCamera::update()
 		ShakeFlag = true;
 		if (0. >= m_fShakeAcc)
 		{
-			m_fShakeAcc = 0.2f;
+			Shake = 4;
+			m_fShakeAcc = 0.1f;
 			ShakeFlag = false;
 			if (m_pTargetObj)
 			{
@@ -186,6 +187,11 @@ void CCamera::update()
 	if (KEY_HOLD(KEY::DOWN))
 		m_fCamZoom -= 0.01f;
 
+	if (KEY_TAP(KEY::TAB))
+	{
+		StartCoEvent(ZoomInBoss({ 6000.f,1000.f }));
+	}
+
 	CalDiff();
 }
 
@@ -200,6 +206,27 @@ CoRoutine CCamera::CamMoveCoRoutine(Vec2 _vDest)
 		co_await std::suspend_always{};
 	}
 	m_pTargetObj = pTarget;
+	co_return;
+}
+
+CoRoutine CCamera::ZoomInBoss(const Vec2 _vBossPos)
+{
+	const auto vReturnPos = m_vCurLookAt;
+	m_bMoveFlag = true;
+	StartCoEvent(CamMoveCoRoutine(_vBossPos));
+	while (m_bMoveFlag)
+	{
+		m_fCamZoom += 0.005f;
+		co_await std::suspend_always{};
+	}
+	m_bMoveFlag = true;
+	StartCoEvent(CamMoveCoRoutine(vReturnPos));
+	while (m_bMoveFlag)
+	{
+		m_fCamZoom -= 0.005f;
+		co_await std::suspend_always{};
+	}
+	m_fCamZoom = 1.f;
 	co_return;
 }
 
@@ -221,7 +248,7 @@ void CCamera::CalDiff()
 			if (0. >= m_fSpeed)
 			{
 				m_vCurLookAt = m_vLookAt;
-				m_fSpeed = 1000.f;
+				m_fSpeed = 2000.f;
 				m_fAccTime = 0.f;
 				m_bMoveFlag = false;
 			}
@@ -235,7 +262,7 @@ void CCamera::CalDiff()
 				else
 				{
 					m_vCurLookAt = m_vLookAt;
-					m_fSpeed = 1000.f;
+					m_fSpeed = 2000.f;
 					m_fAccTime = 0.f;
 				}
 			}

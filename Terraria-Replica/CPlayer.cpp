@@ -293,7 +293,10 @@ void CPlayer::OnCollisionEnter(CCollider* const _pOther)
 
 	if (L"Monster" == wstrObjName)
 	{
-		Mgr(CCamera)->SetShakeFlag(true);
+		if (!Mgr(CCamera)->IsCamMove() && !Mgr(CCamera)->IsCamShake())
+		{
+			Mgr(CCamera)->SetShakeFlag(true);
+		}
 	}
 }
 
@@ -324,10 +327,10 @@ CoRoutine CPlayer::PlayerRebirthProcess()
 	{
 		co_await std::suspend_always{};
 	}
-
 	SetHP(200);
 	SetPos(vPlayerDeadPos);
 	m_eCurState = PLAYER_STATE::IDLE;
 	m_bSlane = false;
+	Mgr(CCamera)->SetMoveFlag(false);
 	co_return;
 }

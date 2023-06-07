@@ -55,13 +55,13 @@ private:
 	Vec2		m_vDiff = {};		
 
 	float		m_fTime = { 1.0f };
-	float		m_fSpeed = { 1000.f };
+	float		m_fSpeed = { 2000.f };
 	float		m_fAccTime = {};
 	float		m_fAccel = {};
 	CTexture* m_pVeilTex = {}; 
 
 	//float		m_fSpeed = 1000.; 
-	float		m_fShakeAcc = 0.2f;
+	float		m_fShakeAcc = 0.1f;
 	UINT        Shake = 4;
 	bool		ShakeFlag = false;
 	bool        m_bMoveFlag = false;
@@ -91,7 +91,7 @@ public:
 	}
 	void SetLookAt(Vec2 _vLook)
 	{
-		m_fSpeed = 1000.f;
+		m_fSpeed = 2000.f;
 		m_fAccTime = 0.f;
 		m_vLookAt = _vLook;
 		float fMoveDist = (m_vLookAt - m_vPrevLookAt).length();
@@ -136,8 +136,10 @@ public:
 	}
 
 	void SetShakeFlag(bool _b) { ShakeFlag = _b; }
-
+	constexpr bool IsCamShake()const { return ShakeFlag; }
 	CoRoutine CamMoveCoRoutine(const Vec2 _vDest);
+
+	CoRoutine ZoomInBoss(const Vec2 _vBossPos);
 private:
 	void CalDiff();
 	
