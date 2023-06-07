@@ -334,5 +334,7 @@ CoRoutine CPlayer::PlayerRebirthProcess()
 	m_eCurState = PLAYER_STATE::IDLE;
 	m_bSlane = false;
 	Mgr(CCamera)->SetMoveFlag(false);
+	Mgr(CCamera)->SetTarget(this);
+	Mgr(CCamera)->update();
 	co_return;
 }
