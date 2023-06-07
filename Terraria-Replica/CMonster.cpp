@@ -8,6 +8,7 @@
 #include "CPlayer.h"
 #include "CWeapon.h"
 #include "CEventMgr.h"
+#include "CCamera.h"
 
 CMonster::CMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 {
@@ -108,6 +109,7 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 		pPlayer->GetComp<CRigidBody>()->component_update();
 		if (pPlayer->GetHP() <= 0)
 		{
+			Mgr(CCamera)->FadeOut(1.5f);
 			pPlayer->SetSlane(true);
 			pPlayer->GetComp<CRigidBody>()->SetVelocity({});
 			StartDelayCoRoutine(pPlayer,pPlayer->PlayerRebirthProcess(), 1.f);

@@ -25,6 +25,80 @@ void CCamera::init()
 	m_CamRect.vLT = Vec2{ 0.f,0.f };
 	m_CamRect.vRB = m_vResolution;
 	m_CamRect.vLookMid = m_vResolution / 2.f;
+
+	CreateDCBITMAP(m_hCamVeilDC, m_hCamVeilBit, m_vResolution);
+	PatBlt(m_hCamVeilDC, 0, 0, (int)m_vResolution.x, (int)m_vResolution.y, BLACKNESS);
+}
+
+void CCamera::render(HDC _dc)
+{
+	if (m_listCamEffect.empty())
+	{
+		return; 
+	}
+	tCamEffect& effect = m_listCamEffect.front();
+	effect.fCurTime += DT;
+	
+	float fRatio = 0.f;
+	fRatio = effect.fCurTime / effect.fDuration; 
+	
+
+	if (0.f > fRatio)
+		fRatio = 0.f;
+	if (1.f < fRatio)
+		fRatio = 1.f;
+
+	int iAlpha = 0;
+	/*switch (effect.eEffect)
+	{
+	case CAM_EFFECT::FADE_IN:
+		iAlpha = static_cast<int>(255.f * (1.f - fRatio));
+		break;
+	case CAM_EFFECT::FADE_OUT:
+		iAlpha = static_cast<int>(255.f * fRatio);
+		break;
+	case CAM_EFFECT::NONE:
+		break;
+	default:
+		break;
+	}*/
+	switch (effect.eEffect)
+	{
+	case CAM_EFFECT::FADE_IN:
+		iAlpha = static_cast<int>(135.f * (1.f - fRatio));
+		break;
+	case CAM_EFFECT::FADE_OUT:
+		iAlpha = static_cast<int>(135.f * fRatio);
+		break;
+	case CAM_EFFECT::NONE:
+		break;
+	default:
+		break;
+	}
+
+	BLENDFUNCTION bf = {};
+	bf.BlendOp = AC_SRC_OVER;	
+	bf.BlendFlags = 0;	
+	bf.AlphaFormat = 0;	 
+	bf.SourceConstantAlpha = iAlpha;
+
+	AlphaBlend(_dc
+		,0
+		,0
+		,(int)m_vResolution.x
+		,(int)m_vResolution.y
+		,m_hCamVeilDC
+		,0
+		,0
+		,(int)m_vResolution.x
+		,(int)m_vResolution.y
+		,bf);
+
+	
+	if (effect.fDuration < effect.fCurTime) 
+	{
+		m_listCamEffect.pop_front();
+	}
 }
 
 void CCamera::TransformRenderPos() const

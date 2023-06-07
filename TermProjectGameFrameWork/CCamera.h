@@ -67,9 +67,13 @@ private:
 	bool        m_bMoveFlag = false;
 	list<tCamEffect>	m_listCamEffect; 
 	float m_fCamZoom = 1.f;
+
+	HDC m_hCamVeilDC = nullptr;
+	HBITMAP m_hCamVeilBit = nullptr;
+
 public:
 	void init();
-	//void render(HDC _dc);
+	void render(HDC _dc);
 	constexpr Vec2	GetLookAt()const { return m_vCurLookAt; }
 	void	FadeIn(float _fDuration)
 	{

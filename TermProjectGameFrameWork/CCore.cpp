@@ -184,7 +184,7 @@ void CCore::progress()
 	CCamera::GetInst()->update();
 
 	CSceneMgr::GetInst()->render(m_hMemDC);
-	
+	Mgr(CCamera)->render(m_hMemDC);
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y,		
 		m_hMemDC, 0, 0, SRCCOPY);
 	//Clear();

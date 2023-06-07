@@ -327,6 +327,7 @@ CoRoutine CPlayer::PlayerRebirthProcess()
 	{
 		co_await std::suspend_always{};
 	}
+	Mgr(CCamera)->FadeIn(1.f);
 	SetHP(200);
 	SetWillPos(vPlayerDeadPos);
 	SetPos(vPlayerDeadPos);
