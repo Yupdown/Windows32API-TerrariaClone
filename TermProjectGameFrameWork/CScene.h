@@ -9,6 +9,7 @@ class CScene
 {
 	friend class CDebugMgr;
 	friend class CCollisionMgr;
+	friend class CMiniMap;
 private:
 	const auto& GetSceneObj()const { return m_vecObj; }
 public:

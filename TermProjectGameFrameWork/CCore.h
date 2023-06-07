@@ -13,7 +13,7 @@ class CCore
 		_In_ LPWSTR    lpCmdLine,
 		_In_ int       nCmdShow);
 
-	static jthread m_miniMapThread;
+	//static jthread m_miniMapThread;
 	friend class Singleton;
 	CCore();
 	~CCore();

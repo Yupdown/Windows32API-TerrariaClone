@@ -16,7 +16,7 @@
 #include "CThreadMgr.h"
 #include "CDebugMgr.h"
 
-jthread CCore::m_miniMapThread;
+//jthread CCore::m_miniMapThread;
 
 extern void miniMapWin();
 
@@ -24,7 +24,7 @@ bool g_bStopToken = false;
 
 bool g_bDoMultiThread = true;
 
-static bool bShowMiniMap = false;
+//static bool bShowMiniMap = false;
 
 CCore::CCore()
 {
@@ -192,25 +192,25 @@ void CCore::progress()
 
 	Mgr(CKeyMgr)->ReSetWheel();
 
-	if (!bDebugInit)
-	{
-		Mgr(CDebugMgr)->init();
-		m_miniMapThread = jthread{ miniMapWin };
-		bDebugInit = true;
-	}
+	////if (!bDebugInit)
+	////{
+	////	//Mgr(CDebugMgr)->init();
+	//////	m_miniMapThread = jthread{ miniMapWin };
+	//////	bDebugInit = true;
+	////}
 
-	if (KEY_TAP(KEY::M))
-	{
-		bShowMiniMap = !bShowMiniMap;
-		if (bShowMiniMap)
-		{
-			ShowWindow(Mgr(CDebugMgr)->m_hWnd, SW_SHOW);
-		}
-		else
-		{
-			ShowWindow(Mgr(CDebugMgr)->m_hWnd, SW_HIDE);
-		}
-	}
+	//if (KEY_TAP(KEY::M))
+	//{
+	//	bShowMiniMap = !bShowMiniMap;
+	//	/*if (bShowMiniMap)
+	//	{
+	//		ShowWindow(Mgr(CDebugMgr)->m_hWnd, SW_SHOW);
+	//	}
+	//	else
+	//	{
+	//		ShowWindow(Mgr(CDebugMgr)->m_hWnd, SW_HIDE);
+	//	}*/
+	//}
 }
 
 void CCore::Clear()

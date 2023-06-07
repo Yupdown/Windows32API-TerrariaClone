@@ -81,7 +81,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             if (WM_QUIT == msg.message)
             {
                 g_bStopToken = true;
-                CCore::m_miniMapThread.join();
+               // CCore::m_miniMapThread.join();
                 break;
             }
             if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))

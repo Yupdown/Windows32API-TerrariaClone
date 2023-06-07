@@ -50,13 +50,13 @@ void CObject::update()
 
 void CObject::render(HDC _dc)const
 {
-	auto [vPos, vScale] = Mgr(CCamera)->GetRenderPos(this);
+	/*auto [vPos, vScale] = Mgr(CCamera)->GetRenderPos(this);
 	
 	Rectangle(_dc, 
 		(int)(vPos.x),
 		(int)(vPos.y),
 		(int)(vPos.x + vScale.x),
-		(int)(vPos.y + vScale.y));
+		(int)(vPos.y + vScale.y));*/
 }
 
 void CObject::component_render(HDC _dc)const

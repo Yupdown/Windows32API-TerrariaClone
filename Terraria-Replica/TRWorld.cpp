@@ -23,6 +23,7 @@
 #include "CustomMath.hpp"
 #include "CWeapon.h"
 #include "TRMonGenerator.h"
+#include "CMiniMap.h"
 
 TRWorld* g_TRWorld = nullptr;
 
@@ -165,6 +166,10 @@ void TRWorld::OnSceneCreate(CScene* scene)
 		pMon->SetScale(Vec2{ 38.0f, 22.0f });
 		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
 		pMon->SetColliderScale(Vec2{ 38.0f, 22.0f });
+	}
+
+	{
+		scene->AddObject(new CMiniMap, GROUP_TYPE::UI);
 	}
 
 	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER); 
