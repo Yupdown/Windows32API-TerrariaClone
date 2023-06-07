@@ -7,6 +7,7 @@
 #include "CRigidBody.h"
 #include "CPlayer.h"
 #include "CWeapon.h"
+#include "CEventMgr.h"
 
 CMonster::CMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 {
@@ -28,6 +29,11 @@ CMonster::~CMonster()
 
 void CMonster::update()
 {
+	if (Mgr(CSceneMgr)->GetCurScene()->GetPlayerCast()->IsPlayerSlane())
+	{
+		return;
+	}
+
 	CObject::update();
 	auto vPlayerPos = Mgr(CSceneMgr)->GetCurScene()->GetPlayer()->GetPos();
 	auto pAnim = GetComp<CAnimator>();
@@ -66,6 +72,10 @@ void CMonster::OnCollision(CCollider* const _pOther)
 	if (L"Player" == pObj->GetName())
 	{
 		auto pPlayer = (CPlayer*)pObj;
+		if (pPlayer->IsPlayerSlane())
+		{
+			return;
+		}
 		auto vDir = GetComp<CRigidBody>()->GetVelocity().Normalize();
 		vDir.y = 0;
 		
@@ -81,6 +91,12 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 	if (L"Player" == wstrObjName)
 	{
 		auto pPlayer = (CPlayer*)pObj;
+
+		if (pPlayer->IsPlayerSlane())
+		{
+			return;
+		}
+
 		auto iCurHP = pPlayer->GetHP();
 		pPlayer->SetHP(iCurHP - 30);
 		auto vDir = GetComp<CRigidBody>()->GetVelocity().Normalize();
@@ -90,6 +106,12 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 		pPlayer->GetComp<CRigidBody>()->AddVelocity(vDir * 500 );
 		pPlayer->GetComp<CRigidBody>()->AddForce(vDir*500 );
 		pPlayer->GetComp<CRigidBody>()->component_update();
+		if (pPlayer->GetHP() <= 0)
+		{
+			pPlayer->SetSlane(true);
+			pPlayer->GetComp<CRigidBody>()->SetVelocity({});
+			StartDelayCoRoutine(pPlayer,pPlayer->PlayerRebirthProcess(), 1.f);
+		}
 	}
 }
 

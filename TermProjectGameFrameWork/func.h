@@ -9,6 +9,7 @@ int wrapAround(int x, int low, int high);
 
 class CObject;
 class AI;
+class CScene;
 
 void StartCoRoutine(CObject* const _pObj,CoRoutine&& _co);
 
@@ -35,12 +36,44 @@ void StartCoEvent(CoRoutine&& _co);
 
 CoRoutine DelayCoRoutine( function<void(void)> _fp, float _fDelayTime);
 
-template<typename Obj,typename Func,typename... Args>
-requires std::is_base_of<CObject,Obj>::value || std::invocable<Func,Args...>
-void StartDelayCoRoutine(float _fElapsedTime , Obj* const _pObj ,Func&& fp, Args&&... args)
+//template<typename Obj,typename Func,typename... Args>
+//requires std::is_base_of<CObject,Obj>::value || std::invocable<Func,Args...>
+//void StartDelayCoRoutine(float _fElapsedTime , Obj* const _pObj ,Func&& fp, Args&&... args)
+//{
+//	StartCoRoutine(_pObj, DelayCoRoutine(std::bind(std::forward<Func>(fp), _pObj, std::forward<Args>(args)...), _fElapsedTime));
+//}
+
+CoRoutine DelayCoRoutine(CObject* const _pObj, CoRoutine* _pDelayCoEvn, float _fDelayTime);
+
+
+void StartDelayCoRoutine(CObject* const _pObj, CoRoutine&& _delayCoEvn, float _fDelayTime);
+
+
+template <typename T> requires std::derived_from<T, CObject> || std::derived_from<T, CScene>
+CoRoutine DelayCoRoutine(T* const _pObj, void(T::* _objFp)(void), float _fDelayTime)
 {
-	StartCoRoutine(_pObj, DelayCoRoutine(std::bind(std::forward<Func>(fp), _pObj, std::forward<Args>(args)...), _fElapsedTime));
+	float fAccTime = 0.;
+	while (fAccTime < _fDelayTime)
+	{
+		fAccTime += DT;
+		co_await std::suspend_always{};
+	}
+	(_pObj->*_objFp)();
+	co_return;
 }
+
+template<typename T>requires std::derived_from<T, CObject>
+void StartDelayCoRoutine(T* const _pObj, void(T::* _objFp)(void), float _fDelayTime)
+{
+	StartCoRoutine(_pObj, DelayCoRoutine(_pObj, _objFp, _fDelayTime));
+}
+
+template<typename T>requires std::derived_from<T, CScene>
+void StartDelayCoRoutine(T* const _pObj, void(T::* _objFp)(void), float _fDelayTime)
+{
+	StartCoEvent(DelayCoRoutine(_pObj, _objFp, _fDelayTime));
+}
+
 
 void CreateObj(CObject* const _pObj, GROUP_TYPE _eGroup);
 

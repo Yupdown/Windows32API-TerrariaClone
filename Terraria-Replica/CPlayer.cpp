@@ -17,6 +17,8 @@
 #include "CCollider.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
+#include "CCamera.h"
+#include"CEventMgr.h"
 
 CPlayer::CPlayer(TRWorld* const _trWorld)
 {
@@ -52,6 +54,11 @@ CPlayer::CPlayer(const CPlayer& other)
 
 void CPlayer::update()
 {
+	if (m_bSlane)
+	{
+		return;
+	}
+
 	CObject::update();
 	auto pAnim = GetComp<CAnimator>();
 	
@@ -86,6 +93,10 @@ void CPlayer::update()
 
 void CPlayer::render(HDC _dc)const
 {
+	if (m_bSlane)
+	{
+		return;
+	}
 	Vec2 vPos = GetPos();
 	vPos = Mgr(CCamera)->GetRenderPos(vPos);
 	auto [vLT, vScale] = Mgr(CCamera)->GetRenderPos(this);
@@ -262,6 +273,10 @@ void CPlayer::updateAnimation()
 
 void CPlayer::component_update()
 {
+	if (m_bSlane)
+	{
+		return;
+	}
 	CObject::component_update();
 	m_pAnimLeg->component_update();
 }
@@ -273,7 +288,13 @@ void CPlayer::OnCollision(CCollider* const _pOther)
 
 void CPlayer::OnCollisionEnter(CCollider* const _pOther)
 {
-	
+	auto pObj = _pOther->GetOwner();
+	const wstring wstrObjName = pObj->GetName().substr(0, pObj->GetName().find(L'_'));
+
+	if (L"Monster" == wstrObjName)
+	{
+		Mgr(CCamera)->SetShakeFlag(true);
+	}
 }
 
 void CPlayer::OnCollisionExit(CCollider* const _pOther)
@@ -291,4 +312,22 @@ void CPlayer::AddPlayerWeapon()
 	{
 		m_vecWeapon.emplace_back(static_cast<CWeapon*>(pWeapon.get()));
 	}
+}
+
+CoRoutine CPlayer::PlayerRebirthProcess()
+{
+	Mgr(CCamera)->SetMoveFlag(true);
+	const Vec2 vPlayerDeadPos = GetPos() + Vec2{0, -600};
+	StartCoEvent(Mgr(CCamera)->CamMoveCoRoutine(vPlayerDeadPos));
+	co_await std::suspend_always{};
+	while (Mgr(CCamera)->IsCamMove())
+	{
+		co_await std::suspend_always{};
+	}
+
+	SetHP(200);
+	SetPos(vPlayerDeadPos);
+	m_eCurState = PLAYER_STATE::IDLE;
+	m_bSlane = false;
+	co_return;
 }

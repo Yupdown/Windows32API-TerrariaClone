@@ -136,13 +136,13 @@ void CCamera::update()
 		m_vLookAt.x += 50. * DT;*/
 
 	
-	if (KEY_TAP(KEY::TAB) || ShakeFlag)
+	if (ShakeFlag)
 	{
 		Vec2 vPrev = m_vLookAt;
 		ShakeFlag = true;
 		if (0. >= m_fShakeAcc)
 		{
-			m_fShakeAcc = 1.f;
+			m_fShakeAcc = 0.2f;
 			ShakeFlag = false;
 			if (m_pTargetObj)
 			{
@@ -151,10 +151,10 @@ void CCamera::update()
 			}
 			else
 			{
-				//Vec2 vRes = CCore::GetInst()->GetResolution();
-				//SetLookAt(vRes / 2.);
+				Vec2 vRes = CCore::GetInst()->GetResolution();
+				SetLookAt(vRes / 2.f);
 				//SetLookAt(vPrev);
-				SetCamRect(m_pTargetObj->GetPos());
+				//SetCamRect(Mgr(CCore)->GetResolutionV()/2.f);
 			}
 		}
 		else
@@ -165,16 +165,16 @@ void CCamera::update()
 			switch (Shake % 4)
 			{
 			case 0:
-				m_vLookAt.y -= 20.;
+				m_vLookAt.y -= 5.f;
 				break;		   
 			case 1:			   
-				m_vLookAt.x -= 20.;
+				m_vLookAt.x -= 5.f;
 				break;		   
 			case 2:			   
-				m_vLookAt.y += 20.;
+				m_vLookAt.y += 5.f;
 				break;		   
 			case 3:			   
-				m_vLookAt.x += 20.;
+				m_vLookAt.x += 5.f;
 				break;
 			default:
 				break;
@@ -187,6 +187,20 @@ void CCamera::update()
 		m_fCamZoom -= 0.01f;
 
 	CalDiff();
+}
+
+CoRoutine CCamera::CamMoveCoRoutine(Vec2 _vDest)
+{
+	auto pTarget = m_pTargetObj;
+	m_pTargetObj = nullptr;
+	
+	while (m_bMoveFlag)
+	{
+		SetLookAt(_vDest);
+		co_await std::suspend_always{};
+	}
+	m_pTargetObj = pTarget;
+	co_return;
 }
 
 void CCamera::CalDiff()
@@ -207,7 +221,7 @@ void CCamera::CalDiff()
 			if (0. >= m_fSpeed)
 			{
 				m_vCurLookAt = m_vLookAt;
-				m_fSpeed = 3000.f;
+				m_fSpeed = 1000.f;
 				m_fAccTime = 0.f;
 				m_bMoveFlag = false;
 			}
@@ -221,7 +235,7 @@ void CCamera::CalDiff()
 				else
 				{
 					m_vCurLookAt = m_vLookAt;
-					m_fSpeed = 3000.f;
+					m_fSpeed = 1000.f;
 					m_fAccTime = 0.f;
 				}
 			}

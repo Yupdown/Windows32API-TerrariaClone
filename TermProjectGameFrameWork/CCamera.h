@@ -54,14 +54,14 @@ private:
 
 	Vec2		m_vDiff = {};		
 
-	float		m_fTime = { 1.f };
-	float		m_fSpeed = { 3000.f };
+	float		m_fTime = { 1.0f };
+	float		m_fSpeed = { 1000.f };
 	float		m_fAccTime = {};
 	float		m_fAccel = {};
 	CTexture* m_pVeilTex = {}; 
 
 	//float		m_fSpeed = 1000.; 
-	float		m_fShakeAcc = 1.;
+	float		m_fShakeAcc = 0.2f;
 	UINT        Shake = 4;
 	bool		ShakeFlag = false;
 	bool        m_bMoveFlag = false;
@@ -91,7 +91,7 @@ public:
 	}
 	void SetLookAt(Vec2 _vLook)
 	{
-		m_fSpeed = 3000.f;
+		m_fSpeed = 1000.f;
 		m_fAccTime = 0.f;
 		m_vLookAt = _vLook;
 		float fMoveDist = (m_vLookAt - m_vPrevLookAt).length();
@@ -105,6 +105,7 @@ public:
 	constexpr Vec2 GetRealPos(Vec2 _vRenderPos)const { return _vRenderPos + m_vDiff; }
 	constexpr Vec2 GetCurDiff()const { return m_vDiff; }
 	constexpr void SetMoveFlag(bool _b = true) { m_bMoveFlag = _b; }
+	constexpr bool IsCamMove()const { return m_bMoveFlag; }
 	constexpr float GetCamZoom()const { return m_fCamZoom; }
 	void TransformRenderPos()const;
 	void TransformRenderPos(HDC _dc)const;
@@ -134,6 +135,9 @@ public:
 		SetCamRect((_vGlobalLT + _vGlobalRB) / 2.f);
 	}
 
+	void SetShakeFlag(bool _b) { ShakeFlag = _b; }
+
+	CoRoutine CamMoveCoRoutine(const Vec2 _vDest);
 private:
 	void CalDiff();
 	

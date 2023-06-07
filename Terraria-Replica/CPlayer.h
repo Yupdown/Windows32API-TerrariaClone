@@ -37,6 +37,7 @@ private:
     bool m_bIsIDLE = false;
     bool m_bPrevCol = false;
 
+    bool m_bSlane = false;
 public:
     CPlayer(TRWorld* const _trWorld);
     CPlayer(const CPlayer& other);
@@ -57,5 +58,9 @@ public:
     virtual void OnCollisionExit(CCollider* const _pOther);
 
     void AddPlayerWeapon();
+
+    void SetSlane(bool _b) { m_bSlane = _b; }
+    bool IsPlayerSlane()const { return m_bSlane; }
+    CoRoutine PlayerRebirthProcess();
 };
 
