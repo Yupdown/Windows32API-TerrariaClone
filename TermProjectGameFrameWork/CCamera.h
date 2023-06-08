@@ -65,7 +65,7 @@ private:
 	UINT        Shake = 4;
 	bool		ShakeFlag = false;
 	bool        m_bMoveFlag = false;
-	list<tCamEffect>	m_listCamEffect; 
+	std::deque<tCamEffect>	m_listCamEffect; 
 	float m_fCamZoom = 1.f;
 
 	HDC m_hCamVeilDC = nullptr;
