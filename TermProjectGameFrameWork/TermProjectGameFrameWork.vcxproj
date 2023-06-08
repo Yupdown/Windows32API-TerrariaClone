@@ -74,6 +74,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Output\bin_Debug\</OutDir>
+    <IncludePath>$(SolutionDir)FMOD SoundSystem\FMOD Studio API Windows\api\core\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)FMOD SoundSystem\FMOD Studio API Windows\api\core\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Output\bin_Release\</OutDir>
@@ -171,6 +173,7 @@
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CScene_Tool.h" />
+    <ClInclude Include="CSoundMgr.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CThreadMgr.h" />
     <ClInclude Include="CTile.h" />
@@ -211,6 +214,7 @@
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CScene_Tool.cpp" />
+    <ClCompile Include="CSoundMgr.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CThreadMgr.cpp" />
     <ClCompile Include="CTile.cpp" />

@@ -15,6 +15,7 @@
 #include "CAtlasMgr.h"
 #include "CThreadMgr.h"
 #include "CDebugMgr.h"
+#include "CSoundMgr.h"
 
 //jthread CCore::m_miniMapThread;
 
@@ -131,7 +132,7 @@ int CCore::init(HWND _hwnd, POINT _ptResolution, HINSTANCE _hInst)
 	SetBkMode(m_hMemDC, TRANSPARENT);
 	SetBkMode(m_hDC, TRANSPARENT);
 	CPathMgr::GetInst()->init();
-	//Mgr(CSoundMgr)->init();
+	Mgr(CSoundMgr)->init();
 	Mgr(CResMgr)->init();
 	CTimeMgr::GetInst()->init();
 	CKeyMgr::GetInst()->init();

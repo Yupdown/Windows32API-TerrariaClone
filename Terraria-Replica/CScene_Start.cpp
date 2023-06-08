@@ -13,9 +13,11 @@
 #include "CAtlasElement.h"
 #include "CLayer.h"
 #include "CTileLayer.h"
+#include "CSoundMgr.h"
 
 CScene_Start::CScene_Start()
 {
+	Mgr(CSoundMgr)->PlayBGM("Test.mp3", 0.1f);
 	SetName(L"Scene_Start");
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	float ground_level = 64 * PIXELS_PER_TILE;

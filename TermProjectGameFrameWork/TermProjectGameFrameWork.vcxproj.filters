@@ -130,6 +130,9 @@
     <Filter Include="Engine\Scene\Scene_Tool">
       <UniqueIdentifier>{2f591532-e24f-493d-8500-c043a110583e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\02. Manager\SoundMgr">
+      <UniqueIdentifier>{995dd5d0-32ec-4f2e-a75a-13846c4dc706}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -249,6 +252,9 @@
     <ClInclude Include="SimpleMath.hpp">
       <Filter>Default\func</Filter>
     </ClInclude>
+    <ClInclude Include="CSoundMgr.h">
+      <Filter>Engine\02. Manager\SoundMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -346,6 +352,9 @@
     </ClCompile>
     <ClCompile Include="Vec2.cpp">
       <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundMgr.cpp">
+      <Filter>Engine\02. Manager\SoundMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
