@@ -64,6 +64,9 @@
     <Filter Include="CObject\CMiniMap">
       <UniqueIdentifier>{9d537fbe-4b99-4c88-8a98-bfb7f189625e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CObject\InventoryVisualizer">
+      <UniqueIdentifier>{e7efbb6a-5f22-449a-9d29-42eee09598f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -168,6 +171,9 @@
     <ClInclude Include="CMiniMap.h">
       <Filter>CObject\CMiniMap</Filter>
     </ClInclude>
+    <ClInclude Include="CInventoryVisualizer.h">
+      <Filter>CObject\InventoryVisualizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -247,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="CMiniMap.cpp">
       <Filter>CObject\CMiniMap</Filter>
+    </ClCompile>
+    <ClCompile Include="CInventoryVisualizer.cpp">
+      <Filter>CObject\InventoryVisualizer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

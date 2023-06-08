@@ -11,7 +11,7 @@ TRItemStack::TRItemStack()
 TRItemStack::TRItemStack(TRItem* item, int stack_size)
 {
 	this->item = item;
-	this->stack_size = stack_size;
+	this->stack_size = min(stack_size, item->GetMaxStacksize());
 }
 
 TRItemStack::~TRItemStack()

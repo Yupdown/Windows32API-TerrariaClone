@@ -9,6 +9,8 @@ CSlime::CSlime(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view 
 	auto pAnim = GetComp<CAnimator>();
 	pAnim->CreateAnimation(GetName() + L"Walk", _wstrMonImgName, Vec2{ 0,0 }, Vec2{ 16,12 }, Vec2{ 0,13 }, 0.1f, 2);
 	pAnim->Play(GetName() + L"Walk", true);
+
+	GetComp<CCollider>()->SetScale(Vec2(16.0f, 12.0f));
 }
 
 CSlime::~CSlime()

@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CInventoryVisualizer.h" />
     <ClInclude Include="CItemContainerVisualizer.h" />
     <ClInclude Include="CEyeMonster.h" />
     <ClInclude Include="CMiniMap.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Vector3D.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CInventoryVisualizer.cpp" />
     <ClCompile Include="CItemContainerVisualizer.cpp" />
     <ClCompile Include="CEyeMonster.cpp" />
     <ClCompile Include="CMiniMap.cpp" />

@@ -24,7 +24,7 @@ CPlayer::CPlayer(TRWorld* const _trWorld)
 {
 	m_pTRWolrd = _trWorld;
 	m_bIsCamAffected = true;
-	CreateComponent(COMPONENT_TYPE::COLLIDER, Vec2{ 40.f, 56.f });
+	CreateComponent(COMPONENT_TYPE::COLLIDER, Vec2{ 24.0f, 48.0f });
 	CreateComponent(COMPONENT_TYPE::ANIMATOR);
 	CreateComponent(COMPONENT_TYPE::RIGIDBODY);
 	SetName(L"Player_");
@@ -320,7 +320,8 @@ void CPlayer::AddPlayerWeapon()
 CoRoutine CPlayer::PlayerRebirthProcess()
 {
 	Mgr(CCamera)->SetMoveFlag(true);
-	const Vec2 vPlayerDeadPos = GetPos() + Vec2{0, -600};
+	int x = TRWorld::WORLD_WIDTH / 2;
+	const Vec2 vPlayerDeadPos = TRWorld::WorldToGlobal(Vec2(x, m_pTRWolrd->GetTileMap()->GetTopYpos(x))) - Vec2(20.0f, 28.0f);
 	StartCoEvent(Mgr(CCamera)->CamMoveCoRoutine(vPlayerDeadPos));
 	co_await std::suspend_always{};
 	while (Mgr(CCamera)->IsCamMove())

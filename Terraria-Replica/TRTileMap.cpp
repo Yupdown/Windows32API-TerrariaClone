@@ -165,6 +165,18 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 	}
 }
 
+int TRTileMap::GetTopYpos(int x) const
+{
+	int y = tile_height - 1;
+	while (y >= 0)
+	{
+		if (GetTile(x, y)->Solid())
+			break;
+		y--;
+	}
+	return y + 1;
+}
+
 int TRTileMap::GetTileNeighborMask(int x, int y) const
 {
 	TRTile* tile = GetTile(x, y);
