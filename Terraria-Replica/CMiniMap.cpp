@@ -125,12 +125,19 @@ void CMiniMap::render(HDC _dc) const
 		, 264 - 10
 		, RGB(255, 0, 255));
 
-	for (auto& vec : pCurScene->m_vecObj)
+	auto& vec = pCurScene->m_vecObj;
+
+	for (int i=0;i<etoi(GROUP_TYPE::END);++i)
 	{
-		for (auto& obj : vec)
+		if (GROUP_TYPE::UI == (GROUP_TYPE)(i) || GROUP_TYPE::PLAYER_WEAPON == (GROUP_TYPE)(i))
 		{
-			auto vPos = obj->GetPos();
-			auto vScale = obj->GetScale();
+			continue;
+		}
+
+		for (const auto& obj : vec[i])
+		{
+			const auto vPos = obj->GetPos();
+			const auto vScale = obj->GetScale();
 			Rectangle(m_hMinmapDC
 				, (int)((vPos.x - vScale.x / 2.f) * 264.f / 8192.f) -1
 				, (int)((vPos.y - vScale.y / 2.f) * 264.f / 4098.f) -1
@@ -138,6 +145,7 @@ void CMiniMap::render(HDC _dc) const
 				, (int)((vPos.y + vScale.y / 2.f) * 264.f / 4098.f) +1);
 		}
 	}
+
 	auto hOld = SelectObject(m_hMinmapDC, GetStockObject(HOLLOW_BRUSH));
 	const auto CamRect = Mgr(CCamera)->GetCamRect();
 

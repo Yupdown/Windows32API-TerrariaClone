@@ -101,7 +101,7 @@ void TRWorld::Update()
 		}
 	}
 
-	TRMonGenerator::GenerateMonster();
+	//TRMonGenerator::GenerateMonster();
 }
 
 void TRWorld::CreateWorld(int seed)
@@ -145,7 +145,7 @@ void TRWorld::OnSceneCreate(CScene* scene)
 		scene->AddObject(drop_item, GROUP_TYPE::DROP_ITEM);
 	}
 
-	{
+	/*{
 		CWeapon* pWeapon;
 		pWeapon = new CWeapon{ player };
 		pWeapon->SetWeaponImg(L"Item_Pickaxe.png",L"Item_Pickaxe", Vec2{32,32});
@@ -159,33 +159,33 @@ void TRWorld::OnSceneCreate(CScene* scene)
 		pWeapon = new CWeapon{ player };
 		pWeapon->SetWeaponImg(L"Item_Sword.png", L"Item_Sword", Vec2{ 32,32 });
 
-	}
+	}*/
 	
 	tile_map->OnSceneCreate(scene);
 
-	{
-		auto pMon = new CZombie{ this,L"Monster_Zombie",L"NPC_3.png" };
-		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 38.0f, 46.0f });
-		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-		pMon->SetColliderScale(Vec2{ 38.0f, 46.0f });
-	}
+	//{
+	//	auto pMon = new CZombie{ this,L"Monster_Zombie",L"NPC_3.png" };
+	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
+	//	pMon->SetScale(Vec2{ 38.0f, 46.0f });
+	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	//	pMon->SetColliderScale(Vec2{ 38.0f, 46.0f });
+	//}
 
-	{
-		auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
-		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 32.0f, 24.0f });
-		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-		pMon->SetColliderScale(Vec2{ 32.0f, 24.0f });
-	}
+	//{
+	//	auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
+	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
+	//	pMon->SetScale(Vec2{ 32.0f, 24.0f });
+	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	//	pMon->SetColliderScale(Vec2{ 32.0f, 24.0f });
+	//}
 
-	{
-		auto pMon = new CEyeMonster{ this,L"Monster_EyeMonster",L"NPC_2.png" };
-		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 10, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 38.0f, 22.0f });
-		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-		pMon->SetColliderScale(Vec2{ 38.0f, 22.0f });
-	}
+	//{
+	//	auto pMon = new CEyeMonster{ this,L"Monster_EyeMonster",L"NPC_2.png" };
+	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 10, TRWorld::WORLD_HEIGHT)));
+	//	pMon->SetScale(Vec2{ 38.0f, 22.0f });
+	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	//	pMon->SetColliderScale(Vec2{ 38.0f, 22.0f });
+	//}
 
 	{
 		scene->AddObject(new CMiniMap, GROUP_TYPE::UI);

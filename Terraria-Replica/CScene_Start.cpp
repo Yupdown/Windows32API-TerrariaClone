@@ -17,7 +17,7 @@
 
 CScene_Start::CScene_Start()
 {
-	Mgr(CSoundMgr)->PlayBGM("Test.mp3", 0.1f);
+	//Mgr(CSoundMgr)->PlayBGM("Test.mp3", 0.1f);
 	SetName(L"Scene_Start");
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	float ground_level = 64 * PIXELS_PER_TILE;
@@ -72,9 +72,6 @@ CScene_Start::~CScene_Start()
 void CScene_Start::Enter()
 {
 	CScene::Enter();
-
-	static_cast<CPlayer*>(GetPlayer())->AddPlayerWeapon();
-	
 }
 
 void CScene_Start::Exit()

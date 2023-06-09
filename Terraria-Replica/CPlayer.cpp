@@ -20,6 +20,7 @@
 #include "CCamera.h"
 #include "CEventMgr.h"
 #include "CDropItem.h"
+#include "TRItem.h"
 
 CPlayer::CPlayer(TRWorld* const _trWorld)
 {
@@ -46,6 +47,10 @@ CPlayer::CPlayer(TRWorld* const _trWorld)
 	auto pRigid = GetComp<CRigidBody>();
 	pRigid->SetIsGround(false);
 	
+	for (int i = 0; i < 10; ++i)
+	{
+		m_vecWeapon.emplace_back(new CWeapon{ this });
+	}
 }
 
 CPlayer::CPlayer(const CPlayer& other)
@@ -65,28 +70,21 @@ void CPlayer::update()
 	
 	m_ePrevState = m_eCurState;
 
+	updateQuickBarState(m_pTRWolrd->GetQuickBarIdx());
+
 	updateMove();
 
 	updateState();
 	
 	updateAnimation();
 	
-	if (Mgr(CKeyMgr)->GetMouseWheelUp())
-	{
-		m_iCurWeapon = (m_iCurWeapon + 1) % 3;
-	}
-	if (Mgr(CKeyMgr)->GetMouseWheelDown())
-	{
-		m_iCurWeapon = max(0, m_iCurWeapon - 1);
-	}
-
 	if (PLAYER_STATE::ATTACK == m_eCurState)
 	{
-		m_vecWeapon[m_iCurWeapon]->update_weapon();
+		m_vecWeapon[m_iCurQuickBarIdx]->update_weapon();
 	}
 	else
 	{
-		m_vecWeapon[m_iCurWeapon]->ReForm();
+		m_vecWeapon[m_iCurQuickBarIdx]->ReForm();
 	}
 	
 }
@@ -111,7 +109,7 @@ void CPlayer::render(HDC _dc)const
 	m_pAnimLeg->component_render(_dc);
 	if (PLAYER_STATE::ATTACK == m_eCurState)
 	{
-		m_vecWeapon[m_iCurWeapon]->render_weapon(_dc);
+		m_vecWeapon[m_iCurQuickBarIdx]->render_weapon(_dc);
 	}
 	
 	//m_pWeapon->render(_dc);
@@ -309,12 +307,22 @@ void CPlayer::OnCollisionExit(CCollider* const _pOther)
 	
 }
 
-void CPlayer::AddPlayerWeapon()
+void CPlayer::updateQuickBarState(const int _idx)
 {
-	auto& vecWeapon = Mgr(CSceneMgr)->GetCurScene()->GetPlayerWeapon();
-	for (auto& pWeapon : vecWeapon)
+	m_iCurQuickBarIdx = _idx;
+	auto& quick_bar_list = m_pTRWolrd->GetQuickBarList();
+	static const wstring wstrItem = L"Weapon_";
+	for (int i = 0; i < 10; ++i)
 	{
-		m_vecWeapon.emplace_back(static_cast<CWeapon*>(pWeapon.get()));
+		if (quick_bar_list[i]->Blank())
+		{
+			m_vecWeapon[i]->SetActivate(false);
+		}
+		else
+		{
+			m_vecWeapon[i]->SetActivate(true);
+			m_vecWeapon[i]->SetWeaponState(quick_bar_list[i]->GetItemStack().GetItem()->GetItemElement(), wstrItem + quick_bar_list[i]->GetItemStack().GetItem()->GetName());
+		}
 	}
 }
 

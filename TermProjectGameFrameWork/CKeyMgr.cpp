@@ -33,7 +33,8 @@ int g_arrVK[(int)KEY::LAST]
 	'8',
 	'9',
 	'0',
-	'M'
+	'M',
+	VK_ESCAPE
 };
 
 CKeyMgr::CKeyMgr()

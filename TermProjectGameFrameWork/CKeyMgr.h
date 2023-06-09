@@ -37,6 +37,8 @@ enum class KEY
 	NINE,
 	ZERO,
 	M,
+	ESC,
+
 	LAST,		
 
 };

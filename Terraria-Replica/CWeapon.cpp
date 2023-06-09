@@ -16,18 +16,19 @@ CWeapon::CWeapon(CObject* const _pPlayer)
 {
 	CreateComponent(COMPONENT_TYPE::COLLIDER);
 	Mgr(CSceneMgr)->GetCurScene()->AddObject(this, GROUP_TYPE::PLAYER_WEAPON);
-	SetScale({ 32,32 });
 }
 
 CWeapon::~CWeapon()
 {
 }
 
-void CWeapon::SetWeaponImg(wstring_view _wstrFileName,wstring_view _wstrWeaponName ,Vec2 _vScale)
+void CWeapon::SetWeaponState(const CImage* const _pImg ,wstring_view _wstrWeaponName)
 {
-	m_pWeaponImg = Mgr(CResMgr)->GetImg(_wstrFileName);
+	const auto vScale = Vec2{ (float)(_pImg->GetWidth()*2),(float)(_pImg->GetHeight()*2) };
+	m_pWeaponImg = _pImg;
 	SetName(_wstrWeaponName);
-	GetComp<CCollider>()->SetScale(_vScale);
+	GetComp<CCollider>()->SetScale(vScale);
+	SetScale(vScale);
 }
 
 //void CWeapon::SetWeaponImg(CImage* _cImage)
@@ -101,6 +102,11 @@ void CWeapon::render(HDC _dc) const
 
 void CWeapon::update_weapon()
 {
+	if (!m_bActivate)
+	{
+		return;
+	}
+
 	const auto vPos = m_pPlayer->GetPos();
 	m_iFlip = m_pPlayer->GetComp<CAnimator>()->GetAnimDir();
 	static Vec2 vLTpos;
@@ -147,15 +153,21 @@ void CWeapon::update_weapon()
 
 void CWeapon::render_weapon(HDC _dc) const
 {
+	if (!m_bActivate)
+	{
+		return;
+	}
+
 	const auto [vLT, vScale] = Mgr(CCamera)->GetRenderPos(this);
 	Mgr(CCore)->RotateTransform(_dc, m_fDeg2, vLT + vScale / 2.f);
+	const auto vBitSlice = GetScale() / 2.f;
 	if (!m_iFlip)
 	{
-		Mgr(CResMgr)->renderImg(_dc, m_pWeaponImg, this, Vec2{ 0,0 }, Vec2{ 16,16 }, false);
+		Mgr(CResMgr)->renderImg(_dc, m_pWeaponImg, this, Vec2{ 0,0 }, vBitSlice, false);
 	}
 	else
 	{
-		Mgr(CResMgr)->renderImg(_dc, m_pWeaponImg, this, Vec2{ 0,0 }, Vec2{ 16,16 }, true);
+		Mgr(CResMgr)->renderImg(_dc, m_pWeaponImg, this, Vec2{ 0,0 }, vBitSlice, true);
 	}
 	Mgr(CCore)->ResetTransform(_dc);
 	CObject::component_render(_dc);
@@ -167,6 +179,11 @@ void CWeapon::OnCollision(CCollider* const _pOther)
 
 void CWeapon::OnCollisionEnter(CCollider* const _pOther)
 {
+	if (!m_bActivate)
+	{
+		return;
+	}
+
 	auto pObj = _pOther->GetOwner();
 	const wstring wstrObjName = pObj->GetName().substr(0,pObj->GetName().find(L'_'));
 

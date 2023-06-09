@@ -25,7 +25,7 @@ class CPlayer :
 {
 private:
 
-    int m_iCurWeapon = 0;
+    int m_iCurQuickBarIdx = 0;
     vector<CWeapon*>  m_vecWeapon;
 
     CAnimation* m_pPrevAnim = {};
@@ -57,10 +57,13 @@ public:
     virtual void OnCollisionEnter(CCollider* const _pOther);
     virtual void OnCollisionExit(CCollider* const _pOther);
 
-    void AddPlayerWeapon();
+    void updateQuickBarState(const int _idx);
 
     void SetSlane(bool _b) { m_bSlane = _b; }
     bool IsPlayerSlane()const { return m_bSlane; }
     CoRoutine PlayerRebirthProcess();
+
+    void SetQuickBarIdx(const int _idx) { m_iCurQuickBarIdx = _idx; }
+    int GetQuickBarIdx()const { return m_iCurQuickBarIdx; }
 };
 
