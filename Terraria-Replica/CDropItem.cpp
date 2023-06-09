@@ -6,6 +6,7 @@
 #include "CRigidBody.h"
 #include "TRItem.h"
 #include "Vec2Int.hpp"
+#include "CSoundMgr.h"
 
 CDropItem::CDropItem(TRWorld* const _trWorld, TRItemStack _item)
 {
@@ -61,6 +62,7 @@ void CDropItem::OnCollisionEnter(CCollider* const _pOther)
 	if (pObj == m_pTRWolrd->GetPlayer())
 	{
 		m_pTRWolrd->AddItemToInventory(m_item);
+		Mgr(CSoundMgr)->PlayEffect("Grab.wav", 0.5f);
 		DeleteObj(this);
 	}
 }

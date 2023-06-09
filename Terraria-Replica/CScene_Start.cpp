@@ -72,6 +72,7 @@ CScene_Start::~CScene_Start()
 void CScene_Start::Enter()
 {
 	CScene::Enter();
+	Mgr(CSoundMgr)->PlayBGM("03. Overworld Day.mp3", 0.1f);
 }
 
 void CScene_Start::Exit()

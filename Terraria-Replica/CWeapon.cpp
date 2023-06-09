@@ -10,6 +10,10 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "CMonster.h"
+#include "CSoundMgr.h"
+
+static std::mt19937 randHitSound{std::random_device{}()};
+static std::uniform_int_distribution<> uidHit{0, 1};
 
 CWeapon::CWeapon(CObject* const _pPlayer)
 	:m_pPlayer{_pPlayer}
@@ -197,9 +201,22 @@ void CWeapon::OnCollisionEnter(CCollider* const _pOther)
 		pMonRigid->AddVelocity(vMonDir * -1 * 1000);
 		pMonRigid->AddForce(vMonDir * -1 * 1000);
 		pMonRigid->component_update();
+
 		if (pMon->GetHP() <= 0)
 		{
+			if (uidHit(randHitSound))
+			{
+				Mgr(CSoundMgr)->PlayEffect("NPC_Killed_1.wav", 0.5f);
+			}
+			else
+			{
+				Mgr(CSoundMgr)->PlayEffect("NPC_Killed_2.wav", 0.5f);
+			}
 			DeleteObj(pObj);
+		}
+		else
+		{
+			Mgr(CSoundMgr)->PlayEffect("NPC_Hit_1.wav", 0.5f);
 		}
 	}
 }

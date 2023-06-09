@@ -61,5 +61,5 @@ void CSceneMgr::init(SCENE_TYPE _eType)
 {
 	m_pCurScene = m_arrScene[etoi(_eType)].get();
 
-	m_pCurScene->Enter();
+	//m_pCurScene->Enter();
 }

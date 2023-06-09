@@ -47,7 +47,7 @@ void CSoundMgr::init()
 
 void CSoundMgr::PlayEffect(string_view _strName, float _fVol)
 {
-	FMOD_System_PlaySound(m_fmSystem, m_mapBGM[_strName.data()], 0, false, &m_arrChannel[m_iCurChannel]);
+	FMOD_System_PlaySound(m_fmSystem, m_mapSound[_strName.data()], 0, false, &m_arrChannel[m_iCurChannel]);
 	FMOD_Channel_SetVolume(m_arrChannel[m_iCurChannel], _fVol);
 	m_iCurChannel = (m_iCurChannel + 1) % 31;
 }

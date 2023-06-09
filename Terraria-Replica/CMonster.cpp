@@ -9,6 +9,11 @@
 #include "CWeapon.h"
 #include "CEventMgr.h"
 #include "CCamera.h"
+#include "CSoundMgr.h"
+
+static std::mt19937 randHitSound{std::random_device{}()};
+static std::uniform_int_distribution<> uidHit{0, 2};
+
 
 CMonster::CMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 {
@@ -110,9 +115,21 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 		if (pPlayer->GetHP() <= 0)
 		{
 			Mgr(CCamera)->FadeOut(1.5f);
+			Mgr(CSoundMgr)->PlayEffect("Player_Killed.wav", 0.5f);
 			pPlayer->SetSlane(true);
 			pPlayer->GetComp<CRigidBody>()->SetVelocity({});
 			StartDelayCoRoutine(pPlayer,pPlayer->PlayerRebirthProcess(), 1.f);
+		}
+		else
+		{
+			switch (uidHit(randHitSound))
+			{
+			case 0:Mgr(CSoundMgr)->PlayEffect("Player_Hit_0.wav", 0.5f); break;
+			case 1:Mgr(CSoundMgr)->PlayEffect("Player_Hit_1.wav", 0.5f); break;
+			case 2:Mgr(CSoundMgr)->PlayEffect("Player_Hit_2.wav", 0.5f); break;
+			default:
+				break;
+			}
 		}
 	}
 }

@@ -7,6 +7,7 @@
 #include "CResMgr.h"
 #include "CCamera.h"
 #include "CKeyMgr.h"
+#include "CSoundMgr.h"
 
 CMiniMap* g_MiniMap = nullptr;
 
@@ -82,6 +83,14 @@ void CMiniMap::update()
 	if (KEY_TAP(KEY::M))
 	{
 		m_bMiniMapOn = !m_bMiniMapOn;
+		if (m_bMiniMapOn)
+		{
+			Mgr(CSoundMgr)->PlayEffect("Menu_Open.wav", 0.5f);
+		}
+		else
+		{
+			Mgr(CSoundMgr)->PlayEffect("Menu_Close.wav", 0.5f);
+		}
 	}
 }
 

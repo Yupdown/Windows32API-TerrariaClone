@@ -21,6 +21,8 @@
 #include "CEventMgr.h"
 #include "CDropItem.h"
 #include "TRItem.h"
+#include "CSoundMgr.h"
+
 
 CPlayer::CPlayer(TRWorld* const _trWorld)
 {
@@ -163,6 +165,7 @@ void CPlayer::updateState()
 		{
 			m_eCurState = PLAYER_STATE::ATTACK;
 			m_bIsIDLE = false;
+			Mgr(CSoundMgr)->PlayEffect("Item_1.wav", 1.f);
 		}
 	}
 
