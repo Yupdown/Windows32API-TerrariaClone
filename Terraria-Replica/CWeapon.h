@@ -28,8 +28,9 @@ public:
         return pWeapon;
     }
 
-    void SetWeaponImg(wstring_view _wstrFileName, wstring_view _wstrWeaponName,Vec2 _vScale);
+    void SetWeaponState(const CImage* const _pImg, wstring_view _wstrWeaponName);
    //void SetWeaponImg(CImage* _cImage);
+
     void update()override;
     void render(HDC _dc)const override;
     void ReForm()

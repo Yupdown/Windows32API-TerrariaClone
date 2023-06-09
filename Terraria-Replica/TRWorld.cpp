@@ -26,8 +26,12 @@
 #include "TRMonGenerator.h"
 #include "CMiniMap.h"
 #include "CDropItem.h"
+#include "CSoundMgr.h"
 
 TRWorld* g_TRWorld = nullptr;
+
+static std::mt19937 randDigSound{std::random_device{}()};
+static std::uniform_int_distribution<> uidDig{0, 2};
 
 TRWorld::TRWorld()
 {
@@ -85,8 +89,9 @@ void TRWorld::Update()
 		quick_bar_index = 8;
 	else if (KEY_TAP(KEY::ZERO))
 		quick_bar_index = 9;
-	else if (KEY_TAP(KEY::ENTER))
+	else if (KEY_TAP(KEY::ESC))
 		SetToggleInventory(!toggle_inventory);
+	
 	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
 
 	health_indicator->SetHealthValue(player->GetHP());
@@ -94,7 +99,11 @@ void TRWorld::Update()
 	if (KEY_TAP(KEY::LBTN))
 	{
 		bool result = inventory_visualizer->HandleMouseInput();
-		if (!result && !quick_bar[quick_bar_index]->Blank())
+		if (result)
+		{
+			Mgr(CSoundMgr)->PlayEffect("Menu_Tick.wav", 1.f);
+		}
+		else if (!quick_bar[quick_bar_index]->Blank())
 		{
 			Vec2 mouse_world_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
 			quick_bar[quick_bar_index]->GetItemStack().GetItem()->OnUseItem(player, this, mouse_world_pos);
@@ -143,7 +152,7 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	for (int i = 0; i < 17; ++i)
 		DropItem(Vec2Int(x + i * 4, 254), TRItemStack(Mgr(TRItemManager)->GetItemByID(i), 100));
 
-	{
+	/*{
 		CWeapon* pWeapon;
 		pWeapon = new CWeapon{ player };
 		pWeapon->SetWeaponImg(L"Item_Pickaxe.png",L"Item_Pickaxe", Vec2{32,32});
@@ -157,17 +166,17 @@ void TRWorld::OnSceneCreate(CScene* scene)
 		pWeapon = new CWeapon{ player };
 		pWeapon->SetWeaponImg(L"Item_Sword.png", L"Item_Sword", Vec2{ 32,32 });
 
-	}
+	}*/
 	
 	tile_map->OnSceneCreate(scene);
 
-	//{
-	//	auto pMon = new CZombie{ this,L"Monster_Zombie",L"NPC_3.png" };
-	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
-	//	pMon->SetScale(Vec2{ 38.0f, 46.0f });
-	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-	//	pMon->SetColliderScale(Vec2{ 38.0f, 46.0f });
-	//}
+	{
+		auto pMon = new CZombie{ this,L"Monster_Zombie",L"NPC_3.png" };
+		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
+		pMon->SetScale(Vec2{ 38.0f, 46.0f });
+		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+		pMon->SetColliderScale(Vec2{ 38.0f, 46.0f });
+	}
 
 	{
 		auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
@@ -230,6 +239,15 @@ bool TRWorld::PlaceTile(int x, int y, TRTile* new_tile)
 	if (tile->Solid())
 		return false;
 
+	switch (uidDig(randDigSound))
+	{
+	case 0:Mgr(CSoundMgr)->PlayEffect("Dig_0.wav", 0.5f); break;
+	case 1:Mgr(CSoundMgr)->PlayEffect("Dig_1.wav", 0.5f); break;
+	case 2:Mgr(CSoundMgr)->PlayEffect("Dig_2.wav", 0.5f); break;
+	default:
+		break;
+	}
+
 	tile_map->SetTile(x, y, new_tile, true);
 	return true;
 }
@@ -241,7 +259,21 @@ void TRWorld::BreakTile(int x, int y)
 	if (tile == nullptr)
 		return;
 
-	tile_map->SetTile(x, y, Mgr(TRTileManager)->TileAir(), true);
+	TRTile* air_tile = Mgr(TRTileManager)->TileAir();
+
+	if (tile == air_tile)
+		return;
+
+	switch (uidDig(randDigSound))
+	{
+	case 0:Mgr(CSoundMgr)->PlayEffect("Dig_0.wav", 0.5f); break;
+	case 1:Mgr(CSoundMgr)->PlayEffect("Dig_1.wav", 0.5f); break;
+	case 2:Mgr(CSoundMgr)->PlayEffect("Dig_2.wav", 0.5f); break;
+	default:
+		break;
+	}
+
+	tile_map->SetTile(x, y, air_tile, true);
 
 	std::wstring k_dropitem = tile->DropItem();
 	if (k_dropitem == L"")
@@ -264,6 +296,17 @@ void TRWorld::DropItem(Vec2 world_pos, TRItemStack item)
 
 void TRWorld::SetToggleInventory(bool value)
 {
+	if (toggle_inventory != value)
+	{
+		if (value)
+		{
+			Mgr(CSoundMgr)->PlayEffect("Menu_Open.wav", 0.5f);
+		}
+		else
+		{
+			Mgr(CSoundMgr)->PlayEffect("Menu_Close.wav", 0.5f);
+		}
+	}
 	toggle_inventory = value;
 	quick_bar_visualizer->SetVisible(!value);
 	inventory_visualizer->SetVisible(value);

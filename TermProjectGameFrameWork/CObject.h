@@ -79,5 +79,7 @@ public:
 	int GetHP()const { return m_iHP; }
 
 	void SetColliderScale(Vec2 _vScale);
+
+	void render_in_minimap(HDC _dc)const;
 };
 
