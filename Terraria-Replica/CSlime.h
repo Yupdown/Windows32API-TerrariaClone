@@ -18,5 +18,7 @@ public:
     virtual void OnCollision(CCollider* const _pOther) override;
     virtual void OnCollisionEnter(CCollider* const _pOther) override;
     virtual void OnCollisionExit(CCollider* const _pOther) override;
+
+    void Charge();
 };
 
