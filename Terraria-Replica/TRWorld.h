@@ -11,6 +11,7 @@
 class TRItemContainer;
 class CQuickBarVisualizer;
 class CHealthIndicator;
+class CInventoryVisualizer;
 
 class TRWorld
 {
@@ -22,10 +23,15 @@ private:
 	TRTileMap* tile_map;
 	CPlayer* player;
 
+	TRItemContainer* player_inventory[50];
 	TRItemContainer* quick_bar[10];
+
 	CQuickBarVisualizer* quick_bar_visualizer;
+	CInventoryVisualizer* inventory_visualizer;
+
 	CHealthIndicator* health_indicator;
 	int quick_bar_index;
+	bool toggle_inventory;
 
 public:
 	TRWorld();
@@ -40,4 +46,5 @@ public:
 	static Vec2 GlobalToWorld(const Vec2& v);
 
 	TRTileMap* GetTileMap() const;
+	void SetToggleInventory(bool value);
 };

@@ -29,6 +29,8 @@ public:
 	void OnSceneCreate(CScene* scene);
 	void UpdateTileRenderer(int x, int y);
 
+	int GetTopYpos(int x) const;
+
 private:
 	int GetTileNeighborMask(int x, int y) const;
 	int GetTileWallNeighborMask(int x, int y) const;

@@ -22,6 +22,7 @@ CQuickBarVisualizer::CQuickBarVisualizer(TRItemContainer* containers[10])
 
     select_index = 0;
     m_bIsCamAffected = false;
+	visible = true;
 }
 
 CQuickBarVisualizer::CQuickBarVisualizer(const CQuickBarVisualizer& other) : CObject(other)
@@ -37,6 +38,13 @@ void CQuickBarVisualizer::AddContainerVisualizers(CScene* scene)
 {
 	for (int i = 0; i < 10; ++i)
 		scene->AddObject(container_visualizers[i], GROUP_TYPE::UI);
+}
+
+void CQuickBarVisualizer::SetVisible(bool value)
+{
+	visible = value;
+	for (int i = 0; i < 10; ++i)
+		container_visualizers[i]->SetVisible(value);
 }
 
 CQuickBarVisualizer* CQuickBarVisualizer::Clone() const
@@ -71,13 +79,21 @@ void CQuickBarVisualizer::update()
 
 void CQuickBarVisualizer::render(HDC _dc) const
 {
+	if (!visible)
+		return;
+
 	TRItemContainer* item_container = container_visualizers[select_index]->GetItemContainer();
 
 	if (!item_container->Blank())
 	{
 		static wchar_t buffer[64];
 		wsprintf(buffer, L"%s", item_container->GetItemStack().GetItem()->GetName().c_str());
-		renderText(_dc,RGB(255,0,0), m_vPos + Vec2::down * 22.0f, buffer);
+
+		SIZE s_out;
+		GetTextExtentPoint32(_dc, buffer, lstrlen(buffer), &s_out);
+
+		renderText(_dc, 0x00000000, m_vPos + Vec2(278.0f - s_out.cx / 2, -18.0f), buffer);
+		renderText(_dc, 0x00FFFFFF, m_vPos + Vec2(278.0f - s_out.cx / 2, -20.0f), buffer);
 	}
 
 	for (int i = 0; i < 10; ++i)

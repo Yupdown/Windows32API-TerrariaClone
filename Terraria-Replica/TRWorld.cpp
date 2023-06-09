@@ -10,6 +10,7 @@
 #include "CScene.h"
 #include "CQuickBarVisualizer.h"
 #include "CHealthIndicator.h"
+#include "CInventoryVisualizer.h"
 
 #include "CMonster.h"
 #include "TRItemManager.h"
@@ -32,21 +33,25 @@ TRWorld::TRWorld()
 	g_TRWorld = this;
 	tile_map = new TRTileMap(TRWorld::WORLD_WIDTH, TRWorld::WORLD_HEIGHT);
 	
-
+	for (int i = 0; i < 50; ++i)
+		player_inventory[i] = new TRItemContainer();
 	for (int i = 0; i < 10; ++i)
-		quick_bar[i] = new TRItemContainer();
+		quick_bar[i] = player_inventory[i];
+
 	quick_bar_visualizer = new CQuickBarVisualizer(quick_bar);
 	quick_bar_visualizer->SetPos(Vec2Int(10, 24));
+
+	inventory_visualizer = new CInventoryVisualizer(player_inventory);
+	inventory_visualizer->SetPos(Vec2Int(10, 24));
+
 	health_indicator = new CHealthIndicator();
 	health_indicator->SetPos(Vec2Int(1120, 10));
 
-	quick_bar[0]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"pickaxe_iron"), 1));
-	quick_bar[1]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"hammer_iron"), 1));
-	quick_bar[2]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"longsword_iron"), 1));
-	quick_bar[3]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_dirt"), 1));
-	quick_bar[4]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_bricks_stone"), 1));
-	quick_bar[5]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"wall_bricks_stone"), 1));
+	for (int id = 0; id < 17; ++id)
+		player_inventory[id]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByID(id), 10));
+
 	quick_bar_index = 0;
+	SetToggleInventory(false);
 }
 
 TRWorld::~TRWorld()
@@ -79,17 +84,22 @@ void TRWorld::Update()
 		quick_bar_index = 8;
 	else if (KEY_TAP(KEY::ZERO))
 		quick_bar_index = 9;
+	else if (KEY_TAP(KEY::ENTER))
+		SetToggleInventory(!toggle_inventory);
 	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
 
 	health_indicator->SetHealthValue(player->GetHP());
 
-	if (!quick_bar[quick_bar_index]->Blank())
+	if (KEY_TAP(KEY::LBTN))
 	{
-		Vec2 mouse_world_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
-
-		if (KEY_TAP(KEY::LBTN))
+		bool result = inventory_visualizer->HandleMouseInput();
+		if (!result)
+		{
+			Vec2 mouse_world_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
 			quick_bar[quick_bar_index]->GetItemStack().GetItem()->OnUseItem(player, this, mouse_world_pos);
+		}
 	}
+
 	TRMonGenerator::GenerateMonster();
 }
 
@@ -120,7 +130,8 @@ void TRWorld::CreateWorld(int seed)
 void TRWorld::OnSceneCreate(CScene* scene)
 {
 	player = new CPlayer(this);
-	player->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT - 32)));
+	int x = TRWorld::WORLD_WIDTH / 2;
+	player->SetPos(TRWorld::WorldToGlobal(Vec2(x, tile_map->GetTopYpos(x))) - Vec2(20.0f, 28.0f));
 	player->SetScale(Vec2{ 40.f, 56.f });
 	scene->AddObject(player, GROUP_TYPE::PLAYER);
 	Mgr(CCamera)->SetTarget(player);
@@ -176,6 +187,8 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	Mgr(CCollisionMgr)->RegisterGroup( GROUP_TYPE::MONSTER,GROUP_TYPE::PLAYER_WEAPON);
 	scene->AddObject(quick_bar_visualizer, GROUP_TYPE::UI);
 	quick_bar_visualizer->AddContainerVisualizers(scene);
+	scene->AddObject(inventory_visualizer, GROUP_TYPE::UI);
+	inventory_visualizer->AddContainerVisualizers(scene);
 	scene->AddObject(health_indicator, GROUP_TYPE::UI);
 
 	scene->Enter();
@@ -194,4 +207,11 @@ Vec2 TRWorld::GlobalToWorld(const Vec2& v)
 TRTileMap* TRWorld::GetTileMap() const
 {
 	return tile_map;
+}
+
+void TRWorld::SetToggleInventory(bool value)
+{
+	toggle_inventory = value;
+	quick_bar_visualizer->SetVisible(!value);
+	inventory_visualizer->SetVisible(value);
 }

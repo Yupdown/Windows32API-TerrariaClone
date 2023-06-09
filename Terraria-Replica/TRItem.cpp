@@ -81,7 +81,7 @@ bool TRItemTileWall::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target
 
 TRItemTool::TRItemTool(std::wstring name, std::wstring k_element) : TRItem(name, k_element)
 {
-
+	this->max_stacksize = 1;
 }
 
 TRItemTool::~TRItemTool()

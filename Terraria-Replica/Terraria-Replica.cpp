@@ -12,6 +12,7 @@
 #include "CKeyMgr.h"
 #include "CObject.h"
 #include "CRigidBody.h"
+#include "CCollider.h"
 #include "CustomMath.hpp"
 
 void updateTileCollision(CObject* const _pObj, TRWorld* const _pTRWorld);
@@ -265,6 +266,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 void updateTileCollision(CObject* const _pObj,TRWorld* const _pTRWorld)
 {
 	auto pRigid = _pObj->GetComp<CRigidBody>();
+    auto pCol = _pObj->GetComp<CCollider>();
 
     //if (!pRigid->IsGravity())
     //{
@@ -272,12 +274,18 @@ void updateTileCollision(CObject* const _pObj,TRWorld* const _pTRWorld)
     //    return;
     //}
 
+    if (pCol == nullptr)
+    {
+        _pObj->SetPos(_pObj->GetWillPos());
+        return;
+    }
+
 	auto pTileMap = _pTRWorld->GetTileMap();
 	Vec2 world_pos = TRWorld::GlobalToWorld(_pObj->GetWillPos());
 	Vec2 world_vel = pRigid->GetVelocity();
 
-	float w = 1.5f;
-	float h = 3.0f;
+	float w = pCol->GetScale().x / PIXELS_PER_TILE;
+	float h = pCol->GetScale().y / PIXELS_PER_TILE;
 
 	Vec2 pre_pos = TRWorld::GlobalToWorld(_pObj->GetPos());
 	Vec2 post_pos = world_pos;

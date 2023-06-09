@@ -12,6 +12,7 @@ private:
     CItemContainerVisualizer* container_visualizers[10];
     CImage* container_background[2];
     int select_index;
+    bool visible;
 
 public:
     CQuickBarVisualizer(TRItemContainer* containers[10]);
@@ -19,6 +20,7 @@ public:
 
     void SetSelectIndex(int index);
     void AddContainerVisualizers(CScene* scene);
+    void SetVisible(bool value);
 
     CQuickBarVisualizer* Clone() const override;
 
