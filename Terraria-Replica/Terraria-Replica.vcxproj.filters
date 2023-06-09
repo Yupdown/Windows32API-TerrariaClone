@@ -67,6 +67,9 @@
     <Filter Include="CObject\InventoryVisualizer">
       <UniqueIdentifier>{e7efbb6a-5f22-449a-9d29-42eee09598f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CObject\DropItem">
+      <UniqueIdentifier>{02e3a9bd-25fd-47fe-af24-e08dd42f34b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -174,6 +177,9 @@
     <ClInclude Include="CInventoryVisualizer.h">
       <Filter>CObject\InventoryVisualizer</Filter>
     </ClInclude>
+    <ClInclude Include="CDropItem.h">
+      <Filter>CObject\DropItem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -256,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="CInventoryVisualizer.cpp">
       <Filter>CObject\InventoryVisualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="CDropItem.cpp">
+      <Filter>CObject\DropItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
