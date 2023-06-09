@@ -94,14 +94,14 @@ void TRWorld::Update()
 	if (KEY_TAP(KEY::LBTN))
 	{
 		bool result = inventory_visualizer->HandleMouseInput();
-		if (!result)
+		if (!result && !quick_bar[quick_bar_index]->Blank())
 		{
 			Vec2 mouse_world_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
 			quick_bar[quick_bar_index]->GetItemStack().GetItem()->OnUseItem(player, this, mouse_world_pos);
 		}
 	}
 
-	TRMonGenerator::GenerateMonster();
+	//TRMonGenerator::GenerateMonster();
 }
 
 void TRWorld::CreateWorld(int seed)
@@ -130,6 +130,8 @@ void TRWorld::CreateWorld(int seed)
 
 void TRWorld::OnSceneCreate(CScene* scene)
 {
+	m_pScene = scene;
+
 	player = new CPlayer(this);
 	int x = TRWorld::WORLD_WIDTH / 2;
 	player->SetPos(TRWorld::WorldToGlobal(Vec2Int(x, tile_map->GetTopYpos(x))) - Vec2(20.0f, 28.0f));
@@ -139,11 +141,7 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	scene->RegisterPlayer(player);
 
 	for (int i = 0; i < 17; ++i)
-	{
-		CDropItem* drop_item = new CDropItem(this, TRItemStack(Mgr(TRItemManager)->GetItemByID(i), 1));
-		drop_item->SetPos(TRWorld::WorldToGlobal(Vec2Int(x + i, 254)));
-		scene->AddObject(drop_item, GROUP_TYPE::DROP_ITEM);
-	}
+		DropItem(Vec2Int(x + i * 4, 254), TRItemStack(Mgr(TRItemManager)->GetItemByID(i), 100));
 
 	{
 		CWeapon* pWeapon;
@@ -163,29 +161,29 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	
 	tile_map->OnSceneCreate(scene);
 
-	{
-		auto pMon = new CZombie{ this,L"Monster_Zombie",L"NPC_3.png" };
-		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 38.0f, 46.0f });
-		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-		pMon->SetColliderScale(Vec2{ 38.0f, 46.0f });
-	}
+	//{
+	//	auto pMon = new CZombie{ this,L"Monster_Zombie",L"NPC_3.png" };
+	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
+	//	pMon->SetScale(Vec2{ 38.0f, 46.0f });
+	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	//	pMon->SetColliderScale(Vec2{ 38.0f, 46.0f });
+	//}
 
-	{
-		auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
-		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 32.0f, 24.0f });
-		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-		pMon->SetColliderScale(Vec2{ 32.0f, 24.0f });
-	}
+	//{
+	//	auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
+	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
+	//	pMon->SetScale(Vec2{ 32.0f, 24.0f });
+	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	//	pMon->SetColliderScale(Vec2{ 32.0f, 24.0f });
+	//}
 
-	{
-		auto pMon = new CEyeMonster{ this,L"Monster_EyeMonster",L"NPC_2.png" };
-		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 10, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 38.0f, 22.0f });
-		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-		pMon->SetColliderScale(Vec2{ 38.0f, 22.0f });
-	}
+	//{
+	//	auto pMon = new CEyeMonster{ this,L"Monster_EyeMonster",L"NPC_2.png" };
+	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 10, TRWorld::WORLD_HEIGHT)));
+	//	pMon->SetScale(Vec2{ 38.0f, 22.0f });
+	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	//	pMon->SetColliderScale(Vec2{ 38.0f, 22.0f });
+	//}
 
 	{
 		scene->AddObject(new CMiniMap, GROUP_TYPE::UI);
@@ -221,6 +219,47 @@ TRTileMap* TRWorld::GetTileMap() const
 CPlayer* TRWorld::GetPlayer() const
 {
 	return player;
+}
+
+bool TRWorld::PlaceTile(int x, int y, TRTile* new_tile)
+{
+	TRTile* tile = tile_map->GetTile(x, y);
+
+	if (tile == nullptr)
+		return false;
+	if (tile->Solid())
+		return false;
+
+	tile_map->SetTile(x, y, new_tile, true);
+	return true;
+}
+
+void TRWorld::BreakTile(int x, int y)
+{
+	TRTile* tile = tile_map->GetTile(x, y);
+
+	if (tile == nullptr)
+		return;
+
+	tile_map->SetTile(x, y, Mgr(TRTileManager)->TileAir(), true);
+
+	std::wstring k_dropitem = tile->DropItem();
+	if (k_dropitem == L"")
+		return;
+
+	TRItem* p_dropitem = Mgr(TRItemManager)->GetItemByKey(k_dropitem);
+	DropItem(Vec2(x + 0.5f, y + 0.5f), TRItemStack(p_dropitem, 1));
+}
+
+void TRWorld::DropItem(Vec2 world_pos, TRItemStack item)
+{
+	if (item.Null())
+		return;
+
+	CDropItem* drop_item = new CDropItem(this, item);
+	drop_item->SetPos(TRWorld::WorldToGlobal(world_pos));
+
+	m_pScene->AddObject(drop_item, GROUP_TYPE::DROP_ITEM);
 }
 
 void TRWorld::SetToggleInventory(bool value)

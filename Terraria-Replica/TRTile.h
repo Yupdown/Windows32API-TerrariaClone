@@ -31,6 +31,7 @@ public:
 	bool StickEach() const;
 	bool Solid() const;
 	float Hardness() const;
+	std::wstring DropItem() const;
 };
 
 class TRTileAir : public TRTile
