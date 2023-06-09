@@ -25,6 +25,7 @@
 #include "CWeapon.h"
 #include "TRMonGenerator.h"
 #include "CMiniMap.h"
+#include "CDropItem.h"
 
 TRWorld* g_TRWorld = nullptr;
 
@@ -131,11 +132,18 @@ void TRWorld::OnSceneCreate(CScene* scene)
 {
 	player = new CPlayer(this);
 	int x = TRWorld::WORLD_WIDTH / 2;
-	player->SetPos(TRWorld::WorldToGlobal(Vec2(x, tile_map->GetTopYpos(x))) - Vec2(20.0f, 28.0f));
+	player->SetPos(TRWorld::WorldToGlobal(Vec2Int(x, tile_map->GetTopYpos(x))) - Vec2(20.0f, 28.0f));
 	player->SetScale(Vec2{ 40.f, 56.f });
 	scene->AddObject(player, GROUP_TYPE::PLAYER);
 	Mgr(CCamera)->SetTarget(player);
 	scene->RegisterPlayer(player);
+
+	for (int i = 0; i < 17; ++i)
+	{
+		CDropItem* drop_item = new CDropItem(this, TRItemStack(Mgr(TRItemManager)->GetItemByID(i), 1));
+		drop_item->SetPos(TRWorld::WorldToGlobal(Vec2Int(x + i, 254)));
+		scene->AddObject(drop_item, GROUP_TYPE::DROP_ITEM);
+	}
 
 	{
 		CWeapon* pWeapon;
@@ -185,6 +193,7 @@ void TRWorld::OnSceneCreate(CScene* scene)
 
 	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER); 
 	Mgr(CCollisionMgr)->RegisterGroup( GROUP_TYPE::MONSTER,GROUP_TYPE::PLAYER_WEAPON);
+	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::DROP_ITEM);
 	scene->AddObject(quick_bar_visualizer, GROUP_TYPE::UI);
 	quick_bar_visualizer->AddContainerVisualizers(scene);
 	scene->AddObject(inventory_visualizer, GROUP_TYPE::UI);
@@ -209,9 +218,28 @@ TRTileMap* TRWorld::GetTileMap() const
 	return tile_map;
 }
 
+CPlayer* TRWorld::GetPlayer() const
+{
+	return player;
+}
+
 void TRWorld::SetToggleInventory(bool value)
 {
 	toggle_inventory = value;
 	quick_bar_visualizer->SetVisible(!value);
 	inventory_visualizer->SetVisible(value);
+}
+
+void TRWorld::AddItemToInventory(TRItemStack item)
+{
+	TRItemStack return_item = item;
+
+	for (auto& container : player_inventory)
+	{
+		if (container->Blank() || container->GetItemStack().GetItem() == item.GetItem())
+			return_item = container->Apply(return_item);
+
+		if (return_item.Null())
+			break;
+	}
 }

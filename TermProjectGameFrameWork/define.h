@@ -31,6 +31,7 @@ enum class GROUP_TYPE
 	PROJ_MONSTER, 
 
 	PLAYER_WEAPON,
+	DROP_ITEM,
 
 	UI = 31,		
 	

@@ -18,7 +18,8 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "CCamera.h"
-#include"CEventMgr.h"
+#include "CEventMgr.h"
+#include "CDropItem.h"
 
 CPlayer::CPlayer(TRWorld* const _trWorld)
 {

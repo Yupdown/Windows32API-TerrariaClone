@@ -46,5 +46,8 @@ public:
 	static Vec2 GlobalToWorld(const Vec2& v);
 
 	TRTileMap* GetTileMap() const;
+	CPlayer* GetPlayer() const;
+
 	void SetToggleInventory(bool value);
+	void AddItemToInventory(TRItemStack item);
 };
