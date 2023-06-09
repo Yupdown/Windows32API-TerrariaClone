@@ -25,7 +25,7 @@ private:
 	void stop_all();
 public:
 	void init();
-	//bool isDone(const size_t _idx)const;
+
 	void Join(const size_t _idx)const;
 	void Join_all()const;
 

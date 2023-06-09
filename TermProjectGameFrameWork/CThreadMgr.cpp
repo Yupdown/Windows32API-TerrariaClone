@@ -56,11 +56,6 @@ void CThreadMgr::init()
     }
 }
 
-//bool CThreadMgr::isDone(const size_t _idx) const
-//{
-//    return m_arrDone[_idx].load(std::memory_order_seq_cst);
-//}
-
 void CThreadMgr::Join(const size_t _idx)const
 {
     while (!m_arrDone[_idx].load(std::memory_order_relaxed))
