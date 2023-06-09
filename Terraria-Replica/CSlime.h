@@ -4,6 +4,9 @@
 class CSlime :
     public CMonster
 {
+private:
+    float m_charge_time;
+
 public:
 
    CSlime(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName);

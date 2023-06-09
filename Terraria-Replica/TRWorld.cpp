@@ -169,13 +169,13 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	//	pMon->SetColliderScale(Vec2{ 38.0f, 46.0f });
 	//}
 
-	//{
-	//	auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
-	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
-	//	pMon->SetScale(Vec2{ 32.0f, 24.0f });
-	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-	//	pMon->SetColliderScale(Vec2{ 32.0f, 24.0f });
-	//}
+	{
+		auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
+		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
+		pMon->SetScale(Vec2{ 32.0f, 24.0f });
+		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+		pMon->SetColliderScale(Vec2{ 32.0f, 24.0f });
+	}
 
 	//{
 	//	auto pMon = new CEyeMonster{ this,L"Monster_EyeMonster",L"NPC_2.png" };

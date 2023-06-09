@@ -30,35 +30,35 @@ CMonster::~CMonster()
 
 void CMonster::update()
 {
-	if (Mgr(CSceneMgr)->GetCurScene()->GetPlayerCast()->IsPlayerSlane())
+	if (Mgr(CSceneMgr)->GetCurScene()->GetPlayerCast()->IsPlayerSlain())
 	{
 		return;
 	}
 
 	CObject::update();
-	auto vPlayerPos = Mgr(CSceneMgr)->GetCurScene()->GetPlayer()->GetPos();
-	auto pAnim = GetComp<CAnimator>();
-	auto vCurPos = GetPos();
+	//auto vPlayerPos = Mgr(CSceneMgr)->GetCurScene()->GetPlayer()->GetPos();
+	//auto pAnim = GetComp<CAnimator>();
+	//auto vCurPos = GetPos();
 
-	auto vDir = (vPlayerPos - vCurPos).Normalize();
-	
-	auto pRigid = GetComp<CRigidBody>();
+	//auto vDir = (vPlayerPos - vCurPos).Normalize();
+	//
+	//auto pRigid = GetComp<CRigidBody>();
 
-	if (pRigid->IsGravity())
-	{
-		vDir.y = 0.f;
-	}
+	//if (pRigid->IsGravity())
+	//{
+	//	vDir.y = 0.f;
+	//}
 
-	pRigid->AddVelocity(vDir * 20.f);
+	//pRigid->AddVelocity(vDir * 20.f);
 
-	if (vDir.x > 0)
-	{
-		pAnim->SetAnimLeft();
-	}
-	else
-	{
-		pAnim->SetAnimRight();
-	}
+	//if (vDir.x > 0)
+	//{
+	//	pAnim->SetAnimLeft();
+	//}
+	//else
+	//{
+	//	pAnim->SetAnimRight();
+	//}
 }
 
 void CMonster::render(HDC _dc) const
@@ -73,7 +73,7 @@ void CMonster::OnCollision(CCollider* const _pOther)
 	if (L"Player" == pObj->GetName())
 	{
 		auto pPlayer = (CPlayer*)pObj;
-		if (pPlayer->IsPlayerSlane())
+		if (pPlayer->IsPlayerSlain())
 		{
 			return;
 		}
@@ -93,7 +93,7 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 	{
 		auto pPlayer = (CPlayer*)pObj;
 
-		if (pPlayer->IsPlayerSlane())
+		if (pPlayer->IsPlayerSlain())
 		{
 			return;
 		}

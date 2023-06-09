@@ -37,7 +37,7 @@ private:
     bool m_bIsIDLE = false;
     bool m_bPrevCol = false;
 
-    bool m_bSlane = false;
+    bool m_bSlain = false;
 public:
     CPlayer(TRWorld* const _trWorld);
     CPlayer(const CPlayer& other);
@@ -59,8 +59,8 @@ public:
 
     void AddPlayerWeapon();
 
-    void SetSlane(bool _b) { m_bSlane = _b; }
-    bool IsPlayerSlane()const { return m_bSlane; }
+    void SetSlane(bool _b) { m_bSlain = _b; }
+    bool IsPlayerSlain()const { return m_bSlain; }
     CoRoutine PlayerRebirthProcess();
 };
 

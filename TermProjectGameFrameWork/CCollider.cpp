@@ -35,6 +35,7 @@ void CCollider::component_update()
 
 void CCollider::component_render(HDC _dc)const
 {
+	return;
 	const auto vRenderPos = Mgr(CCamera)->GetRenderPos(m_vFinalPos);
 	auto hOld = SelectObject(_dc, GetStockObject(HOLLOW_BRUSH));
 	Rectangle(_dc

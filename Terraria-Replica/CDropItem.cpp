@@ -13,7 +13,7 @@ CDropItem::CDropItem(TRWorld* const _trWorld, TRItemStack _item)
 	m_bIsCamAffected = true;
 	m_item = _item;
 
-	CreateComponent(COMPONENT_TYPE::COLLIDER, Vec2::one * 8.0f);
+	CreateComponent(COMPONENT_TYPE::COLLIDER, Vec2::one * 16.0f);
 	CreateComponent(COMPONENT_TYPE::RIGIDBODY);
 
 	SetName(L"DropItem_" + _item.GetItem()->GetName());
@@ -34,7 +34,7 @@ void CDropItem::update()
 
 	float dist = (t_vPos - m_vPos).length();
 	if (dist < 80.0f)
-		rBody->AddForce((t_vPos - m_vPos).Normalize() * 3200.0f);
+		rBody->AddForce((t_vPos - m_vPos).Normalize() * 5000.0f);
 }
 
 void CDropItem::render(HDC _dc) const
@@ -47,7 +47,7 @@ void CDropItem::render(HDC _dc) const
 	CImage* image = m_item.GetItem()->GetItemElement();
 	Vec2 pos = Mgr(CCamera)->GetRenderPos(m_vPos);
 	Vec2Int size = Vec2Int(image->GetWidth(), image->GetHeight());
-	Mgr(CResMgr)->renderImg(_dc, image, pos - Vec2(size.x, size.y * 2 - 6.0f), size * 2, Vec2Int::zero, size);
+	Mgr(CResMgr)->renderImg(_dc, image, pos - Vec2Int(size.x, size.y * 2 - 6), size * 2, Vec2Int::zero, size);
 }
 
 void CDropItem::OnCollision(CCollider* const _pOther)
