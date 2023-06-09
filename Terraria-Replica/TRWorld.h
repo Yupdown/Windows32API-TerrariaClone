@@ -7,6 +7,7 @@
 #include "CScene.h"
 
 #include "TRItemContainer.h"
+#include "TRItemStack.h"
 
 class TRItemContainer;
 class CQuickBarVisualizer;
@@ -22,6 +23,7 @@ public:
 private:
 	TRTileMap* tile_map;
 	CPlayer* player;
+	CScene* m_pScene;
 
 	TRItemContainer* player_inventory[50];
 	TRItemContainer* quick_bar[10];
@@ -47,6 +49,10 @@ public:
 
 	TRTileMap* GetTileMap() const;
 	CPlayer* GetPlayer() const;
+
+	bool PlaceTile(int x, int y, TRTile* new_tile);
+	void BreakTile(int x, int y);
+	void DropItem(Vec2 world_pos, TRItemStack item);
 
 	void SetToggleInventory(bool value);
 	void AddItemToInventory(TRItemStack item);

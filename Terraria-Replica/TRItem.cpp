@@ -57,7 +57,7 @@ bool TRItemTile::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos
 {
 	int x = FloorToInt(target_pos.x);
 	int y = FloorToInt(target_pos.y);
-	world->GetTileMap()->SetTile(x, y, Mgr(TRTileManager)->GetTileByKey(k_tile), true);
+	world->PlaceTile(x, y, Mgr(TRTileManager)->GetTileByKey(k_tile));
 	return true;
 }
 
@@ -100,7 +100,7 @@ bool TRItemPickaxe::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_
 {
 	int x = FloorToInt(target_pos.x);
 	int y = FloorToInt(target_pos.y);
-	world->GetTileMap()->SetTile(x, y, Mgr(TRTileManager)->TileAir(), true);
+	world->BreakTile(x, y);
 	return false;
 }
 

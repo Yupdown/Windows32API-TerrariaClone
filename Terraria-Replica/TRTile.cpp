@@ -342,6 +342,11 @@ float TRTile::Hardness() const
     return hardness;
 }
 
+std::wstring TRTile::DropItem() const
+{
+    return k_dropitem;
+}
+
 TRTileSolid::TRTileSolid(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTile(name, true, hardness, k_element, k_dropitem)
 {
     this->stick_group = 1;
