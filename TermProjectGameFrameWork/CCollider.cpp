@@ -35,14 +35,14 @@ void CCollider::component_update()
 
 void CCollider::component_render(HDC _dc)const
 {
-	const auto vRenderPos = Mgr(CCamera)->GetRenderPos(m_vFinalPos);
+	/*const auto vRenderPos = Mgr(CCamera)->GetRenderPos(m_vFinalPos);
 	auto hOld = SelectObject(_dc, GetStockObject(HOLLOW_BRUSH));
 	Rectangle(_dc
 		, (int)(vRenderPos.x - m_vScale.x / 2.f)
 		, (int)(vRenderPos.y - m_vScale.y / 2.f)
 		, (int)(vRenderPos.x + m_vScale.x / 2.f)
 		, (int)(vRenderPos.y + m_vScale.y / 2.f)); 
-	SelectObject(_dc, hOld);
+	SelectObject(_dc, hOld);*/
 }
 
 void CCollider::OnCollision(CCollider* const _pOther)

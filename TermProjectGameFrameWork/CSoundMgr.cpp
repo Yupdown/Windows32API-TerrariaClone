@@ -77,6 +77,11 @@ void CSoundMgr::BGMVolDown()
 	}
 }
 
+void CSoundMgr::update()
+{
+	FMOD_System_Update(m_fmSystem);
+}
+
 void CSoundMgr::BGMVolUp()
 {
 	if (m_fmBGMChannel)

@@ -13,7 +13,7 @@
 
 static std::mt19937 randHitSound{std::random_device{}()};
 static std::uniform_int_distribution<> uidHit{0, 2};
-
+static std::uniform_int_distribution<> uidDir{0, 1};
 
 CMonster::CMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName)
 {
@@ -75,18 +75,59 @@ void CMonster::render(HDC _dc) const
 void CMonster::OnCollision(CCollider* const _pOther)
 {
 	auto pObj = _pOther->GetOwner();
-	if (L"Player" == pObj->GetName())
+	const wstring wstrObjName = pObj->GetName().substr(0, pObj->GetName().find(L'_'));
+	if (L"Player" == wstrObjName)
 	{
 		auto pPlayer = (CPlayer*)pObj;
 		if (pPlayer->IsPlayerSlane())
 		{
 			return;
 		}
-		auto vDir = GetComp<CRigidBody>()->GetVelocity().Normalize();
-		vDir.y = 0;
 		
-		pPlayer->GetComp<CRigidBody>()->AddForce(vDir * 500);
-		pPlayer->GetComp<CRigidBody>()->component_update();
+		if (pPlayer->IsCanHit())
+		{
+			auto vDir = pPlayer->GetPos() - GetPos();
+			vDir.y = 0;
+			pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
+			//pPlayer->GetComp<CRigidBody>()->SetVelocity({});
+			Vec2 vForce = {};
+			if (vDir.x > 0.f)
+			{
+				vForce.x = 1.f;
+			}
+			else if (vDir.x < 0.f)
+			{
+				vForce.x = -1.f;
+			}
+			else
+			{
+				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
+			}
+			pPlayer->GetComp<CRigidBody>()->AddVelocity(vForce *500);
+			pPlayer->GetComp<CRigidBody>()->AddForce(vForce *500);
+
+			pPlayer->GetComp<CRigidBody>()->component_update();
+			pPlayer->SetHP(pPlayer->GetHP() - 30);
+			if (pPlayer->GetHP() <= 0)
+			{
+				Mgr(CCamera)->FadeOut(1.5f);
+				Mgr(CSoundMgr)->PlayEffect("Player_Killed.wav", 0.5f);
+				pPlayer->SetSlane(true);
+				pPlayer->GetComp<CRigidBody>()->SetVelocity({});
+				StartDelayCoRoutine(pPlayer, pPlayer->PlayerRebirthProcess(), 1.f);
+			}
+			else
+			{
+				switch (uidHit(randHitSound))
+				{
+				case 0:Mgr(CSoundMgr)->PlayEffect("Player_Hit_0.wav", 0.5f); break;
+				case 1:Mgr(CSoundMgr)->PlayEffect("Player_Hit_1.wav", 0.5f); break;
+				case 2:Mgr(CSoundMgr)->PlayEffect("Player_Hit_2.wav", 0.5f); break;
+				default:
+					break;
+				}
+			}
+		}
 	}
 }
 
@@ -103,32 +144,48 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 			return;
 		}
 
-		auto iCurHP = pPlayer->GetHP();
-		pPlayer->SetHP(iCurHP - 30);
-		auto vDir = GetComp<CRigidBody>()->GetVelocity().Normalize();
-		vDir.y = 0;
-		pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
-		pPlayer->GetComp<CRigidBody>()->SetVelocity({});
-		pPlayer->GetComp<CRigidBody>()->AddVelocity(vDir * 500 );
-		pPlayer->GetComp<CRigidBody>()->AddForce(vDir*500 );
-		pPlayer->GetComp<CRigidBody>()->component_update();
-		if (pPlayer->GetHP() <= 0)
+		if (pPlayer->IsCanHit())
 		{
-			Mgr(CCamera)->FadeOut(1.5f);
-			Mgr(CSoundMgr)->PlayEffect("Player_Killed.wav", 0.5f);
-			pPlayer->SetSlane(true);
-			pPlayer->GetComp<CRigidBody>()->SetVelocity({});
-			StartDelayCoRoutine(pPlayer,pPlayer->PlayerRebirthProcess(), 1.f);
-		}
-		else
-		{
-			switch (uidHit(randHitSound))
+			auto vDir = pPlayer->GetPos() - GetPos();
+			vDir.y = 0;
+			pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
+			//pPlayer->GetComp<CRigidBody>()->SetVelocity({});
+			Vec2 vForce = {};
+			if (vDir.x > 0.f)
 			{
-			case 0:Mgr(CSoundMgr)->PlayEffect("Player_Hit_0.wav", 0.5f); break;
-			case 1:Mgr(CSoundMgr)->PlayEffect("Player_Hit_1.wav", 0.5f); break;
-			case 2:Mgr(CSoundMgr)->PlayEffect("Player_Hit_2.wav", 0.5f); break;
-			default:
-				break;
+				vForce.x = 1.f;
+			}
+			else if (vDir.x < 0.f)
+			{
+				vForce.x = -1.f;
+			}
+			else
+			{
+				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
+			}
+			pPlayer->GetComp<CRigidBody>()->AddVelocity(vForce * 500);
+			pPlayer->GetComp<CRigidBody>()->AddForce(vForce * 500);
+
+			pPlayer->GetComp<CRigidBody>()->component_update();
+			pPlayer->SetHP(pPlayer->GetHP() - 30);
+			if (pPlayer->GetHP() <= 0)
+			{
+				Mgr(CCamera)->FadeOut(1.5f);
+				Mgr(CSoundMgr)->PlayEffect("Player_Killed.wav", 0.5f);
+				pPlayer->SetSlane(true);
+				pPlayer->GetComp<CRigidBody>()->SetVelocity({});
+				StartDelayCoRoutine(pPlayer, pPlayer->PlayerRebirthProcess(), 1.f);
+			}
+			else
+			{
+				switch (uidHit(randHitSound))
+				{
+				case 0:Mgr(CSoundMgr)->PlayEffect("Player_Hit_0.wav", 0.5f); break;
+				case 1:Mgr(CSoundMgr)->PlayEffect("Player_Hit_1.wav", 0.5f); break;
+				case 2:Mgr(CSoundMgr)->PlayEffect("Player_Hit_2.wav", 0.5f); break;
+				default:
+					break;
+				}
 			}
 		}
 	}

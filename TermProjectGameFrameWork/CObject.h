@@ -80,6 +80,6 @@ public:
 
 	void SetColliderScale(Vec2 _vScale);
 
-	void render_in_minimap(HDC _dc)const;
+	virtual void dmg_render(HDC _dc){}
 };
 

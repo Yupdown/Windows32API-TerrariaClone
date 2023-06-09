@@ -53,6 +53,9 @@ CPlayer::CPlayer(TRWorld* const _trWorld)
 	{
 		m_vecWeapon.emplace_back(new CWeapon{ this });
 	}
+
+	CreateDCBITMAP(m_hPlayerVeilDC, m_hPlayerVeilBit, Vec2{ 40.f, 56.f });
+	PatBlt(m_hPlayerVeilDC, 0, 0, 40, 56, BLACKNESS);
 }
 
 CPlayer::CPlayer(const CPlayer& other)
@@ -71,6 +74,8 @@ void CPlayer::update()
 	auto pAnim = GetComp<CAnimator>();
 	
 	m_ePrevState = m_eCurState;
+
+	updateDmgCoolDown();
 
 	updateQuickBarState(m_pTRWolrd->GetQuickBarIdx());
 
@@ -98,9 +103,7 @@ void CPlayer::render(HDC _dc)const
 	{
 		return;
 	}
-	Vec2 vPos = GetPos();
-	vPos = Mgr(CCamera)->GetRenderPos(vPos);
-	auto [vLT, vScale] = Mgr(CCamera)->GetRenderPos(this);
+	
 	//Mgr(CCore)->RotateTransform(_dc,m_iDegree,vLT + vScale/2);
 	//Mgr(CResMgr)->renderImg(_dc, m_pWeapon, this, Vec2{ 0,0 }, Vec2{ 16,16 });
 	//Mgr(CCore)->ResetTransform(_dc);
@@ -126,7 +129,7 @@ void CPlayer::updateState()
 	auto pAnim = GetComp<CAnimator>();
 	auto pRigid = GetComp<CRigidBody>();
 	
-	if (KEY_TAP(KEY::SPACE) && bitwise_absf(pRigid->GetVelocity().y) == 0)
+	if (KEY_TAP(KEY::SPACE) && IsFloatZero(pRigid->GetVelocity().y))
 	{
 		pRigid->SetIsGround(false);
 
@@ -295,6 +298,7 @@ void CPlayer::OnCollisionEnter(CCollider* const _pOther)
 
 	if (L"Monster" == wstrObjName)
 	{
+		++m_iMonColCnt;
 		if (!Mgr(CCamera)->IsCamMove() && !Mgr(CCamera)->IsCamShake())
 		{
 			Mgr(CCamera)->SetShakeFlag(true);
@@ -305,8 +309,13 @@ void CPlayer::OnCollisionEnter(CCollider* const _pOther)
 void CPlayer::OnCollisionExit(CCollider* const _pOther)
 {
 	
-	auto pCollider = GetComp<CCollider>();
-	auto pRigid = GetComp<CRigidBody>();
+	auto pObj = _pOther->GetOwner();
+	const wstring wstrObjName = pObj->GetName().substr(0, pObj->GetName().find(L'_'));
+
+	if (L"Monster" == wstrObjName)
+	{
+		--m_iMonColCnt;
+	}
 	
 }
 
@@ -350,4 +359,44 @@ CoRoutine CPlayer::PlayerRebirthProcess()
 	Mgr(CCamera)->SetTarget(this);
 	Mgr(CCamera)->update();
 	co_return;
+}
+
+void CPlayer::updateDmgCoolDown()
+{
+	m_fDmgCoolDown -= DT;
+	if (0.f >= m_fDmgCoolDown)
+	{
+		m_fDmgCoolDown = m_iMonColCnt == 0 ? 0.f : 1.f;
+	}
+}
+
+void CPlayer::dmg_render(HDC _dc)
+{
+	if (!IsCanHit())
+	{
+	    const int i = (int)(m_fDmgCoolDown * 10.f);
+		const int iAlpha = i & 1 ? 50 : 0;
+
+		const auto [vLT, vScale] = Mgr(CCamera)->GetRenderPos(this);
+
+		static 	BLENDFUNCTION bf = {
+			.BlendOp = AC_SRC_OVER,
+			.BlendFlags = 0,
+			.AlphaFormat = 0,
+		};
+
+		bf.SourceConstantAlpha = iAlpha;
+
+		AlphaBlend(_dc
+			, (int)vLT.x + 15
+			, (int)vLT.y + 10
+			, (int)(vScale.x) - 22
+			, (int)(vScale.y) - 10
+			, m_hPlayerVeilDC
+			, 0
+			, 0
+			, 40 - 22
+			, 56 - 10
+			, bf);
+	}
 }

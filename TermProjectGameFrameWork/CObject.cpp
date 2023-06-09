@@ -88,10 +88,6 @@ void CObject::SetColliderScale(Vec2 _vScale)
 	pCollider->SetScale(_vScale);
 }
 
-void CObject::render_in_minimap(HDC _dc) const
-{
-}
-
 void CObject::updateTileCollision()
 {
 	if (m_pTRWolrd && m_arrComp[etoi(COMPONENT_TYPE::RIGIDBODY)])
