@@ -3,8 +3,6 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-*.idb
-*.lib
 */[Uu]nity/
 bin_Debug/
 bin_Release/
