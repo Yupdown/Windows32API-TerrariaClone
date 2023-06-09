@@ -3,8 +3,6 @@
 
 
 CThreadMgr::CThreadMgr()
-    :m_mutexMain{}
-    ,m_cvQ{}
 {
 }
 
@@ -29,7 +27,7 @@ void CThreadMgr::init()
 {
     m_vecThread.resize(THREAD::END);
     for (size_t i = 0; i < THREAD::END; ++i) {
-        m_arrDone[i].store(true, std::memory_order_relaxed);
+        m_arrDone[i].store(true, std::memory_order_seq_cst);
         m_vecThread[i] = std::jthread([this] {
             while (true) {
                 std::function<void(void)> task;
@@ -50,33 +48,30 @@ void CThreadMgr::init()
 
                 task();
 
-               m_arrDone[idx].store(true, std::memory_order_release);
+                std::atomic_thread_fence(std::memory_order_seq_cst);
 
-               m_cvMain.notify_all();
+                m_arrDone[idx].store(true,std::memory_order_relaxed);
             }
             });
     }
 }
 
-bool CThreadMgr::isDone(const size_t _idx) const
+//bool CThreadMgr::isDone(const size_t _idx) const
+//{
+//    return m_arrDone[_idx].load(std::memory_order_seq_cst);
+//}
+
+void CThreadMgr::Join(const size_t _idx)const
 {
-    return m_arrDone[_idx].load(std::memory_order_acquire);
+    while (!m_arrDone[_idx].load(std::memory_order_relaxed))
+    {
+    }
 }
 
-void CThreadMgr::Join(const size_t _idx)
-{
-    std::unique_lock<std::mutex> lock{ m_mutexMain };
-    m_cvMain.wait_for(lock, std::chrono::milliseconds(16),[this, _idx] {
-        return isDone(_idx);
-    });
-    m_cvMain.notify_all();
-}
-
-void CThreadMgr::join_all()
+void CThreadMgr::Join_all()const
 {
     while (!std::all_of(m_arrDone.begin(), m_arrDone.end(), [](const auto& b) { return b.load(std::memory_order_relaxed); }))
     {
-        std::this_thread::yield();
     }
 }
 

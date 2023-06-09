@@ -18,10 +18,10 @@ public:
 	const string& GetResPathA()const { return m_strResPath; }
 
 	wstring GetTexFilePath(wstring_view _wstrName)const { return m_wstrResPath + _wstrName.data(); }
-	string GetSoundFilePath(string_view _strName)const { return m_strResPath + _strName.data(); }
+	string GetSoundFilePath(string_view _strName)const { return m_strSoundPath + _strName.data(); }
 
 	const wstring& GetTexPath()const { return m_wstrResPath ; }
-	const string& GetSoundPath()const { return m_strResPath ; }
+	const string& GetSoundPath()const { return m_strSoundPath ; }
 };
 
 

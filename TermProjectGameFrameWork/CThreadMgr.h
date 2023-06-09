@@ -18,16 +18,16 @@ private:
 	bool m_bStopRequest = false;
 
 
-	std::mutex m_mutexMain;
-	std::condition_variable m_cvMain;
+	//std::mutex m_mutexMain;
+	//std::condition_variable m_cvMain;
 
 private:
 	void stop_all();
 public:
 	void init();
-	bool isDone(const size_t _idx)const;
-	void Join(const size_t _idx);
-	void join_all();
+	//bool isDone(const size_t _idx)const;
+	void Join(const size_t _idx)const;
+	void Join_all()const;
 
 	template<typename Func, typename... Args>
 		requires std::invocable<Func, Args...>
@@ -35,7 +35,7 @@ public:
 	{
 		std::lock_guard<std::mutex> lock{ m_mutexQ };
 		m_jobQueue.emplace([_idx,fp,args...]()mutable {std::invoke(std::forward<Func>(fp), std::forward<Args>(args)...); }, _idx);
-		m_arrDone[_idx].store(false);
+		m_arrDone[_idx].store(false, std::memory_order_relaxed);
 		m_cvQ.notify_one();
 	}
 };
