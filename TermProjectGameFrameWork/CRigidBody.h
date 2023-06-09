@@ -29,7 +29,7 @@ public:
 		return pNewComp;
 	}
 public:
-	bool  IsGround()const { return m_bIsGround; }
+	bool  IsGround()const { return m_bIsGround || IsFloatZero(m_vVelocity.y); }
 	void SetIsGround(bool _b)
 	{
 		m_bIsGround = _b;

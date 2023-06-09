@@ -22,7 +22,7 @@ void CRigidBody::Move()
 	{
 		m_vVelocity.y = 0.f;
 	}
-
+	
 	Vec2 vPos = m_pOwner->GetPos();
 	Vec2 vScale = m_pOwner->GetScale()/2;
 	

@@ -377,7 +377,7 @@ void updateTileCollision(CObject* const _pObj,TRWorld* const _pTRWorld)
 			}
 			if (flag)
 			{
-				post_pos.x = reform_x;
+ 				post_pos.x = reform_x;
 				post_vel.x = 0.0f;
 			}
 			else if (post_vel.y >= 0.0f)
@@ -387,6 +387,8 @@ void updateTileCollision(CObject* const _pObj,TRWorld* const _pTRWorld)
 
     _pObj->SetPos(TRWorld::WorldToGlobal(post_pos));
 	pRigid->SetVelocity(post_vel);
-	if (!landed)
-		pRigid->SetIsGround(false);
+    if (!landed)
+    {
+        pRigid->SetIsGround(false);
+    }
 }

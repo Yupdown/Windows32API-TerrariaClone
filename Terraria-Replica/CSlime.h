@@ -4,6 +4,9 @@
 class CSlime :
     public CMonster
 {
+private:
+    float m_charge_time;
+
 public:
 
    CSlime(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName);
@@ -15,5 +18,7 @@ public:
     virtual void OnCollision(CCollider* const _pOther) override;
     virtual void OnCollisionEnter(CCollider* const _pOther) override;
     virtual void OnCollisionExit(CCollider* const _pOther) override;
+
+    void Charge();
 };
 

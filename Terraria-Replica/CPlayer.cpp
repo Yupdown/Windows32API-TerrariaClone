@@ -65,7 +65,7 @@ CPlayer::CPlayer(const CPlayer& other)
 
 void CPlayer::update()
 {
-	if (m_bSlane)
+	if (m_bSlain)
 	{
 		return;
 	}
@@ -99,7 +99,7 @@ void CPlayer::update()
 
 void CPlayer::render(HDC _dc)const
 {
-	if (m_bSlane)
+	if (m_bSlain)
 	{
 		return;
 	}
@@ -278,7 +278,7 @@ void CPlayer::updateAnimation()
 
 void CPlayer::component_update()
 {
-	if (m_bSlane)
+	if (m_bSlain)
 	{
 		return;
 	}
@@ -342,7 +342,7 @@ CoRoutine CPlayer::PlayerRebirthProcess()
 {
 	Mgr(CCamera)->SetMoveFlag(true);
 	int x = TRWorld::WORLD_WIDTH / 2;
-	const Vec2 vPlayerDeadPos = TRWorld::WorldToGlobal(Vec2(x, m_pTRWolrd->GetTileMap()->GetTopYpos(x))) - Vec2(20.0f, 28.0f);
+	const Vec2 vPlayerDeadPos = TRWorld::WorldToGlobal(Vec2Int(x, m_pTRWolrd->GetTileMap()->GetTopYpos(x))) - Vec2(20.0f, 28.0f);
 	StartCoEvent(Mgr(CCamera)->CamMoveCoRoutine(vPlayerDeadPos));
 	co_await std::suspend_always{};
 	while (Mgr(CCamera)->IsCamMove())
@@ -354,7 +354,7 @@ CoRoutine CPlayer::PlayerRebirthProcess()
 	SetWillPos(vPlayerDeadPos);
 	SetPos(vPlayerDeadPos);
 	m_eCurState = PLAYER_STATE::IDLE;
-	m_bSlane = false;
+	m_bSlain = false;
 	Mgr(CCamera)->SetMoveFlag(false);
 	Mgr(CCamera)->SetTarget(this);
 	Mgr(CCamera)->update();
