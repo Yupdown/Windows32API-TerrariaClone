@@ -7,7 +7,7 @@ class CRigidBody :
 private:
     CRigidBody(const CRigidBody&) = default;
 private:
-	Vec2			m_vLimitBreak = Vec2{ 240.0f, 720.0f } *10.f;
+	Vec2			m_vLimitBreak = Vec2{ 240.0f, 720.0f } *5.f;
 	Vec2            m_vForce;   
 	Vec2            m_vAccel;  
 	Vec2            m_vVelocity;   
@@ -44,7 +44,12 @@ public:
 public:
 	constexpr inline Vec2 GetVelocity()const { return m_vVelocity; }
 	constexpr inline void SetVelocity(Vec2 _v) { m_vVelocity = _v; }
-	constexpr inline void SetMaxVelocity(Vec2 _vMaxVel) { m_vMaxVelocity = _vMaxVel; }
+	constexpr inline void SetMaxVelocity(Vec2 _vMaxVel)
+	{
+		m_vLimitBreak = _vMaxVel * 5.f;
+		m_vMaxVelocity = _vMaxVel;
+		m_vMaxVelocityOrigin = _vMaxVel;
+	}
 	constexpr inline void SetMass(float _fMass) { m_fMass = _fMass; }
 	constexpr inline float GetMass()const { return m_fMass; }
 	constexpr inline void AddForce(Vec2 _vF) { m_vForce += _vF; }
