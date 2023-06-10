@@ -251,13 +251,11 @@ void CPlayer::updateAnimation()
 	break;
 	case PLAYER_STATE::JUMP:
 	{
-		
-		
-			if (!m_bIsAtk)
-			{
-				pAnim->Play(L"Player_Torso_JUMP", true);
-			}
-			m_pAnimLeg->Play(L"Player_Leg_JUMP", true);
+		if (!m_bIsAtk)
+		{
+			pAnim->Play(L"Player_Torso_JUMP", true);
+		}
+		m_pAnimLeg->Play(L"Player_Leg_JUMP", true);
 		
 	}
 	break;

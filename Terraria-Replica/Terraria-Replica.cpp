@@ -284,8 +284,8 @@ void updateTileCollision(CObject* const _pObj,TRWorld* const _pTRWorld)
 	Vec2 world_pos = TRWorld::GlobalToWorld(_pObj->GetWillPos());
 	Vec2 world_vel = pRigid->GetVelocity();
 
-	float w = pCol->GetScale().x / PIXELS_PER_TILE;
-	float h = pCol->GetScale().y / PIXELS_PER_TILE;
+	float w = pCol->GetScale().x / (float)PIXELS_PER_TILE;
+	float h = pCol->GetScale().y / (float)PIXELS_PER_TILE;
 
 	Vec2 pre_pos = TRWorld::GlobalToWorld(_pObj->GetPos());
 	Vec2 post_pos = world_pos;

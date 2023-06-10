@@ -79,6 +79,8 @@ void CMonster::OnCollision(CCollider* const _pOther)
 	if (L"Player" == wstrObjName)
 	{
 		auto pPlayer = (CPlayer*)pObj;
+		auto p_rb = pPlayer->GetComp<CRigidBody>();
+
 		if (pPlayer->IsPlayerSlain())
 		{
 			return;
@@ -90,7 +92,7 @@ void CMonster::OnCollision(CCollider* const _pOther)
 			vDir.y = 0;
 			//pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
 			//pPlayer->GetComp<CRigidBody>()->SetVelocity({});
-			Vec2 vForce = {};
+			Vec2 vForce = {0.0f, -0.5f};
 			if (vDir.x > 0.f)
 			{
 				vForce.x = 1.f;
@@ -103,18 +105,19 @@ void CMonster::OnCollision(CCollider* const _pOther)
 			{
 				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
 			}
-			pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
-			pPlayer->GetComp<CRigidBody>()->AddVelocity(vForce *500.f*2.f);
-			pPlayer->GetComp<CRigidBody>()->AddForce(vForce *500.f*2.f);
 
-			pPlayer->GetComp<CRigidBody>()->component_update();
+			p_rb->SetLimitBreak();
+			p_rb->AddVelocity(vForce * 500.f * 2.f);
+			p_rb->AddForce(vForce * 500.f * 2.f);
+			p_rb->SetIsGround(false);
+
 			pPlayer->SetHP(pPlayer->GetHP() - 30);
 			if (pPlayer->GetHP() <= 0)
 			{
 				Mgr(CCamera)->FadeOut(1.5f);
 				Mgr(CSoundMgr)->PlayEffect("Player_Killed.wav", 0.5f);
 				pPlayer->SetSlane(true);
-				pPlayer->GetComp<CRigidBody>()->SetVelocity({});
+				p_rb->SetVelocity(Vec2::zero);
 				StartDelayCoRoutine(pPlayer, pPlayer->PlayerRebirthProcess(), 1.f);
 			}
 			else

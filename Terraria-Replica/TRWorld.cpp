@@ -11,6 +11,7 @@
 #include "CQuickBarVisualizer.h"
 #include "CHealthIndicator.h"
 #include "CInventoryVisualizer.h"
+#include "CAcquireItemText.h"
 
 #include "CMonster.h"
 #include "TRItemManager.h"
@@ -94,15 +95,13 @@ void TRWorld::Update()
 	
 	if (Mgr(CKeyMgr)->GetMouseWheelUp())
 	{
-		quick_bar_index = wrapAround(quick_bar_index + 1, 0, 10);
+		SwitchQuickBarIndex(wrapAround(quick_bar_index + 1, 0, 10));
 	}
 
 	if (Mgr(CKeyMgr)->GetMouseWheelDown())
 	{
-		quick_bar_index = wrapAround(quick_bar_index - 1, 0, 10);
+		SwitchQuickBarIndex(wrapAround(quick_bar_index - 1, 0, 10));
 	}
-
-	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
 
 	health_indicator->SetHealthValue(player->GetHP());
 
@@ -353,6 +352,11 @@ void TRWorld::AddItemToInventory(TRItemStack item)
 		if (return_item.Null())
 			break;
 	}
+
+	CAcquireItemText* text = new CAcquireItemText(item);
+	text->SetPos(player->GetPos() - Vec2::up * 24.0f);
+
+	m_pScene->AddObject(text, GROUP_TYPE::DROP_ITEM);
 }
 
 void TRWorld::SwitchQuickBarIndex(int value)
@@ -361,5 +365,6 @@ void TRWorld::SwitchQuickBarIndex(int value)
 		return;
 	quick_bar_index = value;
 
+	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
 	Mgr(CSoundMgr)->PlayEffect("Menu_Tick.wav", 0.5f);
 }

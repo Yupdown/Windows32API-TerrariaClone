@@ -70,6 +70,9 @@
     <Filter Include="CObject\DropItem">
       <UniqueIdentifier>{02e3a9bd-25fd-47fe-af24-e08dd42f34b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CObject\AcquireItemText">
+      <UniqueIdentifier>{eaf8cdd6-c501-444c-b065-5d2eb36ebc07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -180,6 +183,9 @@
     <ClInclude Include="CDropItem.h">
       <Filter>CObject\DropItem</Filter>
     </ClInclude>
+    <ClInclude Include="CAcquireItemText.h">
+      <Filter>CObject\AcquireItemText</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -265,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="CDropItem.cpp">
       <Filter>CObject\DropItem</Filter>
+    </ClCompile>
+    <ClCompile Include="CAcquireItemText.cpp">
+      <Filter>CObject\AcquireItemText</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -202,21 +202,18 @@ void CWeapon::OnCollisionEnter(CCollider* const _pOther)
 		pMonRigid->AddForce(vMonDir * -1 * 1000);
 		pMonRigid->component_update();
 
+		Mgr(CSoundMgr)->PlayEffect("NPC_Hit_1.wav", 0.5f);
 		if (pMon->GetHP() <= 0)
 		{
-			if (uidHit(randHitSound))
-			{
-				Mgr(CSoundMgr)->PlayEffect("NPC_Killed_1.wav", 0.5f);
-			}
-			else
+			if (pObj->GetName() == L"Monster_Zombie")
 			{
 				Mgr(CSoundMgr)->PlayEffect("NPC_Killed_2.wav", 0.5f);
 			}
+			else
+			{
+				Mgr(CSoundMgr)->PlayEffect("NPC_Killed_1.wav", 0.5f);
+			}
 			DeleteObj(pObj);
-		}
-		else
-		{
-			Mgr(CSoundMgr)->PlayEffect("NPC_Hit_1.wav", 0.5f);
 		}
 	}
 }
