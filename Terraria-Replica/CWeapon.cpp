@@ -13,7 +13,8 @@
 #include "CSoundMgr.h"
 
 static std::mt19937 randHitSound{std::random_device{}()};
-static std::uniform_int_distribution<> uidHit{0, 1};
+static std::uniform_int_distribution<> uidHit{0, 2};
+static std::uniform_int_distribution<> uidDir{0, 1};
 
 CWeapon::CWeapon(CObject* const _pPlayer)
 	:m_pPlayer{_pPlayer}
@@ -196,10 +197,27 @@ void CWeapon::OnCollisionEnter(CCollider* const _pOther)
 		auto pMon = (CMonster*)pObj;
 		pMon->SetHP(pMon->GetHP() - 50);
 		auto pMonRigid = pMon->GetComp<CRigidBody>();
-		auto vMonDir = pMonRigid->GetVelocity().Normalize();
+		auto vDir = pMon->GetPos() - m_pPlayer->GetPos();
+		vDir.y = 0;
 		pMonRigid->SetLimitBreak();
-		pMonRigid->AddVelocity(vMonDir * -1 * 1000);
-		pMonRigid->AddForce(vMonDir * -1 * 1000);
+		//pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
+		//pPlayer->GetComp<CRigidBody>()->SetVelocity({});
+		Vec2 vForce = {};
+		if (IsFloatZero(vDir.x))
+		{
+			vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
+		}
+		else if (vDir.x < 0.f)
+		{
+			vForce.x = -1.f;
+		}
+		else
+		{
+			vForce.x = 1.f;
+		}
+		pMon->GetComp<CRigidBody>()->SetLimitBreak();
+		pMon->GetComp<CRigidBody>()->AddVelocity(vForce * 500.f * 2.f);
+		pMon->GetComp<CRigidBody>()->AddForce(vForce * 500.f * 2.f);
 		pMonRigid->component_update();
 
 		Mgr(CSoundMgr)->PlayEffect("NPC_Hit_1.wav", 0.5f);
@@ -225,6 +243,6 @@ void CWeapon::OnCollisionExit(CCollider* const _pOther)
 
 	if (L"Monster" == wstrObjName)
 	{
-		
+		pObj->GetComp<CRigidBody>()->SetLimitOrigin();
 	}
 }

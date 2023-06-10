@@ -331,9 +331,18 @@ void CPlayer::updateQuickBarState(const int _idx)
 		}
 		else
 		{
-			m_vecWeapon[i]->SetActivate(true);
+			if (m_iCurQuickBarIdx != i)
+			{
+				m_vecWeapon[i]->SetActivate(false);
+				m_vecWeapon[i]->ReForm();
+			}
+			else
+			{
+				m_vecWeapon[i]->SetActivate(true);
+			}
 			m_vecWeapon[i]->SetWeaponState(quick_bar_list[i]->GetItemStack().GetItem()->GetItemElement(), wstrItem + quick_bar_list[i]->GetItemStack().GetItem()->GetName());
 		}
+		
 	}
 }
 

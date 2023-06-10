@@ -95,7 +95,7 @@ void CMonster::OnCollision(CCollider* const _pOther)
 			Vec2 vForce = {0.0f, -0.5f};
 			if (vDir.x > 0.f)
 			{
-				vForce.x = 1.f;
+				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
 			}
 			else if (vDir.x < 0.f)
 			{
@@ -103,7 +103,7 @@ void CMonster::OnCollision(CCollider* const _pOther)
 			}
 			else
 			{
-				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
+				vForce.x = 1.f;
 			}
 
 			p_rb->SetLimitBreak();
@@ -155,9 +155,9 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 			pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
 			//pPlayer->GetComp<CRigidBody>()->SetVelocity({});
 			Vec2 vForce = {};
-			if (vDir.x > 0.f)
+			if (IsFloatZero(vDir.x))
 			{
-				vForce.x = 1.f;
+				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
 			}
 			else if (vDir.x < 0.f)
 			{
@@ -165,7 +165,7 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 			}
 			else
 			{
-				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
+				vForce.x = 1.f;
 			}
 			pPlayer->GetComp<CRigidBody>()->AddVelocity(vForce * 500.f*2.f);
 			pPlayer->GetComp<CRigidBody>()->AddForce(vForce * 500.f*2.f);
@@ -194,5 +194,11 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 
 void CMonster::OnCollisionExit(CCollider* const _pOther)
 {
-	
+	auto pObj = _pOther->GetOwner();
+	const wstring wstrObjName = pObj->GetName().substr(0, pObj->GetName().find(L'_'));
+
+	if (L"Item" == wstrObjName)
+	{
+		pObj->GetComp<CRigidBody>()->SetLimitOrigin();
+	}
 }
