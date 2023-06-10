@@ -63,8 +63,9 @@ TRWorld::~TRWorld()
 {
 	delete tile_map;
 
-	for (int i = 0; i < 10; ++i)
-		delete quick_bar[i];
+	for (int i = 0; i < 50; ++i)
+		delete player_inventory[i];
+	
 }
 
 void TRWorld::Update()
@@ -158,7 +159,7 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	scene->AddObject(player, GROUP_TYPE::PLAYER);
 	Mgr(CCamera)->SetTarget(player);
 	scene->RegisterPlayer(player);
-
+	
 	for (int i = 0; i < 17; ++i)
 		DropItem(Vec2Int(x + i * 4, 254), TRItemStack(Mgr(TRItemManager)->GetItemByID(i), 100));
 
@@ -204,9 +205,7 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	//	pMon->SetColliderScale(Vec2{ 38.0f, 22.0f });
 	//}
 
-	{
-		scene->AddObject(new CMiniMap, GROUP_TYPE::UI);
-	}
+	
 
 	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER); 
 	Mgr(CCollisionMgr)->RegisterGroup( GROUP_TYPE::MONSTER,GROUP_TYPE::PLAYER_WEAPON);
@@ -217,7 +216,13 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	inventory_visualizer->AddContainerVisualizers(scene);
 	scene->AddObject(health_indicator, GROUP_TYPE::UI);
 
-	scene->Enter();
+	{
+		auto pMap = new CMiniMap;
+		pMap->CreateMiniMap();
+		scene->AddObject(pMap, GROUP_TYPE::UI);
+	}
+
+	Mgr(CCamera)->update();
 }
 
 Vec2 TRWorld::WorldToGlobal(const Vec2& v)

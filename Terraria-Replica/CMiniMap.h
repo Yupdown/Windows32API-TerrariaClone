@@ -32,5 +32,6 @@ public:
 
 	CTileLayer* GetMiniMapTileLayer()const { return m_pMiniMapTileLayer.get(); }
 
+	void CreateMiniMap();
 };
 

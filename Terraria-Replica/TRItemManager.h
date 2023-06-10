@@ -6,7 +6,7 @@
 class TRItemManager : public Singleton<TRItemManager>
 {
 private:
-	Registry<TRItem*>* registry;
+	Registry<TRItem>* registry;
 
 public:
 	friend class Singleton;
@@ -19,5 +19,7 @@ public:
 
 	TRItem* GetItemByID(int id) const;
 	TRItem* GetItemByKey(const std::wstring& key) const;
+
+	void DeleteMgr();
 };
 

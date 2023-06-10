@@ -11,7 +11,10 @@ CSceneMgr::CSceneMgr()
 
 CSceneMgr::~CSceneMgr()
 {
-		
+	if (m_pCurScene)
+	{
+		m_pCurScene->Exit();
+	}
 }
 
 //void CSceneMgr::init()
@@ -61,5 +64,10 @@ void CSceneMgr::init(SCENE_TYPE _eType)
 {
 	m_pCurScene = m_arrScene[etoi(_eType)].get();
 
-	//m_pCurScene->Enter();
+	m_pCurScene->Enter();
+}
+
+CScene* CSceneMgr::GetScene(SCENE_TYPE _eType) const
+{
+	return m_arrScene[etoi(_eType)].get();
 }

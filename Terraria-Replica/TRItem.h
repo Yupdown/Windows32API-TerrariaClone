@@ -19,7 +19,7 @@ protected:
 
 public:
 	TRItem(std::wstring name, std::wstring k_element);
-	~TRItem();
+	virtual ~TRItem();
 
 	void CreateAtlasElements();
 	std::wstring GetName() const;

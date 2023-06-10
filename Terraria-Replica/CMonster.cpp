@@ -35,7 +35,7 @@ CMonster::~CMonster()
 
 void CMonster::update()
 {
-	if (Mgr(CSceneMgr)->GetCurScene()->GetPlayerCast()->IsPlayerSlain())
+	if (Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START)->GetPlayerCast()->IsPlayerSlain())
 	{
 		return;
 	}

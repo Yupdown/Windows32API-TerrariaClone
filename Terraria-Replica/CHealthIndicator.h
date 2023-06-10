@@ -13,7 +13,7 @@ private:
 public:
     CHealthIndicator();
     CHealthIndicator(const CHealthIndicator& other);
-
+    ~CHealthIndicator();
     CHealthIndicator* Clone() const override;
 
     void SetHealthValue(int value);

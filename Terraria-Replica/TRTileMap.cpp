@@ -12,6 +12,7 @@
 #include "CMiniMap.h"
 
 extern CMiniMap* g_MiniMap;
+static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
 
 TRTileMap::TRTileMap(int width, int height)
 {
@@ -27,6 +28,7 @@ TRTileMap::~TRTileMap()
 {
 	delete[] tile_map;
 	delete[] tile_wall_map;
+	DeleteObject(brush);
 }
 
 TRTile* TRTileMap::GetTile(int x, int y) const
@@ -116,7 +118,6 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 
 void TRTileMap::UpdateTileRenderer(int x, int y)
 {
-	static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
 	HDC hdc = renderer->GetTileLayerDC();
 	HDC miniMapHDC = g_MiniMap->GetMiniMapTileLayer()->GetTileLayerDC();
 	auto minimapRenderer = g_MiniMap->GetMiniMapTileLayer();

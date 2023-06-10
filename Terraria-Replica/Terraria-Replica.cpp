@@ -14,6 +14,9 @@
 #include "CRigidBody.h"
 #include "CCollider.h"
 #include "CustomMath.hpp"
+#include "CScene_Intro.h"
+#include "TRItemManager.h"
+#include "TRTileManager.h"
 
 void updateTileCollision(CObject* const _pObj, TRWorld* const _pTRWorld);
 extern bool g_bStopToken;
@@ -43,7 +46,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 여기에 코드를 입력합니다.
-
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_TERMPROJECTGAMEFRAMEWORK, szWindowClass, MAX_LOADSTRING);
@@ -60,21 +63,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         MessageBox(nullptr, L"게임 실행 실패", L"ERROR", MB_OK);
     }
     
+
     // 씬 생성
+
     auto pSceneStart = new CScene_Start;
     Mgr(CSceneMgr)->AddScene(SCENE_TYPE::START, pSceneStart);
 
+    auto pSceneIntro = new CScene_Intro;
+    Mgr(CSceneMgr)->AddScene(SCENE_TYPE::INTRO, pSceneIntro);
 
     // 시작 씬 설정
-    Mgr(CSceneMgr)->init(SCENE_TYPE::START);
+    Mgr(CSceneMgr)->init(SCENE_TYPE::INTRO);
 
-   TRMain* terraria_main = new TRMain();
-    Mgr(CEventMgr)->SetTRupdate(&TRMain::Update, terraria_main);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TERMPROJECTGAMEFRAMEWORK));
 
     MSG msg;
-    hHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, NULL, 0);
+    //hHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, NULL, 0);
     while (true)
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -97,7 +102,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
     Mgr(CEventMgr)->ResetTRupdate();
-    UnhookWindowsHookEx(hHook);
+   // UnhookWindowsHookEx(hHook);
+   
     return (int)msg.wParam;
 }
 

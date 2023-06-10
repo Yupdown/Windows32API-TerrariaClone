@@ -7,13 +7,10 @@
 
 TRMain::TRMain()
 {
-	Mgr(TRTileManager)->LoadTiles();
-	Mgr(TRItemManager)->LoadItems();
-
 	active_world = new TRWorld();
 	active_world->CreateWorld(0);
 
-	scene_agent = Mgr(CSceneMgr)->GetCurScene();
+	scene_agent = Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START);
 	active_world->OnSceneCreate(scene_agent);
 }
 

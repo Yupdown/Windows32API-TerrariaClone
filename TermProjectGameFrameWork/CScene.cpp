@@ -21,6 +21,7 @@ CScene::CScene()
 		CreateDCBITMAP(m_hSceneThreadDC[i], m_hSceneThreadBit[i], Mgr(CCore)->GetResolutionV());
 		SetBkMode(m_hSceneThreadDC[i], TRANSPARENT);
 	}
+	m_vRes = Mgr(CCore)->GetResolutionV();
 }
 
 CScene::~CScene()
@@ -29,6 +30,7 @@ CScene::~CScene()
 	{
 		DeleteDCBITMAP(m_hSceneThreadDC[i], m_hSceneThreadBit[i]);
 	}
+	Reset();
 }
 
 void CScene::update()
@@ -49,7 +51,10 @@ void CScene::update()
 
 void CScene::Enter()
 {
-	
+	if (g_bDoMultiThread)
+	{
+		Mgr(CThreadMgr)->Join_all();
+	}
 }
 
 void CScene::Exit()
@@ -58,7 +63,7 @@ void CScene::Exit()
 	{
 		Mgr(CThreadMgr)->Join_all();
 	}
-	
+	Reset();
 }
 
 void CScene::AddTileLayer(CTileLayer* const _pTileLayer)
@@ -286,9 +291,12 @@ void CScene::DeleteGroup(GROUP_TYPE _eTarget)
 
 void CScene::Reset()
 {
+	Mgr(CCamera)->Reset();
 	for (auto& i : m_vecObj)
 	{
 		i.clear();
 	}
+	m_vecLayer.clear();
+	m_vecTileLayer.clear();
 }
 

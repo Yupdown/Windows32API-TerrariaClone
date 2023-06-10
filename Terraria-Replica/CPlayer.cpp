@@ -183,7 +183,7 @@ void CPlayer::updateState()
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
 
-	if (abs(pRigid->GetVelocity().y) > 0)
+	if (bitwise_absf(pRigid->GetVelocity().y) > 0 && PLAYER_STATE::ATTACK != m_eCurState)
 	{
 		m_eCurState = PLAYER_STATE::JUMP;
 

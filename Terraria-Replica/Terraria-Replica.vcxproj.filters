@@ -70,6 +70,9 @@
     <Filter Include="CObject\DropItem">
       <UniqueIdentifier>{02e3a9bd-25fd-47fe-af24-e08dd42f34b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CScene\Scene_Intro">
+      <UniqueIdentifier>{695b6a86-6e77-471e-bb0d-659eeae7e458}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -180,6 +183,9 @@
     <ClInclude Include="CDropItem.h">
       <Filter>CObject\DropItem</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Intro.h">
+      <Filter>CScene\Scene_Intro</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -265,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="CDropItem.cpp">
       <Filter>CObject\DropItem</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Intro.cpp">
+      <Filter>CScene\Scene_Intro</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

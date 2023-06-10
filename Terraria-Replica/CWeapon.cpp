@@ -20,7 +20,7 @@ CWeapon::CWeapon(CObject* const _pPlayer)
 	:m_pPlayer{_pPlayer}
 {
 	CreateComponent(COMPONENT_TYPE::COLLIDER);
-	Mgr(CSceneMgr)->GetCurScene()->AddObject(this, GROUP_TYPE::PLAYER_WEAPON);
+	Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START)->AddObject(this, GROUP_TYPE::PLAYER_WEAPON);
 }
 
 CWeapon::~CWeapon()

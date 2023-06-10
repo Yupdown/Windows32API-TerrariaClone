@@ -16,6 +16,10 @@ CHealthIndicator::CHealthIndicator(const CHealthIndicator& other) : CObject(othe
 {
 }
 
+CHealthIndicator::~CHealthIndicator()
+{
+}
+
 CHealthIndicator* CHealthIndicator::Clone() const
 {
     return new CHealthIndicator(*this);

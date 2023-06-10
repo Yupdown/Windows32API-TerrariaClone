@@ -13,7 +13,7 @@ extern TRWorld* g_TRWorld;
 
 void TRMonGenerator::GenerateMonster()
 {
-	auto scene = Mgr(CSceneMgr)->GetCurScene();
+	auto scene = Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START);
 
 	if (scene->GetGroupObject(GROUP_TYPE::MONSTER).size() >= 3)
 	{
