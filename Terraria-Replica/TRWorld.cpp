@@ -353,9 +353,14 @@ void TRWorld::AddItemToInventory(TRItemStack item)
 			break;
 	}
 
-	CAcquireItemText* text = new CAcquireItemText(item);
-	text->SetPos(player->GetPos() - Vec2::up * 24.0f);
+	static wchar_t buffer[64];
+	if (item.GetStackSize() > 1)
+		wsprintf(buffer, L"%s (%d)", item.GetItem()->GetName().c_str(), item.GetStackSize());
+	else
+		wsprintf(buffer, L"%s", item.GetItem()->GetName().c_str());
 
+	CAcquireItemText* text = new CAcquireItemText(buffer);
+	text->SetPos(player->GetPos() - Vec2::up * 24.0f);
 	m_pScene->AddObject(text, GROUP_TYPE::DROP_ITEM);
 }
 
@@ -367,4 +372,14 @@ void TRWorld::SwitchQuickBarIndex(int value)
 
 	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
 	Mgr(CSoundMgr)->PlayEffect("Menu_Tick.wav", 0.5f);
+}
+
+void TRWorld::FloatDamageText(int value, Vec2 vPos, COLORREF color)
+{
+	static wchar_t buffer[64];
+	wsprintf(buffer, L"%d", value);
+
+	CAcquireItemText* text = new CAcquireItemText(buffer, color);
+	text->SetPos(vPos);
+	m_pScene->AddObject(text, GROUP_TYPE::DROP_ITEM);
 }

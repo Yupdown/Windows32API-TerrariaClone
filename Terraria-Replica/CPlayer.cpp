@@ -51,7 +51,7 @@ CPlayer::CPlayer(TRWorld* const _trWorld)
 	
 	for (int i = 0; i < 10; ++i)
 	{
-		m_vecWeapon.emplace_back(new CWeapon{ this });
+		m_vecWeapon.emplace_back(new CWeapon{ _trWorld, this });
 	}
 
 	CreateDCBITMAP(m_hPlayerVeilDC, m_hPlayerVeilBit, Vec2{ 40.f, 56.f });

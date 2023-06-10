@@ -1,15 +1,15 @@
 #pragma once
 #include "CObject.h"
-#include "TRItemStack.h"
 
 class CAcquireItemText : public CObject
 {
 private:
-    TRItemStack m_item;
+    std::wstring m_text;
+    COLORREF m_color;
     float m_time;
 
 public:
-    CAcquireItemText(TRItemStack item);
+    CAcquireItemText(std::wstring text, COLORREF color = (COLORREF)0x00FFFFFF);
     CAcquireItemText(const CAcquireItemText& other);
 
     CAcquireItemText* Clone() const override;

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "TRWorld.h"
 #include "CMonster.h"
 #include "CCollider.h"
 #include "CAnimator.h"
@@ -150,7 +151,9 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 
 		if (pPlayer->IsCanHit())
 		{
+			const int damage = 50;
 			auto vDir = pPlayer->GetPos() - GetPos();
+
 			vDir.y = 0;
 			pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
 			//pPlayer->GetComp<CRigidBody>()->SetVelocity({});
@@ -171,7 +174,9 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 			pPlayer->GetComp<CRigidBody>()->AddForce(vForce * 500.f*2.f);
 
 			pPlayer->GetComp<CRigidBody>()->component_update();
-			pPlayer->SetHP(pPlayer->GetHP() - 30);
+			pPlayer->SetHP(pPlayer->GetHP() - damage);
+			m_pTRWolrd->FloatDamageText(damage, pPlayer->GetPos() - Vec2::up * 24.0f, (COLORREF)0x000000D0);
+
 			switch (uidHit(randHitSound))
 			{
 			case 0:Mgr(CSoundMgr)->PlayEffect("Player_Hit_0.wav", 0.5f); break;

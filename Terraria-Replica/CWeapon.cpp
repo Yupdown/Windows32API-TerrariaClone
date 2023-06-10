@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "CPlayer.h"
 #include "CWeapon.h"
 #include "CResMgr.h"
 #include "CCore.h"
@@ -11,16 +12,18 @@
 #include "CScene.h"
 #include "CMonster.h"
 #include "CSoundMgr.h"
+#include "TRWorld.h"
 
 static std::mt19937 randHitSound{std::random_device{}()};
 static std::uniform_int_distribution<> uidHit{0, 2};
 static std::uniform_int_distribution<> uidDir{0, 1};
 
-CWeapon::CWeapon(CObject* const _pPlayer)
-	:m_pPlayer{_pPlayer}
+CWeapon::CWeapon(TRWorld* _pTRWorld, CObject* const _pPlayer)
+	:m_pPlayer{ _pPlayer }
 {
 	CreateComponent(COMPONENT_TYPE::COLLIDER);
 	Mgr(CSceneMgr)->GetCurScene()->AddObject(this, GROUP_TYPE::PLAYER_WEAPON);
+	m_pTRWolrd = _pTRWorld;
 }
 
 CWeapon::~CWeapon()
@@ -194,8 +197,9 @@ void CWeapon::OnCollisionEnter(CCollider* const _pOther)
 
 	if (L"Monster" == wstrObjName)
 	{
+		const int damage = 50;
+
 		auto pMon = (CMonster*)pObj;
-		pMon->SetHP(pMon->GetHP() - 50);
 		auto pMonRigid = pMon->GetComp<CRigidBody>();
 		auto vDir = pMon->GetPos() - m_pPlayer->GetPos();
 		vDir.y = 0;
@@ -221,6 +225,9 @@ void CWeapon::OnCollisionEnter(CCollider* const _pOther)
 		pMonRigid->component_update();
 
 		Mgr(CSoundMgr)->PlayEffect("NPC_Hit_1.wav", 0.5f);
+		m_pTRWolrd->FloatDamageText(damage, pMon->GetPos() - Vec2::up * 24.0f, (COLORREF)0x0000B0FF);
+
+		pMon->SetHP(pMon->GetHP() - damage);
 		if (pMon->GetHP() <= 0)
 		{
 			if (pObj->GetName() == L"Monster_Zombie")

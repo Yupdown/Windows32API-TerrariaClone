@@ -18,7 +18,7 @@ private:
 
     bool m_bActivate = true;
 public:
-    CWeapon(CObject* const _pPlayer);
+    CWeapon(TRWorld* _pTRWorld, CObject* const _pPlayer);
     ~CWeapon();
 
     CWeapon* Clone()const override

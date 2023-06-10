@@ -60,4 +60,6 @@ public:
 
 	auto& GetQuickBarList() { return quick_bar; }
 	int GetQuickBarIdx()const { return quick_bar_index; }
+
+	void FloatDamageText(int value, Vec2 vPos, COLORREF color);
 };
