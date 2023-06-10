@@ -80,69 +80,6 @@ void CMonster::OnCollision(CCollider* const _pOther)
 	if (L"Player" == wstrObjName)
 	{
 		auto pPlayer = (CPlayer*)pObj;
-		auto p_rb = pPlayer->GetComp<CRigidBody>();
-
-		if (pPlayer->IsPlayerSlain())
-		{
-			return;
-		}
-		
-		if (pPlayer->IsCanHit())
-		{
-			auto vDir = pPlayer->GetPos() - GetPos();
-			vDir.y = 0;
-			//pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
-			//pPlayer->GetComp<CRigidBody>()->SetVelocity({});
-			Vec2 vForce = {0.0f, -0.5f};
-			if (vDir.x > 0.f)
-			{
-				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
-			}
-			else if (vDir.x < 0.f)
-			{
-				vForce.x = -1.f;
-			}
-			else
-			{
-				vForce.x = 1.f;
-			}
-
-			p_rb->SetLimitBreak();
-			p_rb->AddVelocity(vForce * 500.f * 2.f);
-			p_rb->AddForce(vForce * 500.f * 2.f);
-			p_rb->SetIsGround(false);
-
-			pPlayer->SetHP(pPlayer->GetHP() - 30);
-			if (pPlayer->GetHP() <= 0)
-			{
-				Mgr(CCamera)->FadeOut(1.5f);
-				Mgr(CSoundMgr)->PlayEffect("Player_Killed.wav", 0.5f);
-				pPlayer->SetSlane(true);
-				p_rb->SetVelocity(Vec2::zero);
-				StartDelayCoRoutine(pPlayer, pPlayer->PlayerRebirthProcess(), 1.f);
-			}
-			else
-			{
-				switch (uidHit(randHitSound))
-				{
-				case 0:Mgr(CSoundMgr)->PlayEffect("Player_Hit_0.wav", 0.5f); break;
-				case 1:Mgr(CSoundMgr)->PlayEffect("Player_Hit_1.wav", 0.5f); break;
-				case 2:Mgr(CSoundMgr)->PlayEffect("Player_Hit_2.wav", 0.5f); break;
-				default:
-					break;
-				}
-			}
-		}
-	}
-}
-
-void CMonster::OnCollisionEnter(CCollider* const _pOther)
-{
-	auto pObj = _pOther->GetOwner();
-	const wstring wstrObjName = pObj->GetName().substr(0, pObj->GetName().find(L'_'));
-	if (L"Player" == wstrObjName)
-	{
-		auto pPlayer = (CPlayer*)pObj;
 
 		if (pPlayer->IsPlayerSlain())
 		{
@@ -170,8 +107,8 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 			{
 				vForce.x = 1.f;
 			}
-			pPlayer->GetComp<CRigidBody>()->AddVelocity(vForce * 500.f*2.f);
-			pPlayer->GetComp<CRigidBody>()->AddForce(vForce * 500.f*2.f);
+			pPlayer->GetComp<CRigidBody>()->AddVelocity(vForce * 500.f * 2.f);
+			pPlayer->GetComp<CRigidBody>()->AddForce(vForce * 500.f * 2.f);
 
 			pPlayer->GetComp<CRigidBody>()->component_update();
 			pPlayer->SetHP(pPlayer->GetHP() - damage);
@@ -195,6 +132,11 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 			}
 		}
 	}
+}
+
+void CMonster::OnCollisionEnter(CCollider* const _pOther)
+{
+
 }
 
 void CMonster::OnCollisionExit(CCollider* const _pOther)
