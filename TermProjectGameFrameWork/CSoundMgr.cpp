@@ -25,7 +25,7 @@ CSoundMgr::~CSoundMgr()
 void CSoundMgr::init()
 {
 	std::filesystem::recursive_directory_iterator SoundIter{ Mgr(CPathMgr)->GetSoundPath() };
-	auto a = Mgr(CPathMgr)->GetSoundPath();
+
 	for (const auto& sound : SoundIter)
 	{
 		if (sound.is_regular_file())

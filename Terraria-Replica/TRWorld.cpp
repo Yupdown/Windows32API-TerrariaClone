@@ -94,16 +94,12 @@ void TRWorld::Update()
 	
 	if (Mgr(CKeyMgr)->GetMouseWheelUp())
 	{
-		quick_bar_index = (quick_bar_index + 1) % 10;
+		quick_bar_index = wrapAround(quick_bar_index + 1, 0, 10);
 	}
 
 	if (Mgr(CKeyMgr)->GetMouseWheelDown())
 	{
-		quick_bar_index -= 1;
-		if (0 > quick_bar_index)
-		{
-			quick_bar_index = 9;
-		}
+		quick_bar_index = wrapAround(quick_bar_index - 1, 0, 10);
 	}
 
 	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
