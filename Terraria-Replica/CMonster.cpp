@@ -120,16 +120,13 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 			pPlayer->GetComp<CRigidBody>()->SetVelocity({});
 			StartDelayCoRoutine(pPlayer,pPlayer->PlayerRebirthProcess(), 1.f);
 		}
-		else
+		switch (uidHit(randHitSound))
 		{
-			switch (uidHit(randHitSound))
-			{
-			case 0:Mgr(CSoundMgr)->PlayEffect("Player_Hit_0.wav", 0.5f); break;
-			case 1:Mgr(CSoundMgr)->PlayEffect("Player_Hit_1.wav", 0.5f); break;
-			case 2:Mgr(CSoundMgr)->PlayEffect("Player_Hit_2.wav", 0.5f); break;
-			default:
-				break;
-			}
+		case 0:Mgr(CSoundMgr)->PlayEffect("Player_Hit_0.wav", 0.5f); break;
+		case 1:Mgr(CSoundMgr)->PlayEffect("Player_Hit_1.wav", 0.5f); break;
+		case 2:Mgr(CSoundMgr)->PlayEffect("Player_Hit_2.wav", 0.5f); break;
+		default:
+			break;
 		}
 	}
 }

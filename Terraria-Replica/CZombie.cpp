@@ -25,10 +25,9 @@ void CZombie::update()
 
 	auto pRigid = GetComp<CRigidBody>();
 	auto pAnim = GetComp<CAnimator>();
-	auto v = pRigid->GetVelocity().y;
-	auto bb = pRigid->IsGround();
+
 	m_charge_time -= DT;
-	if (m_charge_time <= 0.0f && pRigid->IsGround())
+	if (IsFloatZero(pRigid->GetVelocity().x) && pRigid->IsGround())
 	{
 		pRigid->AddVelocity(Vec2::down * 640.0f);
 		pRigid->AddForce(Vec2::down * 640.0f);
@@ -39,9 +38,9 @@ void CZombie::update()
 
 	auto vDir = (player->GetPos() - m_vPos).Normalize();
 	if (vDir.x > 0.0f)
-		pRigid->AddVelocity(Vec2::right * 6.0f);
+		pRigid->AddVelocity(Vec2::right * 8.0f);
 	else
-		pRigid->AddVelocity(Vec2::left * 6.0f);
+		pRigid->AddVelocity(Vec2::left * 8.0f);
 
 	if (pRigid->GetVelocity().x > 0.0f)
 		pAnim->SetAnimLeft();

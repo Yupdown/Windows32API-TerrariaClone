@@ -70,25 +70,25 @@ TRWorld::~TRWorld()
 void TRWorld::Update()
 {
 	if (KEY_TAP(KEY::ONE))
-		quick_bar_index = 0;
+		SwitchQuickBarIndex(0);
 	else if (KEY_TAP(KEY::TWO))
-		quick_bar_index = 1;
+		SwitchQuickBarIndex(1);
 	else if (KEY_TAP(KEY::THREE))
-		quick_bar_index = 2;
+		SwitchQuickBarIndex(2);
 	else if (KEY_TAP(KEY::FOUR))
-		quick_bar_index = 3;
+		SwitchQuickBarIndex(3);
 	else if (KEY_TAP(KEY::FIVE))
-		quick_bar_index = 4;
+		SwitchQuickBarIndex(4);
 	else if (KEY_TAP(KEY::SIX))
-		quick_bar_index = 5;
+		SwitchQuickBarIndex(5);
 	else if (KEY_TAP(KEY::SEVEN))
-		quick_bar_index = 6;
+		SwitchQuickBarIndex(6);
 	else if (KEY_TAP(KEY::EIGHT))
-		quick_bar_index = 7;
+		SwitchQuickBarIndex(7);
 	else if (KEY_TAP(KEY::NINE))
-		quick_bar_index = 8;
+		SwitchQuickBarIndex(8);
 	else if (KEY_TAP(KEY::ZERO))
-		quick_bar_index = 9;
+		SwitchQuickBarIndex(9);
 	else if (KEY_TAP(KEY::ESC))
 		SetToggleInventory(!toggle_inventory);
 	
@@ -101,7 +101,7 @@ void TRWorld::Update()
 		bool result = inventory_visualizer->HandleMouseInput();
 		if (result)
 		{
-			Mgr(CSoundMgr)->PlayEffect("Menu_Tick.wav", 1.f);
+			Mgr(CSoundMgr)->PlayEffect("Grab.wav", 0.5f);
 		}
 		else if (!quick_bar[quick_bar_index]->Blank())
 		{
@@ -239,6 +239,25 @@ bool TRWorld::PlaceTile(int x, int y, TRTile* new_tile)
 	if (tile->Solid())
 		return false;
 
+	const int dir[][2] = { 0, 1, 0, -1, -1, 0, 1, 0 };
+	int bitmask = 0;
+
+	for (int k = 0; k < 4; ++k)
+	{
+		int xp = x + dir[k][0];
+		int yp = y + dir[k][1];
+
+		TRTile* tile_p = tile_map->GetTile(xp, yp);
+		if (tile_p == nullptr)
+			continue;
+
+		if (tile_p->Solid())
+			bitmask |= 1 << k;
+	}
+
+	if (bitmask == 0)
+		return false;
+
 	switch (uidDig(randDigSound))
 	{
 	case 0:Mgr(CSoundMgr)->PlayEffect("Dig_0.wav", 0.5f); break;
@@ -324,4 +343,13 @@ void TRWorld::AddItemToInventory(TRItemStack item)
 		if (return_item.Null())
 			break;
 	}
+}
+
+void TRWorld::SwitchQuickBarIndex(int value)
+{
+	if (quick_bar_index == value)
+		return;
+	quick_bar_index = value;
+
+	Mgr(CSoundMgr)->PlayEffect("Menu_Tick.wav", 0.5f);
 }
