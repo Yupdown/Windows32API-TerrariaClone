@@ -4,10 +4,10 @@
 class CRigidBody :
     public CComponent
 {
-	static constexpr Vec2 g_vLimitBreak{2000.f, 2000.f};
 private:
     CRigidBody(const CRigidBody&) = default;
 private:
+	Vec2			m_vLimitBreak = Vec2{ 240.0f, 720.0f } *10.f;
 	Vec2            m_vForce;   
 	Vec2            m_vAccel;  
 	Vec2            m_vVelocity;   
@@ -51,8 +51,16 @@ public:
 	constexpr inline void AddVelocity(Vec2 _v) { m_vVelocity += _v; }
 	constexpr inline Vec2 GetForce()const { return m_vForce; }
 	constexpr inline void SetForce(Vec2 _v) { m_vForce = _v; }
-	void SetLimitBreak() {m_vMaxVelocity = g_vLimitBreak;}
-	void SetLimitOrigin() { m_vMaxVelocity = m_vMaxVelocityOrigin; }
+	void SetLimitBreak()
+	{
+		m_vMaxVelocity = m_vLimitBreak;
+		m_fFriction = 0.f;
+	}
+	void SetLimitOrigin()
+	{
+		m_vMaxVelocity = m_vMaxVelocityOrigin;
+		m_fFriction = 640.f;
+	}
 public:
 	void component_update()override;
 	void component_render(HDC _dc)const override;

@@ -5,7 +5,7 @@
 template <typename T> requires std::is_enum<T>::value
 constexpr int etoi(T _eType) { return static_cast<int>(_eType); }
 
-int wrapAround(int x, int low, int high);
+int wrapAround(const int x,const int low,const int high);
 
 class CObject;
 class AI;

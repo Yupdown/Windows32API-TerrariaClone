@@ -315,6 +315,7 @@ void CPlayer::OnCollisionExit(CCollider* const _pOther)
 	if (L"Monster" == wstrObjName)
 	{
 		--m_iMonColCnt;
+		GetComp<CRigidBody>()->SetLimitOrigin();
 	}
 	
 }
