@@ -51,7 +51,7 @@ void CRigidBody::component_update()
 {
 	if (bitwise_absf(m_vVelocity.x) <= bitwise_absf(m_vMaxVelocityOrigin.x))
 	{
-		SetLimitOrigin();
+		// SetLimitOrigin();
 	}
 	update_gravity();
 	m_vAccel = m_vForce / m_fMass;
