@@ -77,6 +77,7 @@ void CMonster::OnCollision(CCollider* const _pOther)
 {
 	auto pObj = _pOther->GetOwner();
 	const wstring wstrObjName = pObj->GetName().substr(0, pObj->GetName().find(L'_'));
+
 	if (L"Player" == wstrObjName)
 	{
 		auto pPlayer = (CPlayer*)pObj;

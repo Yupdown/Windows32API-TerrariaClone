@@ -14,6 +14,7 @@
 #include "CRigidBody.h"
 #include "CCollider.h"
 #include "CustomMath.hpp"
+#include "CCthulhuEye.h"
 
 void updateTileCollision(CObject* const _pObj, TRWorld* const _pTRWorld);
 extern bool g_bStopToken;
@@ -268,13 +269,9 @@ void updateTileCollision(CObject* const _pObj,TRWorld* const _pTRWorld)
 	auto pRigid = _pObj->GetComp<CRigidBody>();
     auto pCol = _pObj->GetComp<CCollider>();
 
-    //if (!pRigid->IsGravity())
-    //{
-    //    _pObj->SetPos(_pObj->GetWillPos());
-    //    return;
-    //}
+    CCthulhuEye* casting = dynamic_cast<CCthulhuEye*>(_pObj);
 
-    if (pCol == nullptr)
+    if (pCol == nullptr || casting != nullptr)
     {
         _pObj->SetPos(_pObj->GetWillPos());
         return;

@@ -16,13 +16,15 @@ protected:
 	int stick_group;
 	bool stick_each;
 
+	bool rocky;
+
 	std::wstring k_element;
 	std::wstring k_dropitem;
 
 	CAtlasElement* elements[16][22];
 
 public:
-    TRTile(std::wstring name, bool solid, float hardness, std::wstring k_element, std::wstring k_dropitem);
+	TRTile(std::wstring name, bool solid, float hardness, bool rocky, std::wstring k_element, std::wstring k_dropitem);
 
     void CreateAtlasElements();
 	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask);
@@ -31,20 +33,21 @@ public:
 	bool StickEach() const;
 	bool Solid() const;
 	float Hardness() const;
+	bool Rocky() const;
 	std::wstring DropItem() const;
 };
 
 class TRTileAir : public TRTile
 {
 public:
-	TRTileAir() : TRTile(L"Air", false, 0.0f, L"", L"") {}
+	TRTileAir() : TRTile(L"Air", false, 1.0f, false, L"", L"") {}
 	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask) override;
 };
 
 class TRTileSolid : public TRTile
 {
 public:
-	TRTileSolid(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem);
+	TRTileSolid(std::wstring name, float hardness, bool rocky, std::wstring k_element, std::wstring k_dropitem);
 };
 
 class TRTileDirt : public TRTileSolid

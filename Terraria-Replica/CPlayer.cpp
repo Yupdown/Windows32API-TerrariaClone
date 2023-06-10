@@ -162,14 +162,12 @@ void CPlayer::updateState()
 		m_bIsIDLE = false;
 	}
 
-	if (KEY_TAP(KEY::LBTN))
+	if (m_bRequestAttack)
 	{
-		if (!m_bIsAtk)
-		{
-			m_eCurState = PLAYER_STATE::ATTACK;
-			m_bIsIDLE = false;
-			Mgr(CSoundMgr)->PlayEffect("Item_1.wav", 1.f);
-		}
+		m_eCurState = PLAYER_STATE::ATTACK;
+		m_bIsIDLE = false;
+		m_bRequestAttack = false;
+		Mgr(CSoundMgr)->PlayEffect("Item_1.wav", 1.f);
 	}
 
 	if (m_bIsAtk)
@@ -186,7 +184,6 @@ void CPlayer::updateState()
 	if (abs(pRigid->GetVelocity().y) > 0)
 	{
 		m_eCurState = PLAYER_STATE::JUMP;
-
 		m_bIsIDLE = false;
 	}
 }
@@ -344,6 +341,14 @@ void CPlayer::updateQuickBarState(const int _idx)
 		}
 		
 	}
+}
+
+void CPlayer::UseItem()
+{
+	if (m_bIsAtk)
+		return;
+
+	m_bRequestAttack = true;
 }
 
 CoRoutine CPlayer::PlayerRebirthProcess()

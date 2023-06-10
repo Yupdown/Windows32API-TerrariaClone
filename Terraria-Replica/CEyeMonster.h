@@ -5,7 +5,6 @@ class CEyeMonster :
     public CMonster
 {
 public:
-
     CEyeMonster(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName);
     ~CEyeMonster();
 

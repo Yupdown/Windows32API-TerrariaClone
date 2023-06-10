@@ -73,6 +73,9 @@
     <Filter Include="CObject\AcquireItemText">
       <UniqueIdentifier>{eaf8cdd6-c501-444c-b065-5d2eb36ebc07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CObject\Monster\CCthulhuEye">
+      <UniqueIdentifier>{46474d17-0a9e-424c-bf34-2cb8038ed370}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -186,6 +189,9 @@
     <ClInclude Include="CAcquireItemText.h">
       <Filter>CObject\AcquireItemText</Filter>
     </ClInclude>
+    <ClInclude Include="CCthulhuEye.h">
+      <Filter>CObject\Monster\CCthulhuEye</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -274,6 +280,9 @@
     </ClCompile>
     <ClCompile Include="CAcquireItemText.cpp">
       <Filter>CObject\AcquireItemText</Filter>
+    </ClCompile>
+    <ClCompile Include="CCthulhuEye.cpp">
+      <Filter>CObject\Monster\CCthulhuEye</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

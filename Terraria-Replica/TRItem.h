@@ -85,3 +85,12 @@ public:
 
 	virtual bool OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos) override;
 };
+
+class TRItemSummonBoss : public TRItem
+{
+public:
+	TRItemSummonBoss(std::wstring name, std::wstring k_element);
+	~TRItemSummonBoss();
+
+	virtual bool OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos) override;
+};

@@ -3,6 +3,7 @@
 #include "CResMgr.h"
 #include "TRTileManager.h"
 #include "CustomMath.hpp"
+#include "CSoundMgr.h"
 
 TRItem::TRItem(std::wstring name, std::wstring k_element)
 {
@@ -55,10 +56,14 @@ TRItemTile::~TRItemTile()
 
 bool TRItemTile::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
+	Vec2 vPos = TRWorld::GlobalToWorld(user->GetPos());
+	if ((target_pos - vPos).length() > 10.0f)
+		return false;
+
 	int x = FloorToInt(target_pos.x);
 	int y = FloorToInt(target_pos.y);
-	world->PlaceTile(x, y, Mgr(TRTileManager)->GetTileByKey(k_tile));
-	return true;
+	bool result = world->PlaceTile(x, y, Mgr(TRTileManager)->GetTileByKey(k_tile));
+	return result;
 }
 
 TRItemTileWall::TRItemTileWall(std::wstring name, std::wstring k_element, std::wstring k_tilewall) : TRItem(name, k_element)
@@ -73,10 +78,14 @@ TRItemTileWall::~TRItemTileWall()
 
 bool TRItemTileWall::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
+	Vec2 vPos = TRWorld::GlobalToWorld(user->GetPos());
+	if ((target_pos - vPos).length() > 10.0f)
+		return false;
+
 	int x = FloorToInt(target_pos.x);
 	int y = FloorToInt(target_pos.y);
-	world->GetTileMap()->SetTileWall(x, y, Mgr(TRTileManager)->GetTileWallByKey(k_tilewall), true);
-	return true;
+	bool result = world->PlaceTileWall(x, y, Mgr(TRTileManager)->GetTileWallByKey(k_tilewall));
+	return result;
 }
 
 TRItemTool::TRItemTool(std::wstring name, std::wstring k_element) : TRItem(name, k_element)
@@ -98,6 +107,10 @@ TRItemPickaxe::~TRItemPickaxe()
 
 bool TRItemPickaxe::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
+	Vec2 vPos = TRWorld::GlobalToWorld(user->GetPos());
+	if ((target_pos - vPos).length() > 10.0f)
+		return false;
+
 	int x = FloorToInt(target_pos.x);
 	int y = FloorToInt(target_pos.y);
 	world->BreakTile(x, y);
@@ -114,9 +127,13 @@ TRItemHammer::~TRItemHammer()
 
 bool TRItemHammer::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
+	Vec2 vPos = TRWorld::GlobalToWorld(user->GetPos());
+	if ((target_pos - vPos).length() > 10.0f)
+		return false;
+
 	int x = FloorToInt(target_pos.x);
 	int y = FloorToInt(target_pos.y);
-	world->GetTileMap()->SetTileWall(x, y, Mgr(TRTileManager)->TileWallAir(), true);
+	world->BreakTileWall(x, y);
 	return false;
 }
 
@@ -131,4 +148,19 @@ TRItemSword::~TRItemSword()
 bool TRItemSword::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
 	return false;
+}
+
+TRItemSummonBoss::TRItemSummonBoss(std::wstring name, std::wstring k_element) : TRItem(name, k_element)
+{
+	this->max_stacksize = 1;
+}
+
+TRItemSummonBoss::~TRItemSummonBoss()
+{
+}
+
+bool TRItemSummonBoss::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
+{
+	Mgr(CSoundMgr)->PlayEffect("Roar_0.wav", 0.5f);
+	return true;
 }

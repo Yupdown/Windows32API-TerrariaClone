@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAcquireItemText.h" />
+    <ClInclude Include="CCthulhuEye.h" />
     <ClInclude Include="CDropItem.h" />
     <ClInclude Include="CInventoryVisualizer.h" />
     <ClInclude Include="CItemContainerVisualizer.h" />
@@ -185,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAcquireItemText.cpp" />
+    <ClCompile Include="CCthulhuEye.cpp" />
     <ClCompile Include="CDropItem.cpp" />
     <ClCompile Include="CInventoryVisualizer.cpp" />
     <ClCompile Include="CItemContainerVisualizer.cpp" />

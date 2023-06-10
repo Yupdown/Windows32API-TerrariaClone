@@ -38,6 +38,7 @@ private:
     bool m_bPrevCol = false;
 
     bool m_bSlain = false;
+    bool m_bRequestAttack = false;
     float m_fDmgCoolDown = 0.f;
     int m_iMonColCnt = 0;
     HDC m_hPlayerVeilDC; 
@@ -65,6 +66,7 @@ public:
 
     void SetSlane(bool _b) { m_bSlain = _b; }
     bool IsPlayerSlain()const { return m_bSlain; }
+    void UseItem();
     CoRoutine PlayerRebirthProcess();
 
     void SetQuickBarIdx(const int _idx) { m_iCurQuickBarIdx = _idx; }

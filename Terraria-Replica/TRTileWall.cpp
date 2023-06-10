@@ -16,6 +16,11 @@ TRTileWall::TRTileWall(std::wstring name, std::wstring k_element, std::wstring k
 		CreateAtlasElements();
 }
 
+std::wstring TRTileWall::DropItem() const
+{
+    return k_dropitem;
+}
+
 void TRTileWall::CreateAtlasElements()
 {
     for (int i = 0; i < 13; ++i)

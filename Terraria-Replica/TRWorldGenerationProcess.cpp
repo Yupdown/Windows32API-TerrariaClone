@@ -7,9 +7,11 @@
 
 void TRWorldGenerationTerrainHeight::GenerateWorld(TRTileMap* tile_map, int width, int height, int seed)
 {
+    int ox = seed & 1023;
+
     for (int i = 0; i < width; ++i)
     {
-        float noise_value = Perlin::Fbm(i * 0.02f, 4);
+        float noise_value = Perlin::Fbm(ox + i * 0.02f, 4);
         int h = height - 64 + RoundToInt(noise_value * 16.0f);
         for (int j = 0; j < h; ++j)
         {
@@ -21,11 +23,14 @@ void TRWorldGenerationTerrainHeight::GenerateWorld(TRTileMap* tile_map, int widt
 
 void TRWorldGenerationPinchCaves::GenerateWorld(TRTileMap* tile_map, int width, int height, int seed)
 {
+    int ox = seed & 1023;
+    int oy = (seed >> 10) & 1023;
+
     for (int i = 0; i < width; ++i)
     {
         for (int j = 0; j < height; ++j)
         {
-            float noise_value = Perlin::Fbm(i * 0.05f, j * 0.05f, 4) + 0.2f;
+            float noise_value = Perlin::Fbm(ox + i * 0.05f, oy + j * 0.05f, 4) + 0.2f;
             float value = Clamp01(Ceil(noise_value));
 
             if (FloorToInt(value) == 0)
@@ -73,6 +78,9 @@ TRWorldGenerationGrowOres::TRWorldGenerationGrowOres(TRTile* _tile, int _seed)
 
 void TRWorldGenerationGrowOres::GenerateWorld(TRTileMap* tile_map, int width, int height, int seed)
 {
+    int ox = seed & 1023;
+    int oy = (seed >> 10) & 1023;
+
     TRTile* cobblestone = TRTileManager::GetInst()->GetTileByKey(L"cobblestone");
 
     for (int i = 0; i < width; ++i)
@@ -82,7 +90,7 @@ void TRWorldGenerationGrowOres::GenerateWorld(TRTileMap* tile_map, int width, in
             if (tile_map->GetTile(i, j) != cobblestone)
                 continue;
 
-            float noise_value = Perlin::Noise(i * 0.1f + this->seed * 100, j * 0.1f + this->seed * 100) + 0.5f;
+            float noise_value = Perlin::Noise(ox + i * 0.1f + this->seed * 100, oy + j * 0.1f + this->seed * 100) + 0.5f;
             float value = Clamp01(Ceil(noise_value));
 
             if (value == 0)

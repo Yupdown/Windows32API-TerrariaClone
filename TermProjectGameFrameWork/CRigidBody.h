@@ -50,6 +50,8 @@ public:
 		m_vMaxVelocity = _vMaxVel;
 		m_vMaxVelocityOrigin = _vMaxVel;
 	}
+	constexpr inline void SetFriction(float _value) { m_fFriction = _value; }
+	constexpr inline float GetFriction() const { return m_fFriction; }
 	constexpr inline void SetMass(float _fMass) { m_fMass = _fMass; }
 	constexpr inline float GetMass()const { return m_fMass; }
 	constexpr inline void AddForce(Vec2 _vF) { m_vForce += _vF; }

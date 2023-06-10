@@ -30,6 +30,7 @@ void TRItemManager::LoadItems()
 	registry->Insert(L"pickaxe_iron", new TRItemPickaxe(L"Iron Pickaxe", L"Item_Pickaxe.png"));
 	registry->Insert(L"hammer_iron", new TRItemHammer(L"Iron Hammer", L"Item_Hammer.png"));
 	registry->Insert(L"longsword_iron", new TRItemSword(L"Iron Longsword", L"Item_Sword.png"));
+	registry->Insert(L"summon_cthulhueye", new TRItemSummonBoss(L"Suspicious Eye", L"Item_43.png"));
 }
 
 void TRItemManager::Initialize()

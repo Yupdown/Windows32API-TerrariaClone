@@ -20,6 +20,7 @@
 #include "CZombie.h"
 #include "CSlime.h"
 #include "CEyeMonster.h"
+#include "CCthulhuEye.h"
 
 #include "Vec2Int.hpp"
 #include "CustomMath.hpp"
@@ -53,8 +54,8 @@ TRWorld::TRWorld()
 	health_indicator = new CHealthIndicator();
 	health_indicator->SetPos(Vec2Int(1120, 10));
 
-	for (int id = 0; id < 17; ++id)
-		player_inventory[id]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByID(id), 10));
+	//for (int id = 0; id < 17; ++id)
+	//	player_inventory[id]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByID(id), 10));
 
 	quick_bar_index = 0;
 	SetToggleInventory(false);
@@ -64,8 +65,8 @@ TRWorld::~TRWorld()
 {
 	delete tile_map;
 
-	for (int i = 0; i < 10; ++i)
-		delete quick_bar[i];
+	for (int i = 0; i < 50; ++i)
+		delete player_inventory[i];
 }
 
 void TRWorld::Update()
@@ -115,7 +116,10 @@ void TRWorld::Update()
 		else if (!quick_bar[quick_bar_index]->Blank())
 		{
 			Vec2 mouse_world_pos = TRWorld::GlobalToWorld(Mgr(CCamera)->GetRealPos(Mgr(CKeyMgr)->GetMousePos()));
-			quick_bar[quick_bar_index]->GetItemStack().GetItem()->OnUseItem(player, this, mouse_world_pos);
+			player->UseItem();
+			bool use_item = quick_bar[quick_bar_index]->GetItemStack().GetItem()->OnUseItem(player, this, mouse_world_pos);
+			if (use_item)
+				quick_bar[quick_bar_index]->Apply(-1);
 		}
 	}
 
@@ -158,8 +162,8 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	Mgr(CCamera)->SetTarget(player);
 	scene->RegisterPlayer(player);
 
-	for (int i = 0; i < 17; ++i)
-		DropItem(Vec2Int(x + i * 4, 254), TRItemStack(Mgr(TRItemManager)->GetItemByID(i), 100));
+	for (int i = 0; i < 18; ++i)
+		DropItem(Vec2Int(x + i * -4, 254 - i * 4), TRItemStack(Mgr(TRItemManager)->GetItemByID(i), 100));
 
 	/*{
 		CWeapon* pWeapon;
@@ -180,12 +184,19 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	tile_map->OnSceneCreate(scene);
 
 	{
-		auto pMon = new CZombie{ this,L"Monster_Zombie",L"NPC_3.png" };
+		auto pMon = new CZombie{ this,L"Monster_",L"NPC_3.png" };
 		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
 		pMon->SetScale(Vec2{ 38.0f, 46.0f });
 		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-		pMon->SetColliderScale(Vec2{ 38.0f, 46.0f });
 	}
+
+	//{
+	//	auto pMon = new CCthulhuEye{ this,L"Monster_CthulhuEye", L"NPC_4.png" };
+	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
+	//	pMon->SetScale(Vec2{ 110.0f, 166.0f });
+	//	pMon->SetColliderScale(Vec2{ 110.0f, 110.0f });
+	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
+	//}
 
 	{
 		auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
@@ -264,7 +275,9 @@ bool TRWorld::PlaceTile(int x, int y, TRTile* new_tile)
 			bitmask |= 1 << k;
 	}
 
-	if (bitmask == 0)
+	TRTileWall* tile_wall_p = tile_map->GetTileWall(x, y);
+
+	if (bitmask == 0 && tile_wall_p == Mgr(TRTileManager)->TileWallAir())
 		return false;
 
 	switch (uidDig(randDigSound))
@@ -292,16 +305,83 @@ void TRWorld::BreakTile(int x, int y)
 	if (tile == air_tile)
 		return;
 
-	switch (uidDig(randDigSound))
-	{
-	case 0:Mgr(CSoundMgr)->PlayEffect("Dig_0.wav", 0.5f); break;
-	case 1:Mgr(CSoundMgr)->PlayEffect("Dig_1.wav", 0.5f); break;
-	case 2:Mgr(CSoundMgr)->PlayEffect("Dig_2.wav", 0.5f); break;
-	default:
-		break;
-	}
+	char buffer[16];
+	sprintf_s(buffer, "%s_%d.wav", tile->Rocky() ? "Tink" : "Dig", uidDig(randDigSound));
+	Mgr(CSoundMgr)->PlayEffect(buffer, 0.5f);
 
 	tile_map->SetTile(x, y, air_tile, true);
+
+	std::wstring k_dropitem = tile->DropItem();
+	if (k_dropitem == L"")
+		return;
+
+	TRItem* p_dropitem = Mgr(TRItemManager)->GetItemByKey(k_dropitem);
+	DropItem(Vec2(x + 0.5f, y + 0.5f), TRItemStack(p_dropitem, 1));
+}
+
+bool TRWorld::PlaceTileWall(int x, int y, TRTileWall* new_tile)
+{
+	TRTileWall* tile = tile_map->GetTileWall(x, y);
+	TRTileWall* air_tile = Mgr(TRTileManager)->TileWallAir();
+
+	if (tile == nullptr)
+		return false;
+	if (tile != air_tile)
+		return false;
+
+	const int dir[][2] = { 0, 1, 0, -1, -1, 0, 1, 0 };
+	int bitmask = 0;
+
+	for (int k = 0; k < 4; ++k)
+	{
+		int xp = x + dir[k][0];
+		int yp = y + dir[k][1];
+
+		TRTile* tile_p = tile_map->GetTile(xp, yp);
+		TRTileWall* tile_wall_p = tile_map->GetTileWall(xp, yp);
+
+		if (tile_p != nullptr)
+		{
+			if (tile_p->Solid())
+				bitmask |= 1 << k;
+		}
+		if (tile_wall_p != nullptr)
+		{
+			if (tile_wall_p != air_tile)
+				bitmask |= 1 << k;
+		}
+	}
+
+	TRTile* tile_p = tile_map->GetTile(x, y);
+
+	if (bitmask == 0 && !tile_p->Solid())
+		return false;
+	
+	char buffer[16];
+	sprintf_s(buffer, "%s_%d.wav", "Dig", uidDig(randDigSound));
+	Mgr(CSoundMgr)->PlayEffect(buffer, 0.5f);
+
+	tile_map->SetTileWall(x, y, new_tile, true);
+	return true;
+}
+
+void TRWorld::BreakTileWall(int x, int y)
+{
+	TRTileWall* tile = tile_map->GetTileWall(x, y);
+
+	if (tile == nullptr)
+		return;
+
+	TRTileWall* air_tile = Mgr(TRTileManager)->TileWallAir();
+
+	if (tile == air_tile)
+		return;
+
+	char buffer[16];
+	sprintf_s(buffer, "%s_%d.wav", "Dig", uidDig(randDigSound));
+	Mgr(CSoundMgr)->PlayEffect(buffer, 0.5f);
+
+	tile_map->SetTileWall(x, y, air_tile, true);
 
 	std::wstring k_dropitem = tile->DropItem();
 	if (k_dropitem == L"")

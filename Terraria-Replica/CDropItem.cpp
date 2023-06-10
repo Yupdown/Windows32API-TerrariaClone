@@ -16,6 +16,7 @@ CDropItem::CDropItem(TRWorld* const _trWorld, TRItemStack _item)
 
 	CreateComponent(COMPONENT_TYPE::COLLIDER, Vec2::one * 16.0f);
 	CreateComponent(COMPONENT_TYPE::RIGIDBODY);
+	GetComp<CRigidBody>()->AddVelocity(Vec2::down * 240.0f);
 
 	SetName(L"DropItem_" + _item.GetItem()->GetName());
 }

@@ -6,11 +6,12 @@
 #include "Vec2Int.hpp"
 #include <random>
 
-TRTile::TRTile(std::wstring name, bool solid, float hardness, std::wstring k_element, std::wstring k_dropitem)
+TRTile::TRTile(std::wstring name, bool solid, float hardness, bool rocky, std::wstring k_element, std::wstring k_dropitem)
 {
 	this->name = name;
 	this->solid = solid;
 	this->hardness = hardness;
+    this->rocky = rocky;
 	this->k_element = k_element;
 	this->k_dropitem = k_dropitem;
     this->stick_group = 0;
@@ -342,28 +343,33 @@ float TRTile::Hardness() const
     return hardness;
 }
 
+bool TRTile::Rocky() const
+{
+    return rocky;
+}
+
 std::wstring TRTile::DropItem() const
 {
     return k_dropitem;
 }
 
-TRTileSolid::TRTileSolid(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTile(name, true, hardness, k_element, k_dropitem)
+TRTileSolid::TRTileSolid(std::wstring name, float hardness, bool rocky, std::wstring k_element, std::wstring k_dropitem) : TRTile(name, true, hardness, rocky, k_element, k_dropitem)
 {
     this->stick_group = 1;
 }
 
-TRTileOre::TRTileOre(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, k_element, k_dropitem)
+TRTileOre::TRTileOre(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, true, k_element, k_dropitem)
 {
     this->stick_group = 2;
     this->stick_each = false;
 }
 
-TRTileDirt::TRTileDirt(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, k_element, k_dropitem)
+TRTileDirt::TRTileDirt(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, false, k_element, k_dropitem)
 {
     this->stick_group = 3;
 }
 
-TRTileGrass::TRTileGrass(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, k_element, k_dropitem)
+TRTileGrass::TRTileGrass(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem) : TRTileSolid(name, hardness, false, k_element, k_dropitem)
 {
     this->stick_group = 1;
 }

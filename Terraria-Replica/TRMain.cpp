@@ -5,13 +5,19 @@
 #include "CSceneMgr.h"
 #include "CLayer.h"
 
+#include <random>
+#include <time.h>
+
 TRMain::TRMain()
 {
+	std::default_random_engine dre(time(NULL));
+	std::uniform_int_distribution<int> uid;
+
 	Mgr(TRTileManager)->LoadTiles();
 	Mgr(TRItemManager)->LoadItems();
 
 	active_world = new TRWorld();
-	active_world->CreateWorld(0);
+	active_world->CreateWorld(uid(dre));
 
 	scene_agent = Mgr(CSceneMgr)->GetCurScene();
 	active_world->OnSceneCreate(scene_agent);
