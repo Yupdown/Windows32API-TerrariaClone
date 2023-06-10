@@ -56,6 +56,7 @@ public:
 
 	void SetToggleInventory(bool value);
 	void AddItemToInventory(TRItemStack item);
+	void SwitchQuickBarIndex(int value);
 
 	auto& GetQuickBarList() { return quick_bar; }
 	int GetQuickBarIdx()const { return quick_bar_index; }
