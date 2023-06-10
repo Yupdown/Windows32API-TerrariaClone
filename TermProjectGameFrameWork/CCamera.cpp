@@ -4,8 +4,8 @@
 #include "CTimeMgr.h"
 #include "CObject.h"
 #include "CKeyMgr.h"
-
-
+#include "CSceneMgr.h"
+#include "CScene.h"
 
 
 CCamera::CCamera()
@@ -32,6 +32,12 @@ void CCamera::init()
 
 void CCamera::render(HDC _dc)
 {
+	auto pPlayer = Mgr(CSceneMgr)->GetCurScene()->GetPlayer();
+	if (pPlayer)
+	{
+		pPlayer->dmg_render(_dc);
+	}
+
 	if (m_listCamEffect.empty())
 	{
 		return; 
@@ -49,19 +55,7 @@ void CCamera::render(HDC _dc)
 		fRatio = 1.f;
 
 	int iAlpha = 0;
-	/*switch (effect.eEffect)
-	{
-	case CAM_EFFECT::FADE_IN:
-		iAlpha = static_cast<int>(255.f * (1.f - fRatio));
-		break;
-	case CAM_EFFECT::FADE_OUT:
-		iAlpha = static_cast<int>(255.f * fRatio);
-		break;
-	case CAM_EFFECT::NONE:
-		break;
-	default:
-		break;
-	}*/
+	
 	switch (effect.eEffect)
 	{
 	case CAM_EFFECT::FADE_IN:
@@ -76,10 +70,12 @@ void CCamera::render(HDC _dc)
 		break;
 	}
 
-	BLENDFUNCTION bf = {};
-	bf.BlendOp = AC_SRC_OVER;	
-	bf.BlendFlags = 0;	
-	bf.AlphaFormat = 0;	 
+	static BLENDFUNCTION bf = {
+	.BlendOp = AC_SRC_OVER,
+	.BlendFlags = 0,
+	.AlphaFormat = 0,
+	};
+
 	bf.SourceConstantAlpha = iAlpha;
 
 	AlphaBlend(_dc

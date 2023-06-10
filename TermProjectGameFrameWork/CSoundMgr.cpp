@@ -25,7 +25,7 @@ CSoundMgr::~CSoundMgr()
 void CSoundMgr::init()
 {
 	std::filesystem::recursive_directory_iterator SoundIter{ Mgr(CPathMgr)->GetSoundPath() };
-	auto a = Mgr(CPathMgr)->GetSoundPath();
+
 	for (const auto& sound : SoundIter)
 	{
 		if (sound.is_regular_file())
@@ -75,6 +75,11 @@ void CSoundMgr::BGMVolDown()
 		}
 		FMOD_Channel_SetVolume(m_fmBGMChannel, fCurVol - 0.1f);
 	}
+}
+
+void CSoundMgr::update()
+{
+	FMOD_System_Update(m_fmSystem);
 }
 
 void CSoundMgr::BGMVolUp()

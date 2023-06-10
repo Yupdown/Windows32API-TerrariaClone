@@ -51,20 +51,20 @@ void CCollisionMgr::update()
 
 	const auto& arrCurSceneObj = Mgr(CSceneMgr)->GetCurScene()->GetSceneObj();
 
-	for (const auto& vecObj : arrCurSceneObj)
+	/*for (const auto& vecObj : arrCurSceneObj)
 	{
 		const auto vecPtr = vecObj.data();
 		for (size_t i = 0, size = vecObj.size(); i < size; ++i)
 		{
 			vecPtr[i]->updateTileCollision();
 		}
-	}
+	}*/
 
-	/*std::for_each(std::execution::par, std::begin(arrCurSceneObj), std::end(arrCurSceneObj), [](const auto& _vecObj) {
+	std::for_each(std::execution::par, std::begin(arrCurSceneObj), std::end(arrCurSceneObj), [](const auto& _vecObj) {
 		std::for_each(std::execution::par_unseq, _vecObj.begin(), _vecObj.end(), [](auto& _pObj) {
 			_pObj->updateTileCollision();
 			});
-		});*/
+		});
 }
 
 void CCollisionMgr::RegisterGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)

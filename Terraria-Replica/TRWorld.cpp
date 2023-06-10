@@ -92,6 +92,16 @@ void TRWorld::Update()
 	else if (KEY_TAP(KEY::ESC))
 		SetToggleInventory(!toggle_inventory);
 	
+	if (Mgr(CKeyMgr)->GetMouseWheelUp())
+	{
+		quick_bar_index = wrapAround(quick_bar_index + 1, 0, 10);
+	}
+
+	if (Mgr(CKeyMgr)->GetMouseWheelDown())
+	{
+		quick_bar_index = wrapAround(quick_bar_index - 1, 0, 10);
+	}
+
 	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
 
 	health_indicator->SetHealthValue(player->GetHP());

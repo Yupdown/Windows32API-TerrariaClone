@@ -21,5 +21,6 @@ public:
 	void PlayBGM(string_view _strName, float _fVol = 1.f);
 	void BGMVolUp();
 	void BGMVolDown();
+	void update();
 };
 

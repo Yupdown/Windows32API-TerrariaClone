@@ -38,6 +38,10 @@ private:
     bool m_bPrevCol = false;
 
     bool m_bSlain = false;
+    float m_fDmgCoolDown = 0.f;
+    int m_iMonColCnt = 0;
+    HDC m_hPlayerVeilDC; 
+    HBITMAP m_hPlayerVeilBit;
 public:
     CPlayer(TRWorld* const _trWorld);
     CPlayer(const CPlayer& other);
@@ -65,5 +69,10 @@ public:
 
     void SetQuickBarIdx(const int _idx) { m_iCurQuickBarIdx = _idx; }
     int GetQuickBarIdx()const { return m_iCurQuickBarIdx; }
+
+
+    void updateDmgCoolDown();
+    void dmg_render(HDC _dc);
+    bool IsCanHit()const { return 0.f >= m_fDmgCoolDown || 1.f <= m_fDmgCoolDown; }
 };
 
