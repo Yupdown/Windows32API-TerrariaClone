@@ -7,7 +7,7 @@
 #include "CTimeMgr.h"
 #include "CCore.h"
 
-int wrapAround(int x, int low, int high)
+int wrapAround(const int x,const int low,const int high)
 {
 	assert(low < high);
 	const int n = (x - low) % (high - low);
