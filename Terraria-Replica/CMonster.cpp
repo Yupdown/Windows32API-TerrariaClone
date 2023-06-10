@@ -91,9 +91,9 @@ void CMonster::OnCollision(CCollider* const _pOther)
 			//pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
 			//pPlayer->GetComp<CRigidBody>()->SetVelocity({});
 			Vec2 vForce = {};
-			if (vDir.x > 0.f)
+			if (IsFloatZero(vForce.x))
 			{
-				vForce.x = 1.f;
+				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
 			}
 			else if (vDir.x < 0.f)
 			{
@@ -101,7 +101,7 @@ void CMonster::OnCollision(CCollider* const _pOther)
 			}
 			else
 			{
-				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
+				vForce.x = 1.f;
 			}
 			pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
 			pPlayer->GetComp<CRigidBody>()->AddVelocity(vForce *500.f*2.f);
@@ -152,9 +152,9 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 			pPlayer->GetComp<CRigidBody>()->SetLimitBreak();
 			//pPlayer->GetComp<CRigidBody>()->SetVelocity({});
 			Vec2 vForce = {};
-			if (vDir.x > 0.f)
+			if (IsFloatZero(vForce.x))
 			{
-				vForce.x = 1.f;
+				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
 			}
 			else if (vDir.x < 0.f)
 			{
@@ -162,7 +162,7 @@ void CMonster::OnCollisionEnter(CCollider* const _pOther)
 			}
 			else
 			{
-				vForce.x = uidDir(randHitSound) ? 1.f : -1.f;
+				vForce.x = 1.f;
 			}
 			pPlayer->GetComp<CRigidBody>()->AddVelocity(vForce * 500.f*2.f);
 			pPlayer->GetComp<CRigidBody>()->AddForce(vForce * 500.f*2.f);
