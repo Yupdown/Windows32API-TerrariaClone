@@ -31,6 +31,9 @@ void TRItemManager::LoadItems()
 	registry->Insert(L"hammer_iron", new TRItemHammer(L"Iron Hammer", L"Item_Hammer.png"));
 	registry->Insert(L"longsword_iron", new TRItemSword(L"Iron Longsword", L"Item_Sword.png"));
 	registry->Insert(L"summon_cthulhueye", new TRItemSummonBoss(L"Suspicious Eye", L"Item_43.png"));
+	registry->Insert(L"armor_iron_head", new TRItemArmor(L"Iron Helmet", L"Item_90.png", 0, 10));
+	registry->Insert(L"armor_iron_chestplate", new TRItemArmor(L"Iron Chestplate", L"Item_81.png", 1, 15));
+	registry->Insert(L"armor_iron_leggings", new TRItemArmor(L"Iron Leggings", L"Item_77.png", 2, 10));
 }
 
 void TRItemManager::Initialize()

@@ -33,7 +33,7 @@ void CScene_Intro::Enter()
 	m_pIntroImg = Mgr(CResMgr)->GetImg(L"Intro.png");
 	m_pIntroLogo = Mgr(CResMgr)->GetImg(L"Intro_Logo.png");
 	m_pPlayer = make_unique<CPlayer>(nullptr);
-	m_pPlayer->SetScale(Vec2{ 50,60 });
+	m_pPlayer->SetScale(Vec2{ 60.0f, 84.0f });
 	m_pPlayer->SetPos(Vec2{ 100,600 });
 	auto pAnim = m_pPlayer->GetComp<CAnimator>();
 	pAnim->Play(L"Player_Torso_WALK", true);

@@ -43,13 +43,15 @@ TRWorld::TRWorld()
 	
 	for (int i = 0; i < 50; ++i)
 		player_inventory[i] = new TRItemContainer();
+	for (int i = 0; i < 3; ++i)
+		player_armor[i] = new TRItemContainer();
 	for (int i = 0; i < 10; ++i)
 		quick_bar[i] = player_inventory[i];
 
 	quick_bar_visualizer = new CQuickBarVisualizer(quick_bar);
 	quick_bar_visualizer->SetPos(Vec2Int(10, 24));
 
-	inventory_visualizer = new CInventoryVisualizer(player_inventory);
+	inventory_visualizer = new CInventoryVisualizer(player_inventory, player_armor);
 	inventory_visualizer->SetPos(Vec2Int(10, 24));
 
 	health_indicator = new CHealthIndicator();
@@ -60,6 +62,10 @@ TRWorld::TRWorld()
 
 	quick_bar_index = 0;
 	SetToggleInventory(false);
+
+	player_inventory[0]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"pickaxe_iron"), 1));
+	player_inventory[1]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"hammer_iron"), 1));
+	player_inventory[2]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"longsword_iron"), 1));
 }
 
 TRWorld::~TRWorld()
@@ -170,8 +176,21 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	Mgr(CCamera)->SetTarget(player);
 	scene->RegisterPlayer(player);
 
-	for (int i = 0; i < 18; ++i)
-		DropItem(Vec2Int(x + i * -4, 254 - i * 4), TRItemStack(Mgr(TRItemManager)->GetItemByID(i), 100));
+	TRItemStack dropitem_list[] = {
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_planks_wood"), 100),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_bricks_stone"), 100),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_bricks_clay"), 100),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"wall_planks_wood"), 100),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"wall_bricks_stone"), 100),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"wall_bricks_clay"), 100),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"armor_iron_head"), 1),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"armor_iron_chestplate"), 1),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"armor_iron_leggings"), 1),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"summon_cthulhueye"), 1)
+	};
+
+	for (int i = 0; i < sizeof(dropitem_list) / sizeof(*dropitem_list); ++i)
+		DropItem(Vec2Int(x - 10 + i * -4, 255), dropitem_list[i]);
 
 	/*{
 		CWeapon* pWeapon;
@@ -456,6 +475,23 @@ void TRWorld::SwitchQuickBarIndex(int value)
 
 	quick_bar_visualizer->SetSelectIndex(quick_bar_index);
 	Mgr(CSoundMgr)->PlayEffect("Menu_Tick.wav", 0.5f);
+}
+
+int TRWorld::GetArmorPoint() const
+{
+	int armor_point = 0;
+
+	for (TRItemContainer* container : player_armor)
+	{
+		if (container->Blank())
+			continue;
+
+		TRItemArmor* armor = dynamic_cast<TRItemArmor*>(container->GetItemStack().GetItem());
+		if (armor != nullptr)
+			armor_point += armor->GetArmorPoint();
+	}
+
+	return armor_point;
 }
 
 void TRWorld::FloatDamageText(int value, Vec2 vPos, COLORREF color)

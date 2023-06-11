@@ -26,6 +26,7 @@ private:
 	CScene* m_pScene;
 
 	TRItemContainer* player_inventory[50];
+	TRItemContainer* player_armor[3];
 	TRItemContainer* quick_bar[10];
 
 	CQuickBarVisualizer* quick_bar_visualizer;
@@ -63,6 +64,7 @@ public:
 
 	auto& GetQuickBarList() { return quick_bar; }
 	int GetQuickBarIdx()const { return quick_bar_index; }
+	int GetArmorPoint() const;
 
 	void FloatDamageText(int value, Vec2 vPos, COLORREF color);
 	void SpawnBoss();
