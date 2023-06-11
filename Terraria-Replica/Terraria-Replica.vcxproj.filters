@@ -70,11 +70,8 @@
     <Filter Include="CObject\DropItem">
       <UniqueIdentifier>{02e3a9bd-25fd-47fe-af24-e08dd42f34b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CObject\AcquireItemText">
-      <UniqueIdentifier>{eaf8cdd6-c501-444c-b065-5d2eb36ebc07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CObject\Monster\CCthulhuEye">
-      <UniqueIdentifier>{46474d17-0a9e-424c-bf34-2cb8038ed370}</UniqueIdentifier>
+    <Filter Include="CScene\Scene_Intro">
+      <UniqueIdentifier>{695b6a86-6e77-471e-bb0d-659eeae7e458}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -186,11 +183,8 @@
     <ClInclude Include="CDropItem.h">
       <Filter>CObject\DropItem</Filter>
     </ClInclude>
-    <ClInclude Include="CAcquireItemText.h">
-      <Filter>CObject\AcquireItemText</Filter>
-    </ClInclude>
-    <ClInclude Include="CCthulhuEye.h">
-      <Filter>CObject\Monster\CCthulhuEye</Filter>
+    <ClInclude Include="CScene_Intro.h">
+      <Filter>CScene\Scene_Intro</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -278,11 +272,8 @@
     <ClCompile Include="CDropItem.cpp">
       <Filter>CObject\DropItem</Filter>
     </ClCompile>
-    <ClCompile Include="CAcquireItemText.cpp">
-      <Filter>CObject\AcquireItemText</Filter>
-    </ClCompile>
-    <ClCompile Include="CCthulhuEye.cpp">
-      <Filter>CObject\Monster\CCthulhuEye</Filter>
+    <ClCompile Include="CScene_Intro.cpp">
+      <Filter>CScene\Scene_Intro</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

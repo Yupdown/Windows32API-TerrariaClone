@@ -15,6 +15,7 @@ private:
 	TRTileWall** tile_wall_map;
 
 	CTileLayer* renderer;
+	HBRUSH m_hTileMapBrush;
 
 public:
 	TRTileMap(int width, int height);

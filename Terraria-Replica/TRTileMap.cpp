@@ -21,12 +21,14 @@ TRTileMap::TRTileMap(int width, int height)
 	tile_map = new TRTile*[width * height];
 	tile_wall_map = new TRTileWall*[width * height];
 	renderer = nullptr;
+	m_hTileMapBrush = CreateSolidBrush(0x00FF00FF);
 }
 
 TRTileMap::~TRTileMap()
 {
 	delete[] tile_map;
 	delete[] tile_wall_map;
+	DeleteObject(m_hTileMapBrush);
 }
 
 TRTile* TRTileMap::GetTile(int x, int y) const
@@ -116,13 +118,12 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 
 void TRTileMap::UpdateTileRenderer(int x, int y)
 {
-	static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
 	HDC hdc = renderer->GetTileLayerDC();
 	HDC miniMapHDC = g_MiniMap->GetMiniMapTileLayer()->GetTileLayerDC();
 	auto minimapRenderer = g_MiniMap->GetMiniMapTileLayer();
 	Vec2Int p = TRWorld::WorldToGlobal(Vec2(static_cast<float>(x), static_cast<float>(y)));
 	RECT r = { p.x - PIXELS_PER_TILE, p.y - PIXELS_PER_TILE * 2, p.x + PIXELS_PER_TILE * 2, p.y + PIXELS_PER_TILE };
-	FillRect(hdc, &r, brush);
+	FillRect(hdc, &r, m_hTileMapBrush);
 
 	for (int dx = -2; dx <= 2; ++dx)
 	{

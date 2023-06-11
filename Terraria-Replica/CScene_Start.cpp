@@ -14,77 +14,88 @@
 #include "CLayer.h"
 #include "CTileLayer.h"
 #include "CSoundMgr.h"
+#include "TRMain.h"
+#include "CEventMgr.h"
+#include "TRWorld.h"
+#include "TRTileManager.h"
+#include "TRItemManager.h"
+
+
+extern std::atomic<bool> g_bLoadMainStage;
+
 
 CScene_Start::CScene_Start()
 {
-	//Mgr(CSoundMgr)->PlayBGM("Test.mp3", 0.1f);
 	SetName(L"Scene_Start");
+}
+
+CScene_Start::~CScene_Start()
+{	
+}
+
+void CScene_Start::Enter()
+{
+	CScene::Enter();
+	Mgr(CEventMgr)->SetTRupdate(&TRMain::Update, m_pTRMain);
+	g_bLoadMainStage = false;
+}
+
+void CScene_Start::Exit()
+{
+	delete m_pTRMain;
+	CScene::Exit();
+	m_pTRMain = nullptr;
+	Mgr(CSoundMgr)->PlayBGM("03. Overworld Day.mp3", 0.1f);
+	m_bChangeScene = false;
+}
+
+void CScene_Start::update()
+{
+	CScene::update();
+	if (KEY_TAP(KEY::RSHIFT) && !m_bChangeScene)
+	{
+		m_bChangeScene = true;
+		g_bLoadMainStage.store(true, std::memory_order_seq_cst);
+		ChangeScene(SCENE_TYPE::INTRO);
+	}
+}
+
+void CScene_Start::render(HDC _dc)
+{
+	CScene::render(_dc);
+}
+
+void CScene_Start::CreateStage()
+{
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	float ground_level = 64 * PIXELS_PER_TILE;
-	
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_0.png",Vec2{ 0, 0 }, Vec2{ vRes.x,vRes.y * 10.f },Vec2{ vRes.x,vRes.y * 10.f }, 10,0.1f));
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_1.png",Vec2{ 0, ground_level },vRes,Vec2{ vRes.x,vRes.y * 10.f }, 10,0.3f));
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_2.png",Vec2{ 0, ground_level },vRes,Vec2{ vRes.x,vRes.y * 10.f }, 10,0.4f));
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_3.png",Vec2{ 0, ground_level },vRes,Vec2{ vRes.x,vRes.y * 10.f }, 10,0.5f));
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_4.png",Vec2{ 0, ground_level },vRes,Vec2{ vRes.x,vRes.y * 10.f }, 10,0.6f));
-	//const  Vec2 vGround = Vec2{ vRes.x,vRes.y * 1.5f };
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_5.png", Vec2{ 0,vRes.y * (8.5f)}, vGround, Vec2{vRes.x,vRes.y * 10}, 10, 1.f));
-	
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_0.png", Vec2{ 0, 0 }, Vec2{ vRes.x,vRes.y * 10.f }, Vec2{ vRes.x,vRes.y * 10.f }, 10, 0.1f));
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_1.png", Vec2{ 0, vRes.y / 2.f -200 }, Vec2{1048,435}, Vec2{ 1048,vRes.y * 10.f  }, 10, 0.3f));
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_2.png", Vec2{ 0, vRes.y / 2.f - 100}, Vec2{1048,435}, Vec2{ 1048,vRes.y * 10.f  }, 10, 0.4f));
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_3.png", Vec2{ 0, vRes.y / 2.f }, Vec2{ 1048,435 }, Vec2{ 1048,vRes.y * 10.f }, 10, 0.5f));
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_4.png", Vec2{ 0, vRes.y / 2.f + 100 }, Vec2{1048,600}, Vec2{ 1048,vRes.y * 10.f  }, 10, 0.6f));
-	////const  Vec2 vGround = Vec2{ vRes.x,vRes.y * 1.5f };
-	//m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_5.png", Vec2{ 0,vRes.y / 2.f + 100 + 600 }, Vec2{1024,600}, Vec2{ vRes.x,vRes.y * 10 }, 10, 1.f));
 
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_0.png", Vec2{ 0, 0 }, Vec2{ 1400, 800 }, Vec2{ 1400, vRes.y * 10.f }, 10, 0.1f));
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_1.png", Vec2{ 0, vRes.y / 2.f - 200 }, Vec2{ 1048,435 }, Vec2{ 1048,vRes.y * 10.f }, 10, 0.3f));
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_2.png", Vec2{ 0, vRes.y / 2.f - 100 }, Vec2{ 1048,435 }, Vec2{ 1048,vRes.y * 10.f }, 10, 0.4f));
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_3.png", Vec2{ 0, vRes.y / 2.f }, Vec2{ 1048,435 }, Vec2{ 1048,vRes.y * 10.f }, 10, 0.5f));
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_4.png", Vec2{ 0, vRes.y / 2.f + 100 }, Vec2{ 1048,600 }, Vec2{ 1048,vRes.y * 10.f }, 10, 0.6f));
-	//const  Vec2 vGround = Vec2{ vRes.x,vRes.y * 1.5f };
+
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_5.png", Vec2{ 0,vRes.y / 2.f + 100 + 600 }, Vec2{ 1024,600 }, Vec2{ vRes.x,vRes.y * 10 }, 10, 1.f));
-
-	//m_vecTileLayer.emplace_back(new CTileLayer{ Vec2{500,7300},2048,1024 });
-	//for (int i = 0; i < 100; ++i) {
-	//	m_vecTileLayer[0]->pre_render(L"Tiles_0000.png", Vec2{ 100 + (float)i * 20 ,500 }, Vec2{ 0,0 });
-	//}
-	//
-
-	//m_vecTileLayer.emplace_back(new CTileLayer{ Vec2{500,7400},2048,1024 });
-	//for (int i = 0; i < 100; ++i) {
-	//	m_vecTileLayer[1]->pre_render(L"Tiles_0001.png", Vec2{ 100 + (float)i * 20 ,500 }, Vec2{ 0,0 });
-	//}
-	//
-
-	//m_vecTileLayer.emplace_back(new CTileLayer{ Vec2{500,7500},2048,1024 });
-	//for (int i = 0; i < 100; ++i) {
-	//	m_vecTileLayer[2]->pre_render(L"Tiles_0002.png", Vec2{ 100 + (float)i * 20 ,500 }, Vec2{ 0,0 });
-	//}
-	
 }
 
-CScene_Start::~CScene_Start()
-{
-}
-
-void CScene_Start::Enter()
+void CScene_Start::LoadWorld()
 {
 	CScene::Enter();
+	std::atomic_thread_fence(std::memory_order_seq_cst);
+	// 纠 积己
+	CreateStage();
+
+
+
+
+	//  TR岿靛 积己 
+	TRMain* terraria_main = new TRMain();
+	m_pTRMain = terraria_main;
+
+	std::atomic_thread_fence(std::memory_order_seq_cst);
+	//std::this_thread::sleep_for(std::chrono::seconds(3));
+	g_bLoadMainStage = false;
 	Mgr(CSoundMgr)->PlayBGM("03. Overworld Day.mp3", 0.1f);
-}
-
-void CScene_Start::Exit()
-{
-}
-
-void CScene_Start::update()
-{
-	CScene::update();
-}
-
-void CScene_Start::render(HDC _dc)
-{
-	CScene::render(_dc);
+	ChangeScene(SCENE_TYPE::START);
 }

@@ -29,6 +29,10 @@ CQuickBarVisualizer::CQuickBarVisualizer(const CQuickBarVisualizer& other) : COb
 {
 }
 
+CQuickBarVisualizer::~CQuickBarVisualizer()
+{
+}
+
 void CQuickBarVisualizer::SetSelectIndex(int value)
 {
     select_index = value;

@@ -19,6 +19,7 @@ public:
 protected:
 	vector<unique_ptr<CLayer>> m_vecLayer;
 	vector<unique_ptr<CTileLayer>> m_vecTileLayer;
+	Vec2 m_vRes = {};
 private:
 	vector<unique_ptr<CObject>>			m_vecObj[(UINT)GROUP_TYPE::END]; 
 	wstring								m_strName;	

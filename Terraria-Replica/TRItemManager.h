@@ -6,7 +6,7 @@
 class TRItemManager : public Singleton<TRItemManager>
 {
 private:
-	Registry<TRItem*>* registry;
+	Registry<TRItem>* registry;
 
 public:
 	friend class Singleton;

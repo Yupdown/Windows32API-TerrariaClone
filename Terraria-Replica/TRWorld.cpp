@@ -31,6 +31,7 @@
 #include "CSoundMgr.h"
 
 TRWorld* g_TRWorld = nullptr;
+extern bool g_bStopToken;
 
 static std::mt19937 randDigSound{std::random_device{}()};
 static std::uniform_int_distribution<> uidDig{0, 2};
@@ -67,6 +68,7 @@ TRWorld::~TRWorld()
 
 	for (int i = 0; i < 50; ++i)
 		delete player_inventory[i];
+	
 }
 
 void TRWorld::Update()
@@ -152,8 +154,13 @@ void TRWorld::CreateWorld(int seed)
 
 void TRWorld::OnSceneCreate(CScene* scene)
 {
-	m_pScene = scene;
+	if (g_bStopToken)
+	{
+		return;
+	}
 
+	m_pScene = scene;
+	Mgr(CCollisionMgr)->Reset();
 	player = new CPlayer(this);
 	int x = TRWorld::WORLD_WIDTH / 2;
 	player->SetPos(TRWorld::WorldToGlobal(Vec2Int(x, tile_map->GetTopYpos(x))) - Vec2(20.0f, 28.0f));
@@ -214,9 +221,7 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	//	pMon->SetColliderScale(Vec2{ 38.0f, 22.0f });
 	//}
 
-	{
-		scene->AddObject(new CMiniMap, GROUP_TYPE::UI);
-	}
+	
 
 	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER); 
 	Mgr(CCollisionMgr)->RegisterGroup( GROUP_TYPE::MONSTER,GROUP_TYPE::PLAYER_WEAPON);
@@ -227,7 +232,13 @@ void TRWorld::OnSceneCreate(CScene* scene)
 	inventory_visualizer->AddContainerVisualizers(scene);
 	scene->AddObject(health_indicator, GROUP_TYPE::UI);
 
-	scene->Enter();
+	{
+		auto pMap = new CMiniMap;
+		pMap->CreateMiniMap();
+		scene->AddObject(pMap, GROUP_TYPE::UI);
+	}
+
+	Mgr(CCamera)->update();
 }
 
 Vec2 TRWorld::WorldToGlobal(const Vec2& v)

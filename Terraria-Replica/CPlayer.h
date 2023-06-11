@@ -23,6 +23,7 @@ class CWeapon;
 class CPlayer :
     public CObject
 {
+    friend class CScene_Intro;
 private:
 
     int m_iCurQuickBarIdx = 0;

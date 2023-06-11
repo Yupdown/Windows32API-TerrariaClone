@@ -7,8 +7,8 @@
 class TRTileManager : public Singleton<TRTileManager>
 {
 private:
-	Registry<TRTile*>* registry_tile;
-	Registry<TRTileWall*>* registry_tile_wall;
+	Registry<TRTile>* registry_tile;
+	Registry<TRTileWall>* registry_tile_wall;
 	TRTile* tile_air;
 	TRTileWall* tile_wall_air;
 

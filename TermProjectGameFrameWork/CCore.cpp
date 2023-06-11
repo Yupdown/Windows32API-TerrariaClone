@@ -17,7 +17,7 @@
 #include "CDebugMgr.h"
 #include "CSoundMgr.h"
 
-//jthread CCore::m_miniMapThread;
+extern jthread g_LoadThread;
 
 extern void miniMapWin();
 
@@ -54,6 +54,11 @@ CCore::CCore()
 CCore::~CCore()
 {
 	g_bStopToken = true;
+	if (g_bDoMultiThread)
+	{
+		Mgr(CThreadMgr)->Join_all();
+	}
+	std::atomic_thread_fence(std::memory_order_seq_cst);
 	ReleaseDC(m_hWnd, m_hDC);	
 	for (auto& pen : m_arrPen)
 	{
@@ -68,6 +73,11 @@ CCore::~CCore()
 	for (int i = 0; i < THREAD::END; ++i)
 	{
 		DeleteDCBITMAP(m_hThreadMazentaDC[i], m_hThreadMazentaBit[i]);
+	}
+	if (g_LoadThread.joinable())
+	{	
+		g_LoadThread.request_stop();
+		g_LoadThread.detach();
 	}
 }
 

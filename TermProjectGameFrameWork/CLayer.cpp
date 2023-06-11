@@ -4,6 +4,8 @@
 #include "CCamera.h"
 #include "CCore.h"
 
+extern bool g_bStopToken;
+
 CLayer::CLayer()
 {
 }
@@ -20,8 +22,16 @@ CLayer* CLayer::CreateLayer(wstring_view _wstrFileName,Vec2 _vLayerStartPos, Vec
 	pLayer->m_pLayerImg = Mgr(CResMgr)->GetImg(_wstrFileName);
 	pLayer->m_vLayerScale = _vLayerScale;
 	pLayer->m_fLayerSpeed = _fSpeed;
-	CreateDCBITMAP(pLayer->m_hLayerDC, pLayer->m_hLayerBit, Vec2{ _vLayerScale.x * (float)_iLayerCount,_vLayerScale.y });
-	
+
+	while (!CreateDCBITMAP(pLayer->m_hLayerDC, pLayer->m_hLayerBit, Vec2{ _vLayerScale.x * (float)_iLayerCount,_vLayerScale.y }) && !g_bStopToken) {
+		DeleteDCBITMAP(pLayer->m_hLayerDC, pLayer->m_hLayerBit);
+	}
+
+	if (g_bStopToken)
+	{
+		return nullptr;
+	}
+
 	for (int i = 0; i < (int)_iLayerCount; ++i)
 	{
 		pLayer->m_pLayerImg->StretchBlt(pLayer->m_hLayerDC

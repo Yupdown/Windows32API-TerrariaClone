@@ -10,6 +10,7 @@
 #include "CSoundMgr.h"
 
 CMiniMap* g_MiniMap = nullptr;
+extern bool g_bStopToken;
 
 CMiniMap::CMiniMap()
 {
@@ -17,65 +18,19 @@ CMiniMap::CMiniMap()
 	//SetPos({ 1200,100 });
 	//SetScale({ 264,264 });
 	m_pMapFrameImg = Mgr(CResMgr)->GetImg(L"Minimap_Frame.png");
-	CreateDCBITMAP(m_hMinmapDC, m_hMimimapBit, Vec2{ 264,264 });
-	CreateDCBITMAP(m_hMinmapDC2, m_hMimimapBit2, Vec2{ 264,264 });
+	while (!CreateDCBITMAP(m_hMinmapDC, m_hMimimapBit, Vec2{ 264,264 }) && !g_bStopToken) {
+		DeleteDCBITMAP(m_hMinmapDC, m_hMimimapBit);
+	}
+	while (!CreateDCBITMAP(m_hMinmapDC2, m_hMimimapBit2, Vec2{ 264,264 }) && !g_bStopToken){
+		DeleteDCBITMAP(m_hMinmapDC2, m_hMimimapBit2);
+	}
 	m_pMiniMapTileLayer = std::make_unique<CTileLayer>(Vec2{ 0,0 }, 8192, 4096);
-	auto pCurScene = Mgr(CSceneMgr)->GetCurScene();
-	
-	
-	int cnt = -2;
-	for (int i = 0; i < pCurScene->m_vecLayer.size(); ++i)
-	{
-		if (i == 0)
-		{
-			TransparentBlt(m_hMinmapDC2
-				, 0
-				, 0
-				, 264 
-				, 264 
-				, pCurScene->m_vecLayer[i]->GetLayerDC()
-				, 0
-				, 0
-				, 8192
-				, 8000
-				, RGB(255, 0, 255));
-		}
-		else
-		{
-			TransparentBlt(m_hMinmapDC2
-				, 0
-				, (int)((400.f + float(cnt) * 100.f) * 264.f / 4096.f)
-				, 264
-				, 264
-				, pCurScene->m_vecLayer[i]->GetLayerDC()
-				, 0
-				, 0
-				, 8192
-				, 4096
-				, RGB(255, 0, 255));
-			++cnt;
-		}
-	}
-
-	for (auto& layer : pCurScene->m_vecTileLayer)
-	{
-		TransparentBlt(m_pMiniMapTileLayer->GetTileLayerDC()
-			, 0
-			, 0
-			, static_cast<int>(layer->GetScale().x)
-			, static_cast<int>(layer->GetScale().y)
-			, layer->GetTileLayerDC()
-			, 0
-			, 0
-			, static_cast<int>(layer->GetScale().x)
-			, static_cast<int>(layer->GetScale().y)
-			, RGB(255, 0, 255));
-	}
-
 }
 
 CMiniMap::~CMiniMap()
 {
+	DeleteDCBITMAP(m_hMinmapDC, m_hMimimapBit);
+	DeleteDCBITMAP(m_hMinmapDC2, m_hMimimapBit2);
 }
 
 void CMiniMap::update()
@@ -176,4 +131,64 @@ void CMiniMap::render(HDC _dc) const
 		, 0
 		, 0
 		, SRCCOPY);
+}
+
+void CMiniMap::CreateMiniMap()
+{
+	if (g_bStopToken)
+	{
+		return;
+	}
+
+	auto pCurScene = Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START);
+
+
+	int cnt = -2;
+	for (int i = 0; i < pCurScene->m_vecLayer.size(); ++i)
+	{
+		if (i == 0)
+		{
+			TransparentBlt(m_hMinmapDC2
+				, 0
+				, 0
+				, 264
+				, 264
+				, pCurScene->m_vecLayer[i]->GetLayerDC()
+				, 0
+				, 0
+				, 8192
+				, 8000
+				, RGB(255, 0, 255));
+		}
+		else
+		{
+			TransparentBlt(m_hMinmapDC2
+				, 0
+				, (int)((400.f + float(cnt) * 100.f) * 264.f / 4096.f)
+				, 264
+				, 264
+				, pCurScene->m_vecLayer[i]->GetLayerDC()
+				, 0
+				, 0
+				, 8192
+				, 4096
+				, RGB(255, 0, 255));
+			++cnt;
+		}
+	}
+
+	for (auto& layer : pCurScene->m_vecTileLayer)
+	{
+		TransparentBlt(m_pMiniMapTileLayer->GetTileLayerDC()
+			, 0
+			, 0
+			, static_cast<int>(layer->GetScale().x)
+			, static_cast<int>(layer->GetScale().y)
+			, layer->GetTileLayerDC()
+			, 0
+			, 0
+			, static_cast<int>(layer->GetScale().x)
+			, static_cast<int>(layer->GetScale().y)
+			, RGB(255, 0, 255));
+	}
 }

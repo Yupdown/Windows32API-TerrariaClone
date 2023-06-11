@@ -25,6 +25,7 @@ protected:
 
 public:
 	TRTile(std::wstring name, bool solid, float hardness, bool rocky, std::wstring k_element, std::wstring k_dropitem);
+	virtual ~TRTile() = default;
 
     void CreateAtlasElements();
 	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask);

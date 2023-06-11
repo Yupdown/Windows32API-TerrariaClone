@@ -3,7 +3,7 @@
 
 TRItemManager::TRItemManager()
 {
-	registry = new Registry<TRItem*>();
+	registry = new Registry<TRItem>();
 }
 
 TRItemManager::~TRItemManager()
@@ -35,7 +35,7 @@ void TRItemManager::LoadItems()
 
 void TRItemManager::Initialize()
 {
-
+	
 }
 
 TRItem* TRItemManager::GetItemByID(int id) const

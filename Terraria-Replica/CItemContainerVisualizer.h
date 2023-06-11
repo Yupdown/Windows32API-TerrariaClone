@@ -13,7 +13,7 @@ private:
 public:
     CItemContainerVisualizer(TRItemContainer* _item_container);
     CItemContainerVisualizer(const CItemContainerVisualizer& other);
-
+    ~CItemContainerVisualizer();
     CItemContainerVisualizer* Clone() const override;
     TRItemContainer* GetItemContainer() const;
     void SetVisible(bool value);

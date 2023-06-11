@@ -85,7 +85,7 @@ void ChangeAIState(AI* const _pAI, MON_STATE _eNextState);
 
 XFORM operator*(const XFORM& lhs, const XFORM& rhs);
 
-void CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit,Vec2 _vBitMapScale);
+HDC CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit,Vec2 _vBitMapScale);
 
 void DeleteDCBITMAP(HDC& _dc, HBITMAP& _hBit);
 

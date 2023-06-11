@@ -19,7 +19,7 @@ TRMain::TRMain()
 	active_world = new TRWorld();
 	active_world->CreateWorld(uid(dre));
 
-	scene_agent = Mgr(CSceneMgr)->GetCurScene();
+	scene_agent = Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START);
 	active_world->OnSceneCreate(scene_agent);
 }
 

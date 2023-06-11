@@ -44,7 +44,7 @@ enum class SCENE_TYPE
 	START,
 	STAGE_01,
 	STAGE_02,
-
+	INTRO,
 
 
 	END,

@@ -3,8 +3,8 @@
 
 TRTileManager::TRTileManager()
 {
-	registry_tile = new Registry<TRTile*>();
-	registry_tile_wall = new Registry<TRTileWall*>();
+	registry_tile = new Registry<TRTile>();
+	registry_tile_wall = new Registry<TRTileWall>();
 }
 
 TRTileManager::~TRTileManager()
@@ -40,7 +40,6 @@ void TRTileManager::LoadTiles()
 
 void TRTileManager::Initialize()
 {
-	
 }
 
 TRTile* TRTileManager::GetTileByID(int id) const
@@ -72,3 +71,4 @@ TRTileWall* TRTileManager::TileWallAir() const
 {
 	return tile_wall_air;
 }
+

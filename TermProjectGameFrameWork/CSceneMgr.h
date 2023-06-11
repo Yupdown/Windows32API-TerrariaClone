@@ -23,6 +23,7 @@ private:
 public:
 	void AddScene(SCENE_TYPE _eType, CScene* const _pScene);
 	void init(SCENE_TYPE _eType);
+	CScene* GetScene(SCENE_TYPE _eType)const;
 };
 
 

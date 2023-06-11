@@ -17,6 +17,10 @@ CItemContainerVisualizer::CItemContainerVisualizer(const CItemContainerVisualize
 
 }
 
+CItemContainerVisualizer::~CItemContainerVisualizer()
+{
+}
+
 void CItemContainerVisualizer::update()
 {
 

@@ -141,6 +141,33 @@ public:
 
 	void SetShakeFlag(bool _b) { ShakeFlag = _b; }
 	constexpr bool IsCamShake()const { return ShakeFlag; }
+	void Reset()
+	{
+		m_CamRect = {};
+
+		m_vLookAt = {};
+		m_vCurLookAt = {};
+		m_vPrevLookAt = {};
+		m_vResolution = {};
+		m_vOriginMid = {};
+
+		m_pTargetObj = {};
+
+		m_vDiff = {};
+
+		m_fTime = { 1.0f };
+		m_fSpeed = { 2000.f };
+		m_fAccTime = {};
+		m_fAccel = {};
+		
+		m_fShakeAcc = 0.1f;
+		Shake = 4;
+		ShakeFlag = false;
+		m_bMoveFlag = false;
+		m_listCamEffect.clear();
+		m_fCamZoom = 1.f;
+		init();
+	}
 	CoRoutine CamMoveCoRoutine(const Vec2 _vDest);
 
 	CoRoutine ZoomInBoss(const Vec2 _vBossPos);

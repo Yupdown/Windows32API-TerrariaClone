@@ -17,7 +17,7 @@ private:
 public:
     CQuickBarVisualizer(TRItemContainer* containers[10]);
     CQuickBarVisualizer(const CQuickBarVisualizer& other);
-
+    ~CQuickBarVisualizer();
     void SetSelectIndex(int index);
     void AddContainerVisualizers(CScene* scene);
     void SetVisible(bool value);

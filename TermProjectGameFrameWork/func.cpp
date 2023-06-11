@@ -65,7 +65,7 @@ XFORM operator*(const XFORM& lhs, const XFORM& rhs)
 	return xform;
 }
 
-void CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit, Vec2 _vBitMapScale)
+HDC CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit, Vec2 _vBitMapScale)
 {
 	_dc = CreateCompatibleDC(Mgr(CCore)->GetMainDC());
 	_hBit = CreateCompatibleBitmap(Mgr(CCore)->GetMainDC(), (int)_vBitMapScale.x, (int)_vBitMapScale.y);
@@ -78,6 +78,7 @@ void CreateDCBITMAP(HDC& _dc, HBITMAP& _hBit, Vec2 _vBitMapScale)
 	DeleteObject(SelectObject(_dc, hOld));
 	DeleteObject(SelectObject(_dc, hOldPen));
 	SetGraphicsMode(_dc, GM_ADVANCED);
+	return _dc;
 }
 
 void DeleteDCBITMAP(HDC& _dc, HBITMAP& _hBit)
