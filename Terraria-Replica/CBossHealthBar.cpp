@@ -16,7 +16,7 @@ CBossHealthBar::CBossHealthBar(CCthulhuEye* const _pBoss, wstring_view _fileName
 	m_pHealthBarImg = Mgr(CResMgr)->GetImg(_fileName);
 
 	m_vBarPos = Vec2{};
-	m_vBarScale = Vec2{ 516.f,60.f };
+	m_vBarScale = Vec2{ 516.f, 58.0f };
 
 	m_vHpPos = Vec2{ 30.f,80.f };
 	
@@ -40,15 +40,10 @@ void CBossHealthBar::render(HDC _dc) const
 {
 	auto vPos = GetPos();
 
-	m_pHealthBarImg->TransparentBlt(_dc
-		, (int)vPos.x
-		, (int)vPos.y
-		, (int)m_vBarScale.x
-		, (int)m_vBarScale.y
-		, (int)m_vBarPos.x
-		, (int)m_vBarPos.y
-		, (int)m_vBarScale.x
-		, (int)m_vBarScale.y
-		, RGB(255, 0, 255));
+	float progress = (float)m_pBoss->GetHP() / 200.0f;
+	float width = progress * 456.0f;
+
+	Mgr(CResMgr)->renderImg(_dc, m_pHealthBarImg, vPos + Vec2::right * 32.0f, Vec2(width, m_vBarScale.y), Vec2(32.0f, 58.0f), Vec2(2.0f, m_vBarScale.y));
+	Mgr(CResMgr)->renderImg(_dc, m_pHealthBarImg, vPos, m_vBarScale, Vec2::zero, m_vBarScale);
 }
 

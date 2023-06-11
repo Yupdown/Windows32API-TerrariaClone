@@ -74,6 +74,8 @@ TRWorld::~TRWorld()
 
 	for (int i = 0; i < 50; ++i)
 		delete player_inventory[i];
+	for (int i = 0; i < 3; ++i)
+		delete player_armor[i];
 	
 }
 
