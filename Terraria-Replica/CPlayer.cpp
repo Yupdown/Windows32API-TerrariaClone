@@ -325,6 +325,7 @@ void CPlayer::updateQuickBarState(const int _idx)
 		if (quick_bar_list[i]->Blank())
 		{
 			m_vecWeapon[i]->SetActivate(false);
+			m_vecWeapon[i]->SetDmg(1);
 		}
 		else
 		{
@@ -337,7 +338,17 @@ void CPlayer::updateQuickBarState(const int _idx)
 			{
 				m_vecWeapon[i]->SetActivate(true);
 			}
-			m_vecWeapon[i]->SetWeaponState(quick_bar_list[i]->GetItemStack().GetItem()->GetItemElement(), wstrItem + quick_bar_list[i]->GetItemStack().GetItem()->GetName());
+			static size_t strPos = 0;
+			if (wstring::npos != quick_bar_list[i]->GetItemStack().GetItem()->GetName().find(L' '))
+			{
+				strPos = quick_bar_list[i]->GetItemStack().GetItem()->GetName().find(L' ') + 1;
+			}
+			else
+			{
+				strPos = 0;
+			}
+			wstring tempName = std::move(quick_bar_list[i]->GetItemStack().GetItem()->GetName().substr(strPos));
+			m_vecWeapon[i]->SetWeaponState(quick_bar_list[i]->GetItemStack().GetItem()->GetItemElement(), std::move(wstrItem + tempName));
 		}
 		
 	}

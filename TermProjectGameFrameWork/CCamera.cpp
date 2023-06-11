@@ -21,7 +21,7 @@ CCamera::~CCamera()
 void CCamera::init()
 {
 	m_vResolution = CCore::GetInst()->GetResolutionV();
-	m_vOriginMid = m_vLookAt = m_vCurLookAt = m_vPrevLookAt = m_vResolution / 2.;
+	m_vOriginMid = m_vLookAt = m_vCurLookAt = m_vPrevLookAt = m_vResolution / 2.f;
 	m_CamRect.vLT = Vec2{ 0.f,0.f };
 	m_CamRect.vRB = m_vResolution;
 	m_CamRect.vLookMid = m_vResolution / 2.f;

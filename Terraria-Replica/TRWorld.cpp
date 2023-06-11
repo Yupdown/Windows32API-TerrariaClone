@@ -75,6 +75,7 @@ TRWorld::~TRWorld()
 	for (int i = 0; i < 50; ++i)
 		delete player_inventory[i];
 	
+	g_TRWorld = nullptr;
 }
 
 void TRWorld::Update()
@@ -132,7 +133,7 @@ void TRWorld::Update()
 		}
 	}
 
-	//TRMonGenerator::GenerateMonster();
+//	TRMonGenerator::GenerateMonster();
 }
 
 void TRWorld::CreateWorld(int seed)

@@ -17,6 +17,10 @@ private:
     int m_iFlip = 0;
 
     bool m_bActivate = true;
+
+    int m_iWeaponDmg = 1;
+
+    bool m_bDmgOnce = false;
 public:
     CWeapon(TRWorld* _pTRWorld, CObject* const _pPlayer);
     ~CWeapon();
@@ -41,6 +45,8 @@ public:
         m_AccfDeg1 = 0.f;
         m_AccfDeg2 = -75.f;
 
+        m_bDmgOnce = false;
+
         SetPos({ 0,0 });
     }
 
@@ -53,5 +59,6 @@ public:
     virtual void OnCollision(CCollider* const _pOther)override;
     virtual void OnCollisionEnter(CCollider* const _pOther)override;
     virtual void OnCollisionExit(CCollider* const _pOther)override;
+    void SetDmg(const int _iDmg) { m_iWeaponDmg = _iDmg; }
 };
 

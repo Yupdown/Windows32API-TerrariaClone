@@ -136,20 +136,15 @@ void CMonster::OnCollision(CCollider* const _pOther)
 			}
 		}
 	}
+	
 }
 
 void CMonster::OnCollisionEnter(CCollider* const _pOther)
 {
-
+	
 }
 
 void CMonster::OnCollisionExit(CCollider* const _pOther)
 {
-	auto pObj = _pOther->GetOwner();
-	const wstring wstrObjName = pObj->GetName().substr(0, pObj->GetName().find(L'_'));
 
-	if (L"Item" == wstrObjName)
-	{
-		pObj->GetComp<CRigidBody>()->SetLimitOrigin();
-	}
 }

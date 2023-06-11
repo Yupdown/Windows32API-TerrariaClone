@@ -37,6 +37,24 @@ void CWeapon::SetWeaponState(const CImage* const _pImg ,wstring_view _wstrWeapon
 	SetName(_wstrWeaponName);
 	GetComp<CCollider>()->SetScale(vScale);
 	SetScale(vScale);
+	const auto wstrName =_wstrWeaponName.substr(_wstrWeaponName.find(L'_')+1);
+
+	if (L"Pickaxe" == wstrName)
+	{
+		m_iWeaponDmg = 10;
+	}
+	else if (L"Hammer" == wstrName)
+	{
+		m_iWeaponDmg = 20;
+	}
+	else if (L"Longsword" == wstrName)
+	{
+		m_iWeaponDmg = 50;
+	}
+	else
+	{
+		m_iWeaponDmg = 1;
+	}
 }
 
 //void CWeapon::SetWeaponImg(CImage* _cImage)
@@ -183,6 +201,7 @@ void CWeapon::render_weapon(HDC _dc) const
 
 void CWeapon::OnCollision(CCollider* const _pOther)
 {
+	
 }
 
 void CWeapon::OnCollisionEnter(CCollider* const _pOther)
@@ -197,8 +216,6 @@ void CWeapon::OnCollisionEnter(CCollider* const _pOther)
 
 	if (L"Monster" == wstrObjName)
 	{
-		const int damage = 50;
-
 		auto pMon = (CMonster*)pObj;
 		auto pMonRigid = pMon->GetComp<CRigidBody>();
 		auto vDir = pMon->GetPos() - m_pPlayer->GetPos();
@@ -219,15 +236,20 @@ void CWeapon::OnCollisionEnter(CCollider* const _pOther)
 		{
 			vForce.x = 1.f;
 		}
-		pMon->GetComp<CRigidBody>()->SetLimitBreak();
+		
 		pMon->GetComp<CRigidBody>()->AddVelocity(vForce * 500.f * 2.f);
 		pMon->GetComp<CRigidBody>()->AddForce(vForce * 500.f * 2.f);
 		pMonRigid->component_update();
 
+		if (m_bDmgOnce)
+		{
+			return;
+		}
+		m_bDmgOnce = true;
 		Mgr(CSoundMgr)->PlayEffect("NPC_Hit_1.wav", 0.5f);
-		m_pTRWolrd->FloatDamageText(damage, pMon->GetPos() - Vec2::up * 24.0f, (COLORREF)0x0000B0FF);
+		m_pTRWolrd->FloatDamageText(m_iWeaponDmg, pMon->GetPos() - Vec2::up * 24.0f, (COLORREF)0x0000B0FF);
 
-		pMon->SetHP(pMon->GetHP() - damage);
+		pMon->SetHP(pMon->GetHP() - m_iWeaponDmg);
 		if (pMon->GetHP() <= 0)
 		{
 			if (pObj->GetName() == L"Monster_Zombie")

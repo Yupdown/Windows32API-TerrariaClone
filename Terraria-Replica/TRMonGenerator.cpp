@@ -6,6 +6,7 @@
 #include "TRWorld.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
+#include "CTimeMgr.h"
 
 static std::mt19937 rng{std::random_device{}()};
 static std::uniform_int_distribution<> uid{0, 3};
@@ -14,11 +15,21 @@ extern TRWorld* g_TRWorld;
 void TRMonGenerator::GenerateMonster()
 {
 	auto scene = Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START);
+	
+	static float fAccTime = 0.f;
+	fAccTime += DT;
 
 	if (scene->GetGroupObject(GROUP_TYPE::MONSTER).size() >= 3)
 	{
 		return;
 	}
+
+	if(5.f > fAccTime)
+	{
+		return;
+	}
+
+	fAccTime = 0.f;
 
 	int randNum = uid(rng);
 	int randMon = randNum % 3;

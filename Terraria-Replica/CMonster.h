@@ -4,6 +4,8 @@
 class CMonster :
     public CObject
 {
+private:
+   
 public:
     CMonster(TRWorld* const _trWorld, wstring_view _wstrMonName ,wstring_view _wstrMonImgName);
     ~CMonster();
@@ -19,5 +21,6 @@ public:
     virtual void OnCollision(CCollider* const _pOther) override;
     virtual void OnCollisionEnter(CCollider* const _pOther) override;
     virtual void OnCollisionExit(CCollider* const _pOther) override;
+
 };
 
