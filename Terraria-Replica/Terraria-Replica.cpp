@@ -20,6 +20,9 @@
 
 void updateTileCollision(CObject* const _pObj, TRWorld* const _pTRWorld);
 extern bool g_bStopToken;
+extern jthread g_LoadThread;
+extern std::atomic<bool> g_bLoadMainStage;
+
 HHOOK hHook;
 #define MAX_LOADSTRING 100
 
@@ -66,6 +69,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // ¾À »ý¼º
 
+    Mgr(TRTileManager)->LoadTiles();
+    Mgr(TRItemManager)->LoadItems();
+
     auto pSceneStart = new CScene_Start;
     Mgr(CSceneMgr)->AddScene(SCENE_TYPE::START, pSceneStart);
 
@@ -74,7 +80,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // ½ÃÀÛ ¾À ¼³Á¤
     Mgr(CSceneMgr)->init(SCENE_TYPE::INTRO);
-
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TERMPROJECTGAMEFRAMEWORK));
 
@@ -87,7 +92,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             if (WM_QUIT == msg.message)
             {
                 g_bStopToken = true;
-               // CCore::m_miniMapThread.join();
+               
                 break;
             }
             if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))

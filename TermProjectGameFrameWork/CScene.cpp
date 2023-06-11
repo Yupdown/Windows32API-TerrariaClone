@@ -298,5 +298,6 @@ void CScene::Reset()
 	}
 	m_vecLayer.clear();
 	m_vecTileLayer.clear();
+	m_pPlayer = nullptr;
 }
 

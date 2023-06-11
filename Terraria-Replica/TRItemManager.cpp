@@ -3,17 +3,16 @@
 
 TRItemManager::TRItemManager()
 {
-	
+	registry = new Registry<TRItem>();
 }
 
 TRItemManager::~TRItemManager()
 {
-	DeleteMgr();
+	delete registry;
 }
 
 void TRItemManager::LoadItems()
 {
-	Initialize();
 	registry->Insert(L"tile_dirt", new TRItemTile(L"Dirt", L"Item_2.png", L"dirt"));
 	registry->Insert(L"tile_cobblestone", new TRItemTile(L"Cobblestone", L"Item_3.png", L"cobblestone"));
 	registry->Insert(L"tile_planks_wood", new TRItemTile(L"Wooden Planks", L"Item_9.png", L"planks_wood"));
@@ -35,7 +34,7 @@ void TRItemManager::LoadItems()
 
 void TRItemManager::Initialize()
 {
-	registry = new Registry<TRItem>();
+	
 }
 
 TRItem* TRItemManager::GetItemByID(int id) const
@@ -46,10 +45,4 @@ TRItem* TRItemManager::GetItemByID(int id) const
 TRItem* TRItemManager::GetItemByKey(const std::wstring& key) const
 {
 	return (*registry)[key];
-}
-
-void TRItemManager::DeleteMgr()
-{
-	delete registry;
-	registry = nullptr;
 }

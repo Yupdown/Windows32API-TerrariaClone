@@ -28,7 +28,5 @@ public:
 	TRTileWall* GetTileWallByID(int id) const;
 	TRTileWall* GetTileWallByKey(const std::wstring& key) const;
 	TRTileWall* TileWallAir() const;
-
-	void DeleteMgr();
 };
 

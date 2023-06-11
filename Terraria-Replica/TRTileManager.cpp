@@ -3,17 +3,18 @@
 
 TRTileManager::TRTileManager()
 {
-	
+	registry_tile = new Registry<TRTile>();
+	registry_tile_wall = new Registry<TRTileWall>();
 }
 
 TRTileManager::~TRTileManager()
 {
-	DeleteMgr();
+	delete registry_tile;
+	delete registry_tile_wall;
 }
 
 void TRTileManager::LoadTiles()
 {
-	Initialize();
 	tile_air = new TRTileAir();
 	registry_tile->Insert(L"air", tile_air);
 	registry_tile->Insert(L"cobblestone", new TRTileSolid(L"Cobblestone", 1.0f, L"tile_cobblestone.png", L"tile_cobblestone"));
@@ -39,8 +40,6 @@ void TRTileManager::LoadTiles()
 
 void TRTileManager::Initialize()
 {
-	registry_tile = new Registry<TRTile>();
-	registry_tile_wall = new Registry<TRTileWall>();
 }
 
 TRTile* TRTileManager::GetTileByID(int id) const
@@ -73,10 +72,3 @@ TRTileWall* TRTileManager::TileWallAir() const
 	return tile_wall_air;
 }
 
-void TRTileManager::DeleteMgr()
-{
-	delete registry_tile;
-	delete registry_tile_wall;
-	registry_tile = nullptr;
-	registry_tile_wall = nullptr;
-}

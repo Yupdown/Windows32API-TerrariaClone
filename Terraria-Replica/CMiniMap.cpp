@@ -10,6 +10,7 @@
 #include "CSoundMgr.h"
 
 CMiniMap* g_MiniMap = nullptr;
+extern bool g_bStopToken;
 
 CMiniMap::CMiniMap()
 {
@@ -17,10 +18,10 @@ CMiniMap::CMiniMap()
 	//SetPos({ 1200,100 });
 	//SetScale({ 264,264 });
 	m_pMapFrameImg = Mgr(CResMgr)->GetImg(L"Minimap_Frame.png");
-	while (!CreateDCBITMAP(m_hMinmapDC, m_hMimimapBit, Vec2{ 264,264 })) {
+	while (!CreateDCBITMAP(m_hMinmapDC, m_hMimimapBit, Vec2{ 264,264 }) && !g_bStopToken) {
 		DeleteDCBITMAP(m_hMinmapDC, m_hMimimapBit);
 	}
-	while (!CreateDCBITMAP(m_hMinmapDC2, m_hMimimapBit2, Vec2{ 264,264 })){
+	while (!CreateDCBITMAP(m_hMinmapDC2, m_hMimimapBit2, Vec2{ 264,264 }) && !g_bStopToken){
 		DeleteDCBITMAP(m_hMinmapDC2, m_hMimimapBit2);
 	}
 	m_pMiniMapTileLayer = std::make_unique<CTileLayer>(Vec2{ 0,0 }, 8192, 4096);
@@ -134,6 +135,11 @@ void CMiniMap::render(HDC _dc) const
 
 void CMiniMap::CreateMiniMap()
 {
+	if (g_bStopToken)
+	{
+		return;
+	}
+
 	auto pCurScene = Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START);
 
 

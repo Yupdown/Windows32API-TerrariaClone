@@ -37,6 +37,7 @@ void CScene_Start::Enter()
 {
 	CScene::Enter();
 	Mgr(CEventMgr)->SetTRupdate(&TRMain::Update, m_pTRMain);
+	g_bLoadMainStage = false;
 }
 
 void CScene_Start::Exit()
@@ -46,9 +47,6 @@ void CScene_Start::Exit()
 	m_pTRMain = nullptr;
 	Mgr(CSoundMgr)->PlayBGM("03. Overworld Day.mp3", 0.1f);
 	m_bChangeScene = false;
-	Mgr(CCollisionMgr)->Reset();
-	Mgr(TRTileManager)->DeleteMgr();
-	Mgr(TRItemManager)->DeleteMgr();
 }
 
 void CScene_Start::update()
@@ -57,6 +55,7 @@ void CScene_Start::update()
 	if (KEY_TAP(KEY::RSHIFT) && !m_bChangeScene)
 	{
 		m_bChangeScene = true;
+		g_bLoadMainStage.store(true, std::memory_order_seq_cst);
 		ChangeScene(SCENE_TYPE::INTRO);
 	}
 }
@@ -83,6 +82,7 @@ void CScene_Start::CreateStage()
 void CScene_Start::LoadWorld()
 {
 	CScene::Enter();
+	std::atomic_thread_fence(std::memory_order_seq_cst);
 	// 纠 积己
 	CreateStage();
 
@@ -90,14 +90,12 @@ void CScene_Start::LoadWorld()
 
 
 	//  TR岿靛 积己 
-	Mgr(TRTileManager)->LoadTiles();
-	Mgr(TRItemManager)->LoadItems();
 	TRMain* terraria_main = new TRMain();
 	m_pTRMain = terraria_main;
 
 	std::atomic_thread_fence(std::memory_order_seq_cst);
 	//std::this_thread::sleep_for(std::chrono::seconds(3));
-	g_bLoadMainStage = true;
+	g_bLoadMainStage = false;
 	Mgr(CSoundMgr)->PlayBGM("03. Overworld Day.mp3", 0.1f);
 	ChangeScene(SCENE_TYPE::START);
 }

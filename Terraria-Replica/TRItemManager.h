@@ -19,7 +19,5 @@ public:
 
 	TRItem* GetItemByID(int id) const;
 	TRItem* GetItemByKey(const std::wstring& key) const;
-
-	void DeleteMgr();
 };
 

@@ -29,6 +29,7 @@
 #include "CSoundMgr.h"
 
 TRWorld* g_TRWorld = nullptr;
+extern bool g_bStopToken;
 
 static std::mt19937 randDigSound{std::random_device{}()};
 static std::uniform_int_distribution<> uidDig{0, 2};
@@ -150,8 +151,13 @@ void TRWorld::CreateWorld(int seed)
 
 void TRWorld::OnSceneCreate(CScene* scene)
 {
-	m_pScene = scene;
+	if (g_bStopToken)
+	{
+		return;
+	}
 
+	m_pScene = scene;
+	Mgr(CCollisionMgr)->Reset();
 	player = new CPlayer(this);
 	int x = TRWorld::WORLD_WIDTH / 2;
 	player->SetPos(TRWorld::WorldToGlobal(Vec2Int(x, tile_map->GetTopYpos(x))) - Vec2(20.0f, 28.0f));

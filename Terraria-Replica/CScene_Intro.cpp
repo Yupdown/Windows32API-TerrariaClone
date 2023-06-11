@@ -9,7 +9,7 @@
 #include "CCore.h"
 
 std::atomic<bool> g_bLoadMainStage = false;
-static jthread g_LoadThread;
+jthread g_LoadThread;
 static HPEN loadingPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 255));
 
 CScene_Intro::CScene_Intro()
@@ -46,6 +46,8 @@ void CScene_Intro::Enter()
 
 	m_fDir = 1.f;
 	m_bLoading = false;
+
+	g_bLoadMainStage = false;
 }
 
 void CScene_Intro::Exit()
@@ -81,6 +83,7 @@ void CScene_Intro::update()
 	if (KEY_TAP(KEY::ENTER) && !m_bLoading)
 	{
 		m_bLoading = true;
+		g_bLoadMainStage.store(true, std::memory_order_seq_cst);
 		g_LoadThread = jthread{ []() {
 			CScene_Start* pStart = (CScene_Start*)Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START);
 			pStart->LoadWorld();
