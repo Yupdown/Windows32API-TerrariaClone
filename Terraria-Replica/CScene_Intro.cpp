@@ -7,6 +7,7 @@
 #include "CSceneMgr.h"
 #include "CScene_Start.h"
 #include "CCore.h"
+#include "CSoundMgr.h"
 
 std::atomic<bool> g_bLoadMainStage = false;
 jthread g_LoadThread;
@@ -48,6 +49,8 @@ void CScene_Intro::Enter()
 	m_bLoading = false;
 
 	g_bLoadMainStage = false;
+
+	Mgr(CSoundMgr)->PlayBGM("05. Title Classic.mp3", 0.5f);
 }
 
 void CScene_Intro::Exit()
