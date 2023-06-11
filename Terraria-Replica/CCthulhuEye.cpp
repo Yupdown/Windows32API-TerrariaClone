@@ -38,6 +38,11 @@ CCthulhuEye::~CCthulhuEye()
 
 void CCthulhuEye::update()
 {
+	if (Mgr(CCamera)->IsCamMove())
+	{
+		return;
+	}
+
 	CMonster::update();
 
 	UpdatePatternState();

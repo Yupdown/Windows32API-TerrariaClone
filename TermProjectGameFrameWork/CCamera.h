@@ -53,7 +53,7 @@ private:
 	CObject* m_pTargetObj = {}; 
 
 	Vec2		m_vDiff = {};		
-
+	float m_fOriginSpeed = 2000.f;
 	float		m_fTime = { 1.0f };
 	float		m_fSpeed = { 2000.f };
 	float		m_fAccTime = {};
@@ -61,6 +61,7 @@ private:
 	CTexture* m_pVeilTex = {}; 
 
 	//float		m_fSpeed = 1000.; 
+	float m_fDestSpeed = 2000.f;
 	float		m_fShakeAcc = 0.1f;
 	UINT        Shake = 4;
 	bool		ShakeFlag = false;
@@ -95,7 +96,7 @@ public:
 	}
 	void SetLookAt(Vec2 _vLook)
 	{
-		m_fSpeed = 2000.f;
+		m_fSpeed = m_fDestSpeed;
 		m_fAccTime = 0.f;
 		m_vLookAt = _vLook;
 		float fMoveDist = (m_vLookAt - m_vPrevLookAt).length();

@@ -15,7 +15,7 @@ CCamera::CCamera()
 
 CCamera::~CCamera()
 {
-
+	DeleteDCBITMAP(m_hCamVeilDC, m_hCamVeilBit);
 }
 
 void CCamera::init()
@@ -281,6 +281,8 @@ CoRoutine CCamera::CamMoveCoRoutine(Vec2 _vDest)
 
 CoRoutine CCamera::ZoomInBoss(const Vec2 _vBossPos)
 {
+	float fAccTime = 0.f;
+	m_fDestSpeed = 1000.f;
 	const auto vReturnPos = m_vCurLookAt;
 	m_bMoveFlag = true;
 	StartCoEvent(CamMoveCoRoutine(_vBossPos));
@@ -290,13 +292,23 @@ CoRoutine CCamera::ZoomInBoss(const Vec2 _vBossPos)
 		co_await std::suspend_always{};
 	}
 	m_bMoveFlag = true;
+	while (1.f >= fAccTime)
+	{
+		fAccTime += DT;
+		m_bMoveFlag = true;
+		co_await std::suspend_always{};
+	}
+	
 	StartCoEvent(CamMoveCoRoutine(vReturnPos));
+	
 	while (m_bMoveFlag)
 	{
 		m_fCamZoom -= 0.002f;
 		co_await std::suspend_always{};
 	}
 	m_fCamZoom = 1.f;
+	m_fDestSpeed = m_fOriginSpeed;
+	m_bMoveFlag = true;
 	co_return;
 }
 
@@ -318,7 +330,7 @@ void CCamera::CalDiff()
 			if (0. >= m_fSpeed)
 			{
 				m_vCurLookAt = m_vLookAt;
-				m_fSpeed = 2000.f;
+				m_fSpeed = m_fOriginSpeed;
 				m_fAccTime = 0.f;
 				m_bMoveFlag = false;
 			}
@@ -332,7 +344,7 @@ void CCamera::CalDiff()
 				else
 				{
 					m_vCurLookAt = m_vLookAt;
-					m_fSpeed = 2000.f;
+					m_fSpeed = m_fOriginSpeed;
 					m_fAccTime = 0.f;
 				}
 			}

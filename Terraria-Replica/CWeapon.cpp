@@ -239,6 +239,13 @@ void CWeapon::OnCollisionEnter(CCollider* const _pOther)
 				Mgr(CSoundMgr)->PlayEffect("NPC_Killed_1.wav", 0.5f);
 			}
 			DeleteObj(pObj);
+
+			if (L"Monster_CthulhuEye" == pMon->GetName())
+			{
+				Mgr(CSoundMgr)->PlayBGM("03. Overworld Day.mp3", 0.1f);
+				Mgr(CCamera)->FadeOut(1.f);
+				Mgr(CCamera)->FadeIn(1.f);
+			}
 		}
 	}
 }

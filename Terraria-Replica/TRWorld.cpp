@@ -477,4 +477,11 @@ void TRWorld::SpawnBoss()
 	pMon->SetColliderScale(Vec2{ 110.0f, 110.0f });
 
 	m_pScene->AddObject(pMon, GROUP_TYPE::MONSTER);
+
+	Mgr(CSoundMgr)->PlayBGM("04. Boss 1.mp3", 0.5f);
+
+	Mgr(CCamera)->FadeOut(1.f);
+	Mgr(CCamera)->FadeIn(1.f);
+
+	StartCoEvent(Mgr(CCamera)->ZoomInBoss(pMon->GetPos()));
 }
