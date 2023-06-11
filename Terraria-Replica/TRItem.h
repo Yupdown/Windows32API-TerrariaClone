@@ -94,3 +94,13 @@ public:
 
 	virtual bool OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos) override;
 };
+
+class TRItemArmor : public TRItem
+{
+private:
+	int armor_point;
+
+public:
+	TRItemArmor(std::wstring name, std::wstring k_element, int armor_point);
+	~TRItemArmor();
+};
