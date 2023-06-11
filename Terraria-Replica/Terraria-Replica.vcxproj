@@ -71,11 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)FMOD SoundSystem\FMOD Studio API Windows\api\core\inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)FMOD SoundSystem\FMOD Studio API Windows\api\core\inc;$(SolutionDir)TermProjectGameFrameWork\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)FMOD SoundSystem\FMOD Studio API Windows\api\core\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)TermProjectGameFrameWork\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)FMOD SoundSystem\FMOD Studio API Windows\api\core\inc;$(SolutionDir)TermProjectGameFrameWork\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)FMOD SoundSystem\FMOD Studio API Windows\api\core\lib\x64;$(SolutionDir)Output\bin_Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -142,6 +143,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

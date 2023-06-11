@@ -135,7 +135,7 @@ void TRWorld::Update()
 		}
 	}
 
-//	TRMonGenerator::GenerateMonster();
+	TRMonGenerator::GenerateMonster();
 }
 
 void TRWorld::CreateWorld(int seed)

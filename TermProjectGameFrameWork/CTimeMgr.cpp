@@ -23,8 +23,8 @@ void CTimeMgr::update()
 	m_DeltaTime = CurTime - m_PrevTime;
 	m_PrevTime = CurTime;
 	m_fAccTime += m_DeltaTime.count();
-	const POINT ptCamPos = Mgr(CCamera)->GetLookAt();
-	wstring wstr = L"Ä«¸Þ¶ó: " + std::to_wstring(ptCamPos.x) + L" , " + std::to_wstring(ptCamPos.y) + L"  FPS: " + std::to_wstring( m_fCheckDT);
+	
+	wstring wstr = L"Terraria-Replica  FPS: " + std::to_wstring(m_fCheckDT);
 	SetWindowText(Mgr(CCore)->GetMainHwnd(), wstr.data());
 	if (m_fAccTime >= 1.f)
 	{

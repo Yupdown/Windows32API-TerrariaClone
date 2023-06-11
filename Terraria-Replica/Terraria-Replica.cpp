@@ -62,6 +62,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
+    SetWindowText(g_hWnd, L"Terraria-Replica");
+
     if (FAILED(CCore::GetInst()->init(g_hWnd, POINT{ 1400,800 },hInst)))        // 해상도
     {
         MessageBox(nullptr, L"게임 실행 실패", L"ERROR", MB_OK);
@@ -85,7 +87,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TERMPROJECTGAMEFRAMEWORK));
 
     MSG msg;
-    //hHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, NULL, 0);
+    hHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, NULL, 0);
     while (true)
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -108,7 +110,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
     Mgr(CEventMgr)->ResetTRupdate();
-   // UnhookWindowsHookEx(hHook);
+    UnhookWindowsHookEx(hHook);
    
     return (int)msg.wParam;
 }

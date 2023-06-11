@@ -252,15 +252,7 @@ void CCamera::update()
 			}
 		}
 	}
-	if (KEY_HOLD(KEY::UP))
-		m_fCamZoom += 0.01f;
-	if (KEY_HOLD(KEY::DOWN))
-		m_fCamZoom -= 0.01f;
-
-	if (KEY_TAP(KEY::TAB))
-	{
-		StartCoEvent(ZoomInBoss({ 6000.f,1000.f }));
-	}
+	
 
 	CalDiff();
 }

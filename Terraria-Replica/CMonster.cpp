@@ -128,11 +128,11 @@ void CMonster::OnCollision(CCollider* const _pOther)
 			}
 			if (pPlayer->GetHP() <= 0)
 			{
-				Mgr(CCamera)->FadeOut(1.5f);
+				Mgr(CCamera)->FadeOut(2.5f);
 				Mgr(CSoundMgr)->PlayEffect("Player_Killed.wav", 0.5f);
 				pPlayer->SetSlane(true);
 				pPlayer->GetComp<CRigidBody>()->SetVelocity({});
-				StartDelayCoRoutine(pPlayer, pPlayer->PlayerRebirthProcess(), 1.f);
+				StartDelayCoRoutine(pPlayer, pPlayer->PlayerRebirthProcess(), 2.f);
 			}
 		}
 	}

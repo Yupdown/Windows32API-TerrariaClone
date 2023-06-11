@@ -364,6 +364,7 @@ void CPlayer::UseItem()
 
 CoRoutine CPlayer::PlayerRebirthProcess()
 {
+	Mgr(CCamera)->FadeIn(2.f);
 	Mgr(CCamera)->SetMoveFlag(true);
 	int x = TRWorld::WORLD_WIDTH / 2;
 	const Vec2 vPlayerDeadPos = TRWorld::WorldToGlobal(Vec2Int(x, m_pTRWolrd->GetTileMap()->GetTopYpos(x))) - Vec2(20.0f, 28.0f);
@@ -373,7 +374,6 @@ CoRoutine CPlayer::PlayerRebirthProcess()
 	{
 		co_await std::suspend_always{};
 	}
-	Mgr(CCamera)->FadeIn(1.f);
 	SetHP(200);
 	SetWillPos(vPlayerDeadPos);
 	SetPos(vPlayerDeadPos);
