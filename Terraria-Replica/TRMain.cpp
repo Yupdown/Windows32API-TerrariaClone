@@ -10,7 +10,7 @@
 
 TRMain::TRMain()
 {
-	std::default_random_engine dre(time(NULL));
+	std::default_random_engine dre((unsigned int)time(NULL));
 	std::uniform_int_distribution<int> uid;
 
 	Mgr(TRTileManager)->LoadTiles();
