@@ -96,6 +96,7 @@ void TRWorld::Update()
 	else if (KEY_TAP(KEY::ESC))
 		SetToggleInventory(!toggle_inventory);
 	
+	
 	if (Mgr(CKeyMgr)->GetMouseWheelUp())
 	{
 		SwitchQuickBarIndex(wrapAround(quick_bar_index + 1, 0, 10));

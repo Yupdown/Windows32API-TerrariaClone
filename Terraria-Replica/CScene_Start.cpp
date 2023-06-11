@@ -38,6 +38,7 @@ void CScene_Start::Enter()
 	CScene::Enter();
 	Mgr(CEventMgr)->SetTRupdate(&TRMain::Update, m_pTRMain);
 	g_bLoadMainStage = false;
+	Mgr(CSoundMgr)->PlayEffect("Menu_Close.wav", 1.f);
 }
 
 void CScene_Start::Exit()
@@ -45,7 +46,6 @@ void CScene_Start::Exit()
 	delete m_pTRMain;
 	CScene::Exit();
 	m_pTRMain = nullptr;
-	Mgr(CSoundMgr)->PlayBGM("03. Overworld Day.mp3", 0.1f);
 	m_bChangeScene = false;
 }
 
