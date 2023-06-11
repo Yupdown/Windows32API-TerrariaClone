@@ -70,12 +70,11 @@ void CScene_Start::CreateStage()
 	const Vec2 vRes = Mgr(CCore)->GetResolutionV();
 	float ground_level = 64 * PIXELS_PER_TILE;
 
-	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_0.png", Vec2{ 0, 0 }, Vec2{ 1400, 800 }, Vec2{ 1400, vRes.y * 10.f }, 10, 0.1f));
+	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_0.png", Vec2{ 0, -100 }, Vec2{ 1400, 1000 }, Vec2{ 1400, vRes.y * 10.f }, 10, 0.1f));
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_1.png", Vec2{ 0, vRes.y / 2.f - 200 }, Vec2{ 1048,435 }, Vec2{ 1048,vRes.y * 10.f }, 10, 0.3f));
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_2.png", Vec2{ 0, vRes.y / 2.f - 100 }, Vec2{ 1048,435 }, Vec2{ 1048,vRes.y * 10.f }, 10, 0.4f));
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_3.png", Vec2{ 0, vRes.y / 2.f }, Vec2{ 1048,435 }, Vec2{ 1048,vRes.y * 10.f }, 10, 0.5f));
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_4.png", Vec2{ 0, vRes.y / 2.f + 100 }, Vec2{ 1048,600 }, Vec2{ 1048,vRes.y * 10.f }, 10, 0.6f));
-
 	m_vecLayer.emplace_back(CLayer::CreateLayer(L"Background_5.png", Vec2{ 0,vRes.y / 2.f + 100 + 600 }, Vec2{ 1024,600 }, Vec2{ vRes.x,vRes.y * 10 }, 10, 1.f));
 }
 

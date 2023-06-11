@@ -89,7 +89,6 @@ void CMonster::OnCollision(CCollider* const _pOther)
 
 		if (pPlayer->IsCanHit())
 		{
-			const int damage = 50;
 			auto vDir = pPlayer->GetPos() - GetPos();
 
 			vDir.y = 0;
@@ -110,6 +109,10 @@ void CMonster::OnCollision(CCollider* const _pOther)
 			}
 			pPlayer->GetComp<CRigidBody>()->AddVelocity(vForce * 500.f * 2.f);
 			pPlayer->GetComp<CRigidBody>()->AddForce(vForce * 500.f * 2.f);
+
+			int damage = 50;
+			int armor_point = m_pTRWolrd->GetArmorPoint();
+			damage = max(damage - armor_point, 1);
 
 			pPlayer->GetComp<CRigidBody>()->component_update();
 			pPlayer->SetHP(pPlayer->GetHP() - damage);

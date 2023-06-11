@@ -166,11 +166,23 @@ bool TRItemSummonBoss::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& targ
 	return true;
 }
 
-TRItemArmor::TRItemArmor(std::wstring name, std::wstring k_element, int armor_point) : TRItem(name, k_element)
+TRItemArmor::TRItemArmor(std::wstring name, std::wstring k_element, int armor_part, int armor_point) : TRItem(name, k_element)
 {
+	this->armor_part = armor_part;
 	this->armor_point = armor_point;
+	this->max_stacksize = 1;
 }
 
 TRItemArmor::~TRItemArmor()
 {
+}
+
+int TRItemArmor::GetArmorPart() const
+{
+	return armor_part;
+}
+
+int TRItemArmor::GetArmorPoint() const
+{
+	return armor_point;
 }

@@ -27,6 +27,21 @@ CEyeMonster::~CEyeMonster()
 void CEyeMonster::update()
 {
 	CMonster::update();
+
+	auto vPlayerPos = Mgr(CSceneMgr)->GetCurScene()->GetPlayer()->GetPos();
+	auto pAnim = GetComp<CAnimator>();
+	auto vCurPos = GetPos();
+
+	auto vDir = (vPlayerPos - vCurPos).Normalize();
+	
+	auto pRigid = GetComp<CRigidBody>();
+
+	pRigid->AddVelocity(vDir * 20.f);
+
+	if (vDir.x > 0)
+		pAnim->SetAnimLeft();
+	else
+		pAnim->SetAnimRight();
 }
 
 void CEyeMonster::render(HDC _dc) const

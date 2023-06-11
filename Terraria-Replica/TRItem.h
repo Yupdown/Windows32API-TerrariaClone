@@ -98,9 +98,13 @@ public:
 class TRItemArmor : public TRItem
 {
 private:
+	int armor_part;
 	int armor_point;
 
 public:
-	TRItemArmor(std::wstring name, std::wstring k_element, int armor_point);
+	TRItemArmor(std::wstring name, std::wstring k_element, int armor_part, int armor_point);
 	~TRItemArmor();
+
+	int GetArmorPart() const;
+	int GetArmorPoint() const;
 };
