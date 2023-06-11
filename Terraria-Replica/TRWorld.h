@@ -65,4 +65,5 @@ public:
 	int GetQuickBarIdx()const { return quick_bar_index; }
 
 	void FloatDamageText(int value, Vec2 vPos, COLORREF color);
+	void SpawnBoss();
 };

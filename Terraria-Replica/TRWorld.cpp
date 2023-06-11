@@ -197,14 +197,6 @@ void TRWorld::OnSceneCreate(CScene* scene)
 		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
 	}
 
-	//{
-	//	auto pMon = new CCthulhuEye{ this,L"Monster_CthulhuEye", L"NPC_4.png" };
-	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
-	//	pMon->SetScale(Vec2{ 110.0f, 166.0f });
-	//	pMon->SetColliderScale(Vec2{ 110.0f, 110.0f });
-	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-	//}
-
 	{
 		auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
 		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
@@ -473,4 +465,15 @@ void TRWorld::FloatDamageText(int value, Vec2 vPos, COLORREF color)
 	CAcquireItemText* text = new CAcquireItemText(buffer, color);
 	text->SetPos(vPos);
 	m_pScene->AddObject(text, GROUP_TYPE::DROP_ITEM);
+}
+
+void TRWorld::SpawnBoss()
+{
+	auto pMon = new CCthulhuEye{ this,L"Monster_CthulhuEye", L"NPC_4.png" };
+
+	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
+	pMon->SetScale(Vec2{ 110.0f, 166.0f });
+	pMon->SetColliderScale(Vec2{ 110.0f, 110.0f });
+
+	m_pScene->AddObject(pMon, GROUP_TYPE::MONSTER);
 }

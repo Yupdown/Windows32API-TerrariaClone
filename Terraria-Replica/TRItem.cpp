@@ -162,5 +162,6 @@ TRItemSummonBoss::~TRItemSummonBoss()
 bool TRItemSummonBoss::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_pos)
 {
 	Mgr(CSoundMgr)->PlayEffect("Roar_0.wav", 0.5f);
+	world->SpawnBoss();
 	return true;
 }
