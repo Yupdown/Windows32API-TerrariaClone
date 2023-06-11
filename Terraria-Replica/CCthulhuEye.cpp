@@ -10,6 +10,7 @@
 #include "SimpleMath.hpp"
 #include "CCollider.h"
 #include "CSoundMgr.h"
+#include "CBossHealthBar.h"
 
 CCthulhuEye::CCthulhuEye(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName) : CMonster(_trWorld, _wstrMonName, _wstrMonImgName)
 {
@@ -29,11 +30,14 @@ CCthulhuEye::CCthulhuEye(TRWorld* const _trWorld, wstring_view _wstrMonName, wst
 	m_pattern = 0;
 	m_pattern_parameter = 3;
 	m_pattern_time = 5.0f;
+
+	m_pHpBar = new CBossHealthBar{ this, L"UI_BossBar.png" };
 }
 
 CCthulhuEye::~CCthulhuEye()
 {
-
+	DeleteObj(m_pHpBar);
+	m_pHpBar = nullptr;
 }
 
 void CCthulhuEye::update()
@@ -124,3 +128,4 @@ void CCthulhuEye::Charge()
 
 	Mgr(CSoundMgr)->PlayEffect("Roar_0.wav", 0.5f);
 }
+

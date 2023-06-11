@@ -5,6 +5,7 @@ class CTexture;
 class CLayer;
 class CTileLayer;
 class CPlayer;
+class CCthulhuEye;
 
 class CScene
 {
@@ -24,7 +25,6 @@ private:
 	vector<unique_ptr<CObject>>			m_vecObj[(UINT)GROUP_TYPE::END]; 
 	wstring								m_strName;	
 	CObject*							m_pPlayer = {};
-	
 	HDC	m_hSceneThreadDC[THREAD::END + 1];
 	HBITMAP	m_hSceneThreadBit[THREAD::END + 1];
 

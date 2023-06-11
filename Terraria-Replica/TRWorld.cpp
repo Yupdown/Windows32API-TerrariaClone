@@ -60,6 +60,8 @@ TRWorld::TRWorld()
 
 	quick_bar_index = 0;
 	SetToggleInventory(false);
+
+	player_inventory[0]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"summon_cthulhueye"), 1));
 }
 
 TRWorld::~TRWorld()
@@ -471,7 +473,6 @@ void TRWorld::FloatDamageText(int value, Vec2 vPos, COLORREF color)
 void TRWorld::SpawnBoss()
 {
 	auto pMon = new CCthulhuEye{ this,L"Monster_CthulhuEye", L"NPC_4.png" };
-
 	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
 	pMon->SetScale(Vec2{ 110.0f, 166.0f });
 	pMon->SetColliderScale(Vec2{ 110.0f, 110.0f });

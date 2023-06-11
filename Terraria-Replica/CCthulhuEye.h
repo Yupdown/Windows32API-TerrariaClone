@@ -1,7 +1,10 @@
 #pragma once
 #include "CMonster.h"
 
-class CCthulhuEye : public CMonster
+class CBossHealthBar;
+
+class CCthulhuEye 
+    : public CMonster
 {
 private:
     int m_phase;
@@ -9,7 +12,7 @@ private:
     int m_pattern_parameter;
     float m_pattern_time;
     Vec2 m_charge_direction;
-
+    CBossHealthBar* m_pHpBar;
 public:
     CCthulhuEye(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName);
     ~CCthulhuEye();
@@ -19,4 +22,5 @@ public:
 
     void UpdatePatternState();
     void Charge();
+
 };

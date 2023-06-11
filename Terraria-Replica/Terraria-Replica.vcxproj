@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAcquireItemText.h" />
+    <ClInclude Include="CBossHealthBar.h" />
     <ClInclude Include="CCthulhuEye.h" />
     <ClInclude Include="CDropItem.h" />
     <ClInclude Include="CInventoryVisualizer.h" />
@@ -187,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAcquireItemText.cpp" />
+    <ClCompile Include="CBossHealthBar.cpp" />
     <ClCompile Include="CCthulhuEye.cpp" />
     <ClCompile Include="CDropItem.cpp" />
     <ClCompile Include="CInventoryVisualizer.cpp" />
