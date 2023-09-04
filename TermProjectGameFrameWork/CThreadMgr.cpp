@@ -15,9 +15,13 @@ void CThreadMgr::stop_all()
 {
     m_bStopRequest = true;
 
-    m_cvQ.notify_all();
-
+    m_cvQRender.notify_all();
+    m_cvQUpdate.notify_all();
     for (auto& t : m_vecThread)
+    {
+        t.join();
+    }
+    for (auto& t : m_vecUpdateWorker)
     {
         t.join();
     }
@@ -33,8 +37,8 @@ void CThreadMgr::init()
                 std::function<void(void)> task;
                 size_t idx;
                 {
-                    std::unique_lock<std::mutex> lock{ m_mutexQ };
-                    m_cvQ.wait(lock, [this] {
+                    std::unique_lock<SpinLock> lock{ m_spinLockRender };
+                    m_cvQRender.wait(lock, [this] {
                         return !m_jobQueue.empty() || m_bStopRequest;
                         });
 
@@ -51,6 +55,32 @@ void CThreadMgr::init()
                 std::atomic_thread_fence(std::memory_order_seq_cst);
 
                 m_arrDone[idx].store(true,std::memory_order_relaxed);
+            }
+            });
+    }
+    for (int i = 0; i < NUM_OF_WORKER; ++i) {
+        m_vecUpdateWorker.emplace_back([this] {
+            while (true) {
+                std::function<void(void)> task;
+                {
+                    std::unique_lock<SpinLock> lock{ m_spinLockUpdate };
+                    m_cvQUpdate.wait(lock, [this] {
+                        return !m_jobUpdateQ.empty() || m_bStopRequest;
+                        });
+
+                    if (m_bStopRequest) {
+                        break;
+                    }
+
+                    task = std::move(m_jobUpdateQ.front());
+                    m_jobUpdateQ.pop();
+                }
+
+                task();
+
+                std::atomic_thread_fence(std::memory_order_seq_cst);
+
+                m_jobCount.fetch_sub(1);
             }
             });
     }

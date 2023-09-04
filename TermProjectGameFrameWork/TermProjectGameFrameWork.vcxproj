@@ -191,6 +191,8 @@
     <ClInclude Include="Vec2.hpp" />
     <ClInclude Include="func.h" />
     <ClInclude Include="Vec2Int.hpp" />
+    <ClInclude Include="SpinLock.hpp" />
+    <ClInclude Include="CircleQueue.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAnimation.cpp" />

@@ -1,5 +1,6 @@
 #pragma once
 
+#define SPIN_LOCK std::lock_guard<SpinLock>lock{m_spinLock}
 #define bit_abs_nonZ(x)  ((((x>>31) ^ x) - (x>>31))|1)
 #define fDT CTimeMgr::GetInst()->GetfDT()			
 #define DT	CTimeMgr::GetInst()->GetDT()			
@@ -133,3 +134,9 @@ enum THREAD
 
 #define TILE_PIXEL_XY (Vec2{PIXELS_PER_TILE,PIXELS_PER_TILE})
 
+#define CAPTURE_COPY(Arg) \
+    std::conditional_t< \
+        std::is_lvalue_reference_v<decltype(Arg)> || !std::is_rvalue_reference_v<decltype(Arg)>, \
+        std::decay_t<decltype(Arg)>, \
+        decltype(Arg)> \
+    (std::forward<decltype(Arg)>(Arg))

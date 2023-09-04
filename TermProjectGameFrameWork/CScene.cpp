@@ -44,9 +44,11 @@ void CScene::update()
 			{
 				continue;
 			}
-			vecPtr[i]->update();
+			//vecPtr[i]->update();
+			Mgr(CThreadMgr)->EnqueueUpdate(&CObject::update, vecPtr[i].get());
 		}
 	}
+	Mgr(CThreadMgr)->JoinUpdate();
 }
 
 void CScene::Enter()
@@ -54,6 +56,7 @@ void CScene::Enter()
 	if (g_bDoMultiThread)
 	{
 		Mgr(CThreadMgr)->Join_all();
+		Mgr(CThreadMgr)->JoinUpdate();
 	}
 }
 
@@ -62,6 +65,7 @@ void CScene::Exit()
 	if (g_bDoMultiThread)
 	{
 		Mgr(CThreadMgr)->Join_all();
+		Mgr(CThreadMgr)->JoinUpdate();
 	}
 	Reset();
 }
@@ -93,9 +97,11 @@ void CScene::component_update()const
 		const auto vecPtr = vecObj.data();
 		for (size_t i = 0, size = vecObj.size(); i < size; ++i)
 		{
-			vecPtr[i]->component_update();
+			//vecPtr[i]->component_update();
+			Mgr(CThreadMgr)->EnqueueUpdate(&CObject::component_update, vecPtr[i].get());
 		}
 	}
+	Mgr(CThreadMgr)->JoinUpdate();
 }
 
 void CScene::render(HDC _dc)

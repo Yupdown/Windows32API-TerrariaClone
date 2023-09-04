@@ -22,6 +22,7 @@ class CCollisionMgr
 private:
 	unordered_map<ULONGLONG, bool> m_mapColPrev;
 	std::bitset<etoi(GROUP_TYPE::END)> m_bitColTable[etoi(GROUP_TYPE::END)];
+	SpinLock m_spinLock = {};
 private:
 	bool IsCollision(const CCollider* const _pLeftCol, const CCollider* const _pRightCol)const;
 public:

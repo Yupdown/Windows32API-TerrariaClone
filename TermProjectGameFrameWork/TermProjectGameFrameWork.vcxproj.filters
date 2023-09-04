@@ -255,6 +255,12 @@
     <ClInclude Include="CSoundMgr.h">
       <Filter>Engine\02. Manager\SoundMgr</Filter>
     </ClInclude>
+    <ClInclude Include="SpinLock.hpp">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleQueue.hpp">
+      <Filter>Default</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

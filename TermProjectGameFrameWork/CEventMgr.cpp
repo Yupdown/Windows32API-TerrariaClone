@@ -59,6 +59,7 @@ void CEventMgr::update()
 
 void CEventMgr::AddDeadObj(unique_ptr<CObject>& _pDeadObj)
 {
+	SPIN_LOCK;
 	m_vecDeadObj.emplace_back(std::move(_pDeadObj));
 }
 

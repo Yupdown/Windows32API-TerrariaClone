@@ -67,3 +67,4 @@ using std::pair;
 #include "define.h"
 #include "Vec2.hpp"
 #include "func.h"
+#include "SpinLock.hpp"

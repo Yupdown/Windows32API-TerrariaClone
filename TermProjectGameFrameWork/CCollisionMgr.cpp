@@ -5,9 +5,11 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "SimpleMath.hpp"
+#include "CThreadMgr.h"
 
 CCollisionMgr::CCollisionMgr()
 {
+	m_mapColPrev.reserve(1000);
 	for (auto& bit : m_bitColTable)
 	{
 		bit.reset();
@@ -44,27 +46,29 @@ void CCollisionMgr::update()
 		{
 			if (m_bitColTable[iRow][iCol])
 			{
-				CollisionUpdateGroup(static_cast<GROUP_TYPE>(iRow), static_cast<GROUP_TYPE>(iCol));
+				//CollisionUpdateGroup(static_cast<GROUP_TYPE>(iRow), static_cast<GROUP_TYPE>(iCol));
+				Mgr(CThreadMgr)->EnqueueUpdate(&CCollisionMgr::CollisionUpdateGroup,this, static_cast<GROUP_TYPE>(iRow), static_cast<GROUP_TYPE>(iCol));
 			}
 		}
 	}
 
 	const auto& arrCurSceneObj = Mgr(CSceneMgr)->GetCurScene()->GetSceneObj();
 
-	/*for (const auto& vecObj : arrCurSceneObj)
+	Mgr(CThreadMgr)->JoinUpdate();
+	for (const auto& vecObj : arrCurSceneObj)
 	{
 		const auto vecPtr = vecObj.data();
 		for (size_t i = 0, size = vecObj.size(); i < size; ++i)
 		{
-			vecPtr[i]->updateTileCollision();
+			Mgr(CThreadMgr)->EnqueueUpdate(&CObject::updateTileCollision, vecPtr[i].get());
 		}
-	}*/
-
-	std::for_each(std::execution::par, std::begin(arrCurSceneObj), std::end(arrCurSceneObj), [](const auto& _vecObj) {
+	}
+	Mgr(CThreadMgr)->JoinUpdate();
+	/*std::for_each(std::execution::par, std::begin(arrCurSceneObj), std::end(arrCurSceneObj), [](const auto& _vecObj) {
 		std::for_each(std::execution::par_unseq, _vecObj.begin(), _vecObj.end(), [](auto& _pObj) {
 			_pObj->updateTileCollision();
 			});
-		});
+		});*/
 }
 
 void CCollisionMgr::RegisterGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
@@ -109,14 +113,11 @@ void CCollisionMgr::CollisionUpdateGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 			ID.Left_id = pLeftCol->GetID();
 			ID.Right_id = pRightCol->GetID();
 
-			auto iter = m_mapColPrev.find(ID.ID);
+			auto iter = m_mapColPrev.try_emplace(ID.ID, false).first;
+			const bool nowCollision = IsCollision(pLeftCol, pRightCol);
 
-			if (m_mapColPrev.end() == iter)
-			{
-				iter = m_mapColPrev.insert(make_pair(ID.ID, false)).first;
-			}
-
-			if (IsCollision(pLeftCol, pRightCol))
+			SPIN_LOCK;
+			if (nowCollision)
 			{
 				if (iter->second)
 				{
