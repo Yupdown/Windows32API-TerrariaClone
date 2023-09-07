@@ -91,16 +91,30 @@ void CResMgr::renderImg(HDC _dc, const CImage* const _pImg, Vec2 _vLT, Vec2 _vSc
 
 	 // vLtPos = Mgr(CCamera)->GetRenderPos(vLtPos);
 
-	 _pImg->StretchBlt(m_hBackDC
-		 , (int)vLtPos.x
-		 , (int)vLtPos.y
-		 , (int)vScale.x
-		 , (int)vScale.y
-		 , (int)_vBitPos.x
-		 , (int)_vBitPos.y
-		 , (int)_vSliceSize.x
-		 , (int)_vSliceSize.y
-		 , SRCCOPY);
+	 if (vScale == _vSliceSize)
+	 {
+		 _pImg->BitBlt(m_hBackDC
+			 , (int)vLtPos.x
+			 , (int)vLtPos.y
+			 , (int)vScale.x
+			 , (int)vScale.y
+			 , (int)_vBitPos.x
+			 , (int)_vBitPos.y
+			 , SRCCOPY);
+	 }
+	 else
+	 {
+		 _pImg->StretchBlt(m_hBackDC
+			 , (int)vLtPos.x
+			 , (int)vLtPos.y
+			 , (int)vScale.x
+			 , (int)vScale.y
+			 , (int)_vBitPos.x
+			 , (int)_vBitPos.y
+			 , (int)_vSliceSize.x
+			 , (int)_vSliceSize.y
+			 , SRCCOPY);
+	 }
 
 	vScale.x = min(vScale.x, vScale.x + vLtPos.x);
 	vScale.y = min(vScale.y, vScale.y + vLtPos.y);

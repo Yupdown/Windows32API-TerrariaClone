@@ -191,8 +191,12 @@ void CCamera::update()
 		}
 		else
 		{
-			//m_vLookAt = m_pTargetObj->GetPos();
-			SetCamRect(m_pTargetObj->GetPos());
+			const Vec2 vLookAt = m_pTargetObj->GetPos();
+			int xint = static_cast<int>(floorf(vLookAt.x));
+			int yint = static_cast<int>(floorf(vLookAt.y));;
+			xint = xint - xint % 2;
+			yint = yint - yint % 2;
+			SetCamRect(Vec2(static_cast<float>(xint), static_cast<float>(yint)));
 		}
 	}
 

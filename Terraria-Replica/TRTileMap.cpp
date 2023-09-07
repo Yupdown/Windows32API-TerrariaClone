@@ -6,6 +6,7 @@
 #include "CTileLayer.h"
 #include "CAtlasMgr.h"
 #include "CAtlasElement.h"
+#include "TRTileMapShade.h"
 #include "CResMgr.h"
 #include "Vec2Int.hpp"
 #include "CCore.h"
@@ -20,6 +21,7 @@ TRTileMap::TRTileMap(int width, int height)
 
 	tile_map = new TRTile*[width * height];
 	tile_wall_map = new TRTileWall*[width * height];
+	tile_map_shade = new TRTileMapShade(width, height);
 	renderer = nullptr;
 	m_hTileMapBrush = CreateSolidBrush(0x00FF00FF);
 }
@@ -28,6 +30,7 @@ TRTileMap::~TRTileMap()
 {
 	delete[] tile_map;
 	delete[] tile_wall_map;
+	delete tile_map_shade;
 	DeleteObject(m_hTileMapBrush);
 }
 
@@ -84,6 +87,7 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 	Vec2Int tile_pixel_size = Vec2Int(tile_width * PIXELS_PER_TILE, tile_height * PIXELS_PER_TILE);
 	renderer = new CTileLayer(tile_pixel_size / 2, tile_pixel_size.x, tile_pixel_size.y);
 
+	tile_map_shade->BuildLightLevelMap(*this);
 	TRTileWall* tile_wall_air = Mgr(TRTileManager)->TileWallAir();
 
 	for (int x = 0; x < tile_width; ++x)
@@ -104,11 +108,12 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 		for (int y = 0; y < tile_height; ++y)
 		{
 			TRTile* tile = GetTile(x, y);
-			if (!tile->Solid())
-				continue;
-
-			int bitmask = GetTileNeighborMask(x, y);
-			tile->OnDrawElement(renderer, x, y, bitmask);
+			if (tile->Solid())
+			{
+				int bitmask = GetTileNeighborMask(x, y);
+				tile->OnDrawElement(renderer, x, y, bitmask);
+			}
+			tile_map_shade->OnDrawElement(renderer, x, y);
 		}
 	}
 
@@ -134,7 +139,7 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 
 			TRTileWall* tile = GetTileWall(xp, yp);
 			if (tile == nullptr)
-				return;
+				continue;
 
 			int bitmask = GetTileWallNeighborMask(xp, yp);
 
@@ -157,11 +162,12 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 
 			TRTile* tile = GetTile(xp, yp);
 			if (tile == nullptr)
-				return;
+				continue;
 
 			int bitmask = GetTileNeighborMask(xp, yp);
 			tile->OnDrawElement(renderer, xp, yp, bitmask);
 			tile->OnDrawElement(minimapRenderer, xp, yp, bitmask);
+			tile_map_shade->OnDrawElement(renderer, xp, yp);
 		}
 	}
 }

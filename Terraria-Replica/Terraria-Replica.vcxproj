@@ -181,6 +181,7 @@
     <ClInclude Include="TRTile.h" />
     <ClInclude Include="TRTileManager.h" />
     <ClInclude Include="TRTileMap.h" />
+    <ClInclude Include="TRTileMapShade.h" />
     <ClInclude Include="TRTileWall.h" />
     <ClInclude Include="TRWorld.h" />
     <ClInclude Include="TRWorldGeneration.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="TRTile.cpp" />
     <ClCompile Include="TRTileManager.cpp" />
     <ClCompile Include="TRTileMap.cpp" />
+    <ClCompile Include="TRTileMapShade.cpp" />
     <ClCompile Include="TRTileWall.cpp" />
     <ClCompile Include="TRWorld.cpp" />
     <ClCompile Include="TRWorldGeneration.cpp" />

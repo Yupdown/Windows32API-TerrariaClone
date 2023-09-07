@@ -91,6 +91,7 @@ void CScene_Intro::update()
 			CScene_Start* pStart = (CScene_Start*)Mgr(CSceneMgr)->GetScene(SCENE_TYPE::START);
 			pStart->LoadWorld();
 		} };
+		Mgr(CSoundMgr)->PlayEffect("Menu_Open.wav", 0.5f);
 	}
 
 	m_fScrollSpeed += 100.f * DT;

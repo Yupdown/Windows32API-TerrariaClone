@@ -1,9 +1,11 @@
 #pragma once
 
-#include "TRTile.h"
-#include "TRTileWall.h"
-#include "CScene.h"
-#include "CTileLayer.h"
+#include "pch.h"
+
+class TRTile;
+class TRTileWall;
+class TRTileMapShade;
+class CTileLayer;
 
 class TRTileMap
 {
@@ -13,6 +15,8 @@ private:
 
 	TRTile** tile_map;
 	TRTileWall** tile_wall_map;
+
+	TRTileMapShade* tile_map_shade;
 
 	CTileLayer* renderer;
 	HBRUSH m_hTileMapBrush;
