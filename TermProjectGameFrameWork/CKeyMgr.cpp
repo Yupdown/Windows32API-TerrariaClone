@@ -4,6 +4,7 @@
 
 
 extern HHOOK hHook;
+static bool g_bHook = true;
 
 int g_arrVK[(int)KEY::LAST]		
 {
@@ -110,6 +111,20 @@ void CKeyMgr::update()
 		}
 	}
 
+#ifdef _DEBUG
+	if (KEY_TAP(KEY::CTRL))
+	{
+		if (g_bHook)
+		{
+			UnhookWindowsHookEx(hHook);
+		}
+		else
+		{
+			hHook = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, NULL, 0);
+		}
+		g_bHook = !g_bHook;
+	}
+#endif
 }
 
 LRESULT CALLBACK LowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam)

@@ -82,6 +82,12 @@
     <Filter Include="CObject\Monster\CCthulhuEye\CBossHealthBar">
       <UniqueIdentifier>{8dba2b82-15f9-4e59-999b-791af5dc4932}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CParticleMgr">
+      <UniqueIdentifier>{47ccec1f-739f-4808-928b-89164bb086a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CParticleMgr\Particle">
+      <UniqueIdentifier>{cfb6e3b1-3b22-47d6-885f-2e4bb3044702}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -207,6 +213,12 @@
     <ClInclude Include="TRTileMapShade.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CParticleMgr.h">
+      <Filter>CParticleMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticle.h">
+      <Filter>CParticleMgr\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TRMain.cpp">
@@ -307,6 +319,12 @@
     </ClCompile>
     <ClCompile Include="TRTileMapShade.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleMgr.cpp">
+      <Filter>CParticleMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticle.cpp">
+      <Filter>CParticleMgr\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

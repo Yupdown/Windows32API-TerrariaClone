@@ -156,6 +156,8 @@
     <ClInclude Include="CEyeMonster.h" />
     <ClInclude Include="CMiniMap.h" />
     <ClInclude Include="CMonster.h" />
+    <ClInclude Include="CParticle.h" />
+    <ClInclude Include="CParticleMgr.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CQuickBarVisualizer.h" />
     <ClInclude Include="CScene_Intro.h" />
@@ -199,6 +201,8 @@
     <ClCompile Include="CEyeMonster.cpp" />
     <ClCompile Include="CMiniMap.cpp" />
     <ClCompile Include="CMonster.cpp" />
+    <ClCompile Include="CParticle.cpp" />
+    <ClCompile Include="CParticleMgr.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CQuickBarVisualizer.cpp" />
     <ClCompile Include="CScene_Intro.cpp" />

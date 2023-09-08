@@ -114,6 +114,7 @@ bool TRItemPickaxe::OnUseItem(CPlayer* user, TRWorld* world, const Vec2& target_
 	int x = FloorToInt(target_pos.x);
 	int y = FloorToInt(target_pos.y);
 	world->BreakTile(x, y);
+	
 	return false;
 }
 

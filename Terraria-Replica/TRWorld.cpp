@@ -30,6 +30,8 @@
 #include "CDropItem.h"
 #include "CSoundMgr.h"
 
+#include "CParticleMgr.h"
+
 TRWorld* g_TRWorld = nullptr;
 extern bool g_bStopToken;
 
@@ -66,6 +68,9 @@ TRWorld::TRWorld()
 	player_inventory[0]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"pickaxe_iron"), 1));
 	player_inventory[1]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"hammer_iron"), 1));
 	player_inventory[2]->Apply(TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"longsword_iron"), 1));
+
+
+	Mgr(CParticleMgr)->Init();
 }
 
 TRWorld::~TRWorld()
@@ -135,6 +140,8 @@ void TRWorld::Update()
 		}
 	}
 
+	Mgr(CParticleMgr)->Update();
+
 	TRMonGenerator::GenerateMonster();
 }
 
@@ -160,7 +167,7 @@ void TRWorld::CreateWorld(int seed)
 	delete generator;
 	for (int i = 0; i < sizeof(processes) / sizeof(*processes); ++i)
 		delete processes[i];
-}
+}	
 
 void TRWorld::OnSceneCreate(CScene* scene)
 {
@@ -336,6 +343,10 @@ void TRWorld::BreakTile(int x, int y)
 	Mgr(CSoundMgr)->PlayEffect(buffer, 0.5f);
 
 	tile_map->SetTile(x, y, air_tile, true);
+
+	const Vec2 vParticlePos = TRWorld::WorldToGlobal(Vec2{ (float)x,(float)y });
+	CAtlasElement* pImg = tile->GetTileImg();
+	Mgr(CParticleMgr)->SetParticles(vParticlePos, pImg);
 
 	std::wstring k_dropitem = tile->DropItem();
 	if (k_dropitem == L"")
