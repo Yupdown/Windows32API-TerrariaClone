@@ -2,6 +2,8 @@
 #include "CParticleMgr.h"
 #include "CCore.h"
 
+std::future<void> g_ParticleRenderer;
+
 CParticleMgr::CParticleMgr()
 {
 }
@@ -36,11 +38,14 @@ void CParticleMgr::Update()
 			cache[i].Update();
 		}
 	}
-	for (unsigned short i = 0; i < 1000; ++i)
-	{
-		if (cache[i].IsActivate())
+
+	g_ParticleRenderer = std::async(std::launch::async, [] {
+		for (unsigned short i = 0; i < 1000; ++i)
 		{
-			cache[i].Render(renderer);
+			if (cache[i].IsActivate())
+			{
+				cache[i].Render(renderer);
+			}
 		}
-	}
+		});
 }

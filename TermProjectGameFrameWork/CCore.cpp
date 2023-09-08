@@ -27,6 +27,8 @@ bool g_bDoMultiThread = true;
 
 //static bool bShowMiniMap = false;
 
+extern std::future<void> g_ParticleRenderer;
+
 CCore::CCore()
 {
 	m_xform.eM11 = (FLOAT)1.0;
@@ -194,8 +196,14 @@ void CCore::progress()
 	// =============
 	CCamera::GetInst()->update();
 
+	if (g_ParticleRenderer.valid())
+	{
+		g_ParticleRenderer.get();
+	}
+
 	CSceneMgr::GetInst()->render(m_hMemDC);
 	Mgr(CCamera)->render(m_hMemDC);
+	
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y,		
 		m_hMemDC, 0, 0, SRCCOPY);
 	//Clear();
