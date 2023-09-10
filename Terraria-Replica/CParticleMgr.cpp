@@ -30,7 +30,6 @@ void CParticleMgr::SetParticles(const Vec2 vPos_, CAtlasElement* const pImg_)
 void CParticleMgr::Update()
 {
 	static const auto cache = m_arrParticles.data();
-	static auto renderer = Mgr(CCore)->GetMainDC();
 	for (unsigned short i = 0; i < 1000; ++i)
 	{
 		if (cache[i].IsActivate())
@@ -40,6 +39,7 @@ void CParticleMgr::Update()
 	}
 
 	g_ParticleRenderer = std::async(std::launch::async, [] {
+		static auto renderer = Mgr(CCore)->GetMainDC();
 		for (unsigned short i = 0; i < 1000; ++i)
 		{
 			if (cache[i].IsActivate())
