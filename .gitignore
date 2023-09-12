@@ -4,8 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 */[Uu]nity/
-bin_Debug/
-bin_Release/
+[Oo]utput/bin_debug/
+[Oo]utput/bin_release/
 
 # User-specific files
 *.rsuser
