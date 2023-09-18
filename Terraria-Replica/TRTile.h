@@ -40,9 +40,9 @@ public:
 	CAtlasElement* GetTileImg() const
 	{
 		static std::mt19937 rng{ std::random_device{}() };
-		static std::uniform_int_distribution uid1{ 0,15 };
-		static std::uniform_int_distribution uid2{ 0,21 };
-		return elements[uid1(rng)][uid2(rng)];
+		static std::uniform_int_distribution uid;
+		int sr = uid(rng) % 3;
+		return elements[1 + sr][1];
 	}
 };
 
