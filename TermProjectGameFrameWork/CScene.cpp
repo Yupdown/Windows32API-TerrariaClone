@@ -13,6 +13,7 @@
 
 extern bool g_bDoMultiThread;
 extern std::future<void> g_ParticleRenderer;
+extern HDC g_particleDC;
 
 CScene::CScene()
 {
@@ -237,6 +238,23 @@ void CScene::render(HDC _dc)
 
 		Mgr(CCamera)->ResetRenderPos();
 		Mgr(CCamera)->SetCamRect(vCamShadingPos);
+
+		if (g_particleDC)
+		{
+			TransparentBlt(_dc
+				, 0
+				, 0
+				, (int)vRes.x
+				, (int)vRes.y
+				, g_particleDC
+				, 0
+				, 0
+				, (int)vRes.x
+				, (int)vRes.y
+				, RGB(255, 0, 255));
+
+			Mgr(CCore)->MazentaBlt(g_particleDC, vRes);
+		}
 
 		if (m_vecTileLayer.size() > 1)
 		{

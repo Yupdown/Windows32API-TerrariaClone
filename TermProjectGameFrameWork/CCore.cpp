@@ -27,8 +27,6 @@ bool g_bDoMultiThread = true;
 
 //static bool bShowMiniMap = false;
 
-extern HDC g_particleDC;
-
 CCore::CCore()
 {
 	m_xform.eM11 = (FLOAT)1.0;
@@ -198,23 +196,6 @@ void CCore::progress()
 
 	CSceneMgr::GetInst()->render(m_hMemDC);
 	Mgr(CCamera)->render(m_hMemDC);
-
-	if (g_particleDC)
-	{
-		TransparentBlt(m_hMemDC
-			, 0
-			, 0
-			, (int)m_ptResolution.x
-			, (int)m_ptResolution.y
-			, g_particleDC
-			, 0
-			, 0
-			, (int)m_ptResolution.x
-			, (int)m_ptResolution.y
-			, RGB(255, 0, 255));
-
-		Mgr(CCore)->MazentaBlt(g_particleDC, m_ptResolution);
-	}
 
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y,		
 		m_hMemDC, 0, 0, SRCCOPY);
