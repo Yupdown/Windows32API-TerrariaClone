@@ -241,6 +241,7 @@ void CScene::render(HDC _dc)
 		if (m_vecTileLayer.size() > 1)
 		{
 			m_vecTileLayer[1]->render(_dc);
+			Mgr(CCore)->MazentaBlt(m_vecTileLayer[1]->GetTileLayerDC(), vRes);
 		}
 	}
 	else
