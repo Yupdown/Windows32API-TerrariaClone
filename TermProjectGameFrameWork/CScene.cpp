@@ -45,11 +45,11 @@ void CScene::update()
 			{
 				continue;
 			}
-			//vecPtr[i]->update();
-			Mgr(CThreadMgr)->EnqueueUpdate(&CObject::update, vecPtr[i].get());
+			vecPtr[i]->update();
+			//Mgr(CThreadMgr)->EnqueueUpdate(&CObject::update, vecPtr[i].get());
 		}
 	}
-	Mgr(CThreadMgr)->JoinUpdate();
+	//Mgr(CThreadMgr)->JoinUpdate();
 }
 
 void CScene::Enter()
@@ -98,11 +98,11 @@ void CScene::component_update()const
 		const auto vecPtr = vecObj.data();
 		for (size_t i = 0, size = vecObj.size(); i < size; ++i)
 		{
-			//vecPtr[i]->component_update();
-			Mgr(CThreadMgr)->EnqueueUpdate(&CObject::component_update, vecPtr[i].get());
+			vecPtr[i]->component_update();
+			//Mgr(CThreadMgr)->EnqueueUpdate(&CObject::component_update, vecPtr[i].get());
 		}
 	}
-	Mgr(CThreadMgr)->JoinUpdate();
+	//Mgr(CThreadMgr)->JoinUpdate();
 }
 
 void CScene::render(HDC _dc)
@@ -127,9 +127,10 @@ void CScene::render(HDC _dc)
 			m_vecLayer[i]->render(m_hSceneThreadDC[THREAD::T1]);
 		}});
 
-		Mgr(CThreadMgr)->Enqueue(THREAD::T2, [this]() {for (const auto& tileVec : m_vecTileLayer)
+		Mgr(CThreadMgr)->Enqueue(THREAD::T2, [this]() {
 		{
-			tileVec->render(m_hSceneThreadDC[THREAD::T2]);
+			static const auto tileVec = m_vecTileLayer.data();
+			(*tileVec)->render(m_hSceneThreadDC[THREAD::T2]);
 		}});
 
 		const Vec2 vPlayerOriginPos = m_pPlayer->GetPos();
@@ -235,7 +236,12 @@ void CScene::render(HDC _dc)
 		Mgr(CThreadMgr)->Enqueue(THREAD::T2, &CCore::MaznetaClear, Mgr(CCore), m_hSceneThreadDC[THREAD::END], THREAD::T2);
 
 		Mgr(CCamera)->ResetRenderPos();
-		Mgr(CCamera)->SetCamRect(GetPlayer()->GetPos());
+		Mgr(CCamera)->SetCamRect(vCamShadingPos);
+
+		if (m_vecTileLayer.size() > 1)
+		{
+			m_vecTileLayer[1]->render(_dc);
+		}
 	}
 	else
 	{
