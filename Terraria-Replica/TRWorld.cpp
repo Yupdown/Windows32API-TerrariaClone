@@ -190,6 +190,7 @@ void TRWorld::OnSceneCreate(CScene* scene)
 		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_planks_wood"), 100),
 		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_bricks_stone"), 100),
 		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_bricks_clay"), 100),
+		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"tile_torch"), 100),
 		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"wall_planks_wood"), 100),
 		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"wall_bricks_stone"), 100),
 		TRItemStack(Mgr(TRItemManager)->GetItemByKey(L"wall_bricks_clay"), 100),
@@ -201,49 +202,8 @@ void TRWorld::OnSceneCreate(CScene* scene)
 
 	for (int i = 0; i < sizeof(dropitem_list) / sizeof(*dropitem_list); ++i)
 		DropItem(Vec2Int(x - 10 + i * -4, 255), dropitem_list[i]);
-
-	/*{
-		CWeapon* pWeapon;
-		pWeapon = new CWeapon{ player };
-		pWeapon->SetWeaponImg(L"Item_Pickaxe.png",L"Item_Pickaxe", Vec2{32,32});
-
-
-
-		pWeapon = new CWeapon{ player };
-		pWeapon->SetWeaponImg(L"Item_Hammer.png", L"Item_Hammer", Vec2{ 32,32 });
-
-
-		pWeapon = new CWeapon{ player };
-		pWeapon->SetWeaponImg(L"Item_Sword.png", L"Item_Sword", Vec2{ 32,32 });
-
-	}*/
 	
 	tile_map->OnSceneCreate(scene);
-
-	{
-		auto pMon = new CZombie{ this,L"Monster_",L"NPC_3.png" };
-		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 38.0f, 46.0f });
-		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-	}
-
-	{
-		auto pMon = new CSlime{ this,L"Monster_Slime",L"NPC_1.png" };
-		pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 100, TRWorld::WORLD_HEIGHT)));
-		pMon->SetScale(Vec2{ 32.0f, 24.0f });
-		scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-		pMon->SetColliderScale(Vec2{ 32.0f, 24.0f });
-	}
-
-	//{
-	//	auto pMon = new CEyeMonster{ this,L"Monster_EyeMonster",L"NPC_2.png" };
-	//	pMon->SetPos(TRWorld::WorldToGlobal(Vec2(TRWorld::WORLD_WIDTH / 2 - 10, TRWorld::WORLD_HEIGHT)));
-	//	pMon->SetScale(Vec2{ 38.0f, 22.0f });
-	//	scene->AddObject(pMon, GROUP_TYPE::MONSTER);
-	//	pMon->SetColliderScale(Vec2{ 38.0f, 22.0f });
-	//}
-
-	
 
 	Mgr(CCollisionMgr)->RegisterGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER); 
 	Mgr(CCollisionMgr)->RegisterGroup( GROUP_TYPE::MONSTER,GROUP_TYPE::PLAYER_WEAPON);

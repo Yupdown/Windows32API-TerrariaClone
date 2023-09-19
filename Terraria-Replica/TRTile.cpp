@@ -348,6 +348,11 @@ bool TRTile::Rocky() const
     return rocky;
 }
 
+int TRTile::LightLevel() const
+{
+    return light_level;
+}
+
 std::wstring TRTile::DropItem() const
 {
     return k_dropitem;
@@ -631,9 +636,32 @@ void TRTileGrass::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bit
 
 void TRTileAir::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
 {
-    //static HBRUSH brush = CreateSolidBrush(0x00FF00FF);
-    //HDC hdc = tilemap_layer->GetTileLayerDC();
-    //Vec2Int p = TRWorld::WorldToGlobal(Vec2(x, y + 1));
-    //RECT r = { p.x, p.y, p.x + PIXELS_PER_TILE, p.y + PIXELS_PER_TILE };
-    //FillRect(hdc, &r, brush);
+
+}
+
+TRTileTorch::TRTileTorch(std::wstring name, std::wstring k_element, std::wstring k_dropitem) : TRTile(name, false, 1.0f, false, k_element, k_dropitem)
+{
+    light_level = 32;
+}
+
+void TRTileTorch::CreateAtlasElements()
+{
+    for (int i = 0; i < 3; ++i)
+        elements[i][0] = Mgr(CAtlasMgr)->GetAtlasElement(k_element, { i * 9.0f, 0.0f });
+}
+
+void TRTileTorch::OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask)
+{
+    int si = 0;
+    int sj = 0;
+
+    int loword = bitmask & 15;
+    if (loword & 0b00000100)
+        sj = 1;
+    else if (loword & 0b00001000)
+        sj = 2;
+
+    HDC hdc = tilemap_layer->GetTileLayerDC();
+    Vec2Int p = TRWorld::WorldToGlobal(Vec2Int(x, y + 1));
+    elements[sj][si]->render(hdc, p, TILE_PIXEL_XY);
 }

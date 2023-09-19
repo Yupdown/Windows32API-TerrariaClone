@@ -22,6 +22,7 @@ void TRItemManager::LoadItems()
 	registry->Insert(L"tile_silver_ore", new TRItemTile(L"Silver Ore", L"Item_14.png", L"silver_ore"));
 	registry->Insert(L"tile_bricks_stone", new TRItemTile(L"Stone Bricks", L"Item_129.png", L"bricks_stone"));
 	registry->Insert(L"tile_bricks_clay", new TRItemTile(L"Bricks", L"Item_131.png", L"bricks_clay"));
+	registry->Insert(L"tile_torch", new TRItemTile(L"Torch", L"Item_Torch.png", L"torch"));
 	registry->Insert(L"wall_cobblestone", new TRItemTileWall(L"Cobblestone Wall", L"Item_26.png", L"cobblestone"));
 	registry->Insert(L"wall_dirt", new TRItemTileWall(L"Dirt Wall", L"Item_30.png", L"dirt"));
 	registry->Insert(L"wall_planks_wood", new TRItemTileWall(L"Wooden Planks Wall", L"Item_93.png", L"planks_wood"));

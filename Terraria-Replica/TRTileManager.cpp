@@ -28,6 +28,7 @@ void TRTileManager::LoadTiles()
 	registry_tile->Insert(L"planks_wood", new TRTileSolid(L"Wooden Planks", 1.0f, false, L"tile_planks.png", L"tile_planks_wood"));
 	registry_tile->Insert(L"bricks_clay", new TRTileSolid(L"Bricks", 1.0f, true, L"tile_bricks.png", L"tile_bricks_clay"));
 	registry_tile->Insert(L"bricks_stone", new TRTileSolid(L"Stone Bricks", 1.0f, true, L"tile_stonebricks.png", L"tile_bricks_stone"));
+	registry_tile->Insert(L"torch", new TRTileTorch(L"Torch", L"tile_torch.png", L"tile_torch"));
 
 	tile_wall_air = new TRTileWallAir();
 	registry_tile_wall->Insert(L"air", tile_wall_air);

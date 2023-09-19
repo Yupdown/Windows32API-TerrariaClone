@@ -18,6 +18,8 @@ protected:
 
 	bool rocky;
 
+	int light_level;
+
 	std::wstring k_element;
 	std::wstring k_dropitem;
 
@@ -27,7 +29,7 @@ public:
 	TRTile(std::wstring name, bool solid, float hardness, bool rocky, std::wstring k_element, std::wstring k_dropitem);
 	virtual ~TRTile() = default;
 
-    void CreateAtlasElements();
+    virtual void CreateAtlasElements();
 	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask);
 
 	int StickGroup() const;
@@ -35,6 +37,7 @@ public:
 	bool Solid() const;
 	float Hardness() const;
 	bool Rocky() const;
+	int LightLevel() const;
 	std::wstring DropItem() const;
 
 	CAtlasElement* GetTileImg() const
@@ -76,4 +79,12 @@ class TRTileOre : public TRTileSolid
 {
 public:
 	TRTileOre(std::wstring name, float hardness, std::wstring k_element, std::wstring k_dropitem);
+};
+
+class TRTileTorch : public TRTile
+{
+public:
+	TRTileTorch(std::wstring name, std::wstring k_element, std::wstring k_dropitem);
+	virtual void CreateAtlasElements() override;
+	virtual void OnDrawElement(CTileLayer* tilemap_layer, int x, int y, int bitmask) override;
 };
