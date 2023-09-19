@@ -17,6 +17,8 @@ private:
 public:
 	CParticle();
 	~CParticle();
+	CParticle(const CParticle&) = delete;
+	CParticle operator = (const CParticle&) = delete;
 	void ActivateParticle(Vec2 vMidPos_,CAtlasElement* const _pImg_);
 	bool IsActivate()const { return m_bIsActivate; }
 	void Update();

@@ -57,13 +57,15 @@ void CParticleMgr::Update()
 	{
 		if (cache[i].IsActivate())
 		{
-			g_renderVec.emplace_back([=]() {
+			g_renderVec.emplace_back([=]()noexcept {
 				cache[i].Render(g_particleDC);
 				});
 		}
 	}
-	g_ParticleRenderer = std::async(std::launch::async, []() {
-		for (auto& fp : g_renderVec)fp();
+	g_ParticleRenderer = std::async(std::launch::async, []()noexcept {
+		static const auto c = g_renderVec.data();
+		const unsigned short n = (unsigned short)(g_renderVec.size());
+		for (unsigned short i = 0; i < n; ++i)c[i]();
 		g_renderVec.clear();
 		});
 }
