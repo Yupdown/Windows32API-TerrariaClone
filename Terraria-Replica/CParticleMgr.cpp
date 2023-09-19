@@ -3,13 +3,19 @@
 #include "CCore.h"
 
 std::future<void> g_ParticleRenderer;
+HDC g_particleDC;
+vector<function<void(void)>> g_renderVec;
 
 CParticleMgr::CParticleMgr()
 {
+	CreateDCBITMAP(m_particeDC, m_particleBit, Mgr(CCore)->GetResolutionV());
+	g_particleDC = m_particeDC;
+	g_renderVec.reserve(1000);
 }
 
 CParticleMgr::~CParticleMgr()
 {
+	DeleteDCBITMAP(m_particeDC, m_particleBit);
 }
 
 void CParticleMgr::Init()
@@ -38,14 +44,26 @@ void CParticleMgr::Update()
 		}
 	}
 
-	g_ParticleRenderer = std::async(std::launch::async, [] {
-		static auto renderer = Mgr(CCore)->GetMainDC();
+	/*g_ParticleRenderer = std::async(std::launch::async, [] {
 		for (unsigned short i = 0; i < 1000; ++i)
 		{
 			if (cache[i].IsActivate())
 			{
-				cache[i].Render(renderer);
+				cache[i].Render(g_particleDC);
 			}
 		}
+		});*/
+	for (unsigned short i = 0; i < 1000; ++i)
+	{
+		if (cache[i].IsActivate())
+		{
+			g_renderVec.emplace_back([=]() {
+				cache[i].Render(g_particleDC);
+				});
+		}
+	}
+	g_ParticleRenderer = std::async(std::launch::async, []() {
+		for (auto& fp : g_renderVec)fp();
+		g_renderVec.clear();
 		});
 }

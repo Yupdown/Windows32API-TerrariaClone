@@ -10,6 +10,8 @@ class CParticleMgr
 private:
 	array<CParticle,1000> m_arrParticles;
 	unsigned short m_iCurParticleNum = 0;
+	HDC m_particeDC;
+	HBITMAP m_particleBit;
 public:
 	void Init();
 	void SetParticles(const Vec2 vPos_,CAtlasElement* const pImg_);

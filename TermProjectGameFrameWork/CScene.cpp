@@ -12,6 +12,7 @@
 #include "CThreadMgr.h"
 
 extern bool g_bDoMultiThread;
+extern std::future<void> g_ParticleRenderer;
 
 CScene::CScene()
 {
@@ -131,6 +132,15 @@ void CScene::render(HDC _dc)
 			tileVec->render(m_hSceneThreadDC[THREAD::T2]);
 		}});
 
+		const Vec2 vPlayerOriginPos = m_pPlayer->GetPos();
+		const Vec2 vCamShadingPos = Mgr(CCamera)->GetCamShadingPos();
+		m_pPlayer->SetPos(vCamShadingPos);
+
+		if (g_ParticleRenderer.valid())
+		{
+			g_ParticleRenderer.get();
+		}
+
 		for (auto& vecObj : m_vecObj)
 		{
 			const auto vecPtr = vecObj.data();
@@ -149,6 +159,8 @@ void CScene::render(HDC _dc)
 				}
 			}
 		};
+
+		m_pPlayer->SetPos(vPlayerOriginPos);
 
 		Mgr(CThreadMgr)->Join(THREAD::T2);
 
@@ -200,6 +212,7 @@ void CScene::render(HDC _dc)
 			, RGB(255, 0, 255));
 
 		std::atomic_thread_fence(std::memory_order_seq_cst);
+
 
 		Mgr(CCamera)->SetNowLookAt(vRes / 2);
 

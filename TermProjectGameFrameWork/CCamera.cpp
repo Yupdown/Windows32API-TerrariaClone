@@ -196,7 +196,8 @@ void CCamera::update()
 			int yint = static_cast<int>(floorf(vLookAt.y));;
 			xint = xint - xint % 2;
 			yint = yint - yint % 2;
-			SetCamRect(Vec2(static_cast<float>(xint), static_cast<float>(yint)));
+			m_vShadingPos = Vec2(static_cast<float>(xint), static_cast<float>(yint));
+			SetCamRect(m_vShadingPos);
 		}
 	}
 

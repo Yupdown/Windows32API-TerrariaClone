@@ -71,8 +71,9 @@ private:
 
 	HDC m_hCamVeilDC = nullptr;
 	HBITMAP m_hCamVeilBit = nullptr;
-
+	Vec2 m_vShadingPos = {};
 public:
+	Vec2 GetCamShadingPos()const { return m_vShadingPos; }
 	void init();
 	void render(HDC _dc);
 	constexpr Vec2	GetLookAt()const { return m_vCurLookAt; }
