@@ -6,7 +6,7 @@
 #include "CCamera.h"
 
 std::mt19937 CParticle::g_rng = std::mt19937{ std::random_device{}()};
-std::uniform_real_distribution<float> CParticle::g_urd = std::uniform_real_distribution<float>{ 0.f,360.f };
+std::uniform_real_distribution<float> CParticle::g_urd = std::uniform_real_distribution<float>{ -1.0f, 1.0f };
 
 CParticle::CParticle()
 {
@@ -19,13 +19,14 @@ CParticle::~CParticle()
 void CParticle::Update()
 {
 	m_fLife -= DT;
-	m_vMidPos += m_vRandDir * DT * g_particleSpeed;
+	m_vVelocity += Vec2::up * 480.0f * DT;
+	m_vMidPos += m_vVelocity * DT;
 }
 
 void CParticle::Render(HDC dc_)
 {
 	const Vec2 vLT = m_vMidPos - g_particleSize / 2.f;
-	m_pAtlasForRender->render(dc_, Mgr(CCamera)->GetRenderPos(vLT), g_particleSize);
+	m_pAtlasForRender->render(dc_, Mgr(CCamera)->GetRenderPos(vLT), g_particleSize * m_fLife * 2.0f);
 	if (0.f >= m_fLife)
 	{
 		m_bIsActivate = false;
@@ -43,6 +44,6 @@ void CParticle::ActivateParticle(Vec2 vMidPos_, CAtlasElement* const pImg_)
 	m_fLife = 0.5f;
 	m_vMidPos = vMidPos_;
 	m_pAtlasForRender = pImg_;
-	const float angle = g_urd(g_rng) * F_DEG2RAD;
-	m_vRandDir = Vec2{ std::cosf(angle),std::sinf(angle) };
+	Vec2 vRandForce = Vec2(g_urd(g_rng), g_urd(g_rng)) * g_particleSpeed;
+	m_vVelocity = vRandForce;
 }
