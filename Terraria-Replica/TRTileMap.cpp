@@ -86,6 +86,7 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 {
 	Vec2Int tile_pixel_size = Vec2Int(tile_width * PIXELS_PER_TILE, tile_height * PIXELS_PER_TILE);
 	renderer = new CTileLayer(tile_pixel_size / 2, tile_pixel_size.x, tile_pixel_size.y);
+	renderer_shade = new CTileLayer(tile_pixel_size / 2, tile_pixel_size.x, tile_pixel_size.y);
 
 	tile_map_shade->BuildLightLevelMap(*this);
 	TRTileWall* tile_wall_air = Mgr(TRTileManager)->TileWallAir();
@@ -113,12 +114,13 @@ void TRTileMap::OnSceneCreate(CScene* scene)
 				int bitmask = GetTileNeighborMask(x, y);
 				tile->OnDrawElement(renderer, x, y, bitmask);
 			}
-			tile_map_shade->OnDrawElement(renderer, x, y);
+			tile_map_shade->OnDrawElement(renderer_shade, x, y);
 		}
 	}
 
 	Mgr(CResMgr)->Clear();
 	scene->AddTileLayer(renderer);
+	scene->AddTileLayer(renderer_shade);
 }
 
 void TRTileMap::UpdateTileRenderer(int x, int y)
@@ -167,9 +169,11 @@ void TRTileMap::UpdateTileRenderer(int x, int y)
 			int bitmask = GetTileNeighborMask(xp, yp);
 			tile->OnDrawElement(renderer, xp, yp, bitmask);
 			tile->OnDrawElement(minimapRenderer, xp, yp, bitmask);
-			tile_map_shade->OnDrawElement(renderer, xp, yp);
 		}
 	}
+
+	tile_map_shade->InvalidateLightLevelMap(*this, x * 2 - 32, y * 2 - 34, x * 2 + 32, y * 2 + 34, true);
+	tile_map_shade->RedrawInvalidated(renderer_shade);
 }
 
 int TRTileMap::GetTopYpos(int x) const

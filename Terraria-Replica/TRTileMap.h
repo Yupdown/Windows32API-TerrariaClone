@@ -19,6 +19,7 @@ private:
 	TRTileMapShade* tile_map_shade;
 
 	CTileLayer* renderer;
+	CTileLayer* renderer_shade;
 	HBRUSH m_hTileMapBrush;
 
 public:
