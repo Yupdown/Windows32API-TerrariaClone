@@ -143,16 +143,16 @@ void CScene::render(HDC _dc)
 			g_ParticleRenderer.get();
 		}
 
-		for (auto& vecObj : m_vecObj)
+		for (int vecObj=0;vecObj<etoi(GROUP_TYPE::UI);++vecObj)
 		{
-			const auto vecPtr = vecObj.data();
-			for (size_t i = 0; i < vecObj.size();)
+			const auto vecPtr = m_vecObj[vecObj].data();
+			for (size_t i = 0; i < m_vecObj[vecObj].size();)
 			{
 				if (vecPtr[i]->IsDead())
 				{
 					Mgr(CEventMgr)->AddDeadObj(vecPtr[i]);
-					vecPtr[i] = std::move(vecObj.back());
-					vecObj.pop_back();
+					vecPtr[i] = std::move(m_vecObj[vecObj].back());
+					m_vecObj[vecObj].pop_back();
 				}
 				else
 				{
@@ -260,6 +260,13 @@ void CScene::render(HDC _dc)
 		{
 			m_vecTileLayer[1]->render(_dc);
 			Mgr(CCore)->MazentaBlt(m_vecTileLayer[1]->GetTileLayerDC(), vRes);
+		}
+
+		const auto ui_cache = m_vecObj[etoi(GROUP_TYPE::UI)].data();
+		const int n = (int)m_vecObj[etoi(GROUP_TYPE::UI)].size();
+		for (int i = 0; i < n; ++i)
+		{
+			ui_cache[i]->render(_dc);
 		}
 	}
 	else

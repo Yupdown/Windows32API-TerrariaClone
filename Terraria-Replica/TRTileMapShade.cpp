@@ -28,6 +28,7 @@ TRTileMapShade::~TRTileMapShade()
 {
 	delete[] light_level;
 	delete[] light_level_last;
+	DeleteObject(hTileMapBrush);
 }
 
 void TRTileMapShade::BuildLightLevelMap(const TRTileMap& tile_map)
@@ -170,7 +171,6 @@ void TRTileMapShade::OnDrawElement(CTileLayer* tilemap_layer, int x, int y) cons
 
 void TRTileMapShade::RedrawInvalidated(CTileLayer* tilemap_layer)
 {
-	HBRUSH hTileMapBrush = CreateSolidBrush(0x00FF00FF);
 	HDC hdc = tilemap_layer->GetTileLayerDC();
 	
 	while (!redraw_buffer.empty())
@@ -186,6 +186,4 @@ void TRTileMapShade::RedrawInvalidated(CTileLayer* tilemap_layer)
 			continue;
 		elements[light_level / 2]->render(hdc, p, Vec2Int(8, 8));
 	}
-
-	DeleteObject(hTileMapBrush);
 }

@@ -19,6 +19,7 @@ private:
 	CAtlasElement* elements[16];
 
 	std::queue<Vec2Int> redraw_buffer;
+	HBRUSH hTileMapBrush = CreateSolidBrush(0x00FF00FF);
 
 public:
 	TRTileMapShade(int width, int height);
