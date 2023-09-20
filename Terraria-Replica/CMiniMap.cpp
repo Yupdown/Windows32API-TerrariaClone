@@ -113,11 +113,11 @@ void CMiniMap::render(HDC _dc) const
 	auto hOld = SelectObject(m_hMinmapDC, GetStockObject(HOLLOW_BRUSH));
 	const auto CamRect = Mgr(CCamera)->GetCamRect();
 
-	Rectangle(m_hMinmapDC
-		, (int)(CamRect.vLT.x * 264.f / 8192.f)
-		, (int)(CamRect.vLT.y * 264.f / 4098.f)
-		, (int)(CamRect.vRB.x * 264.f / 8192.f)
-		, (int)(CamRect.vRB.y * 264.f / 4098.f));
+	//Rectangle(m_hMinmapDC
+	//	, (int)(CamRect.vLT.x * 264.f / 8192.f)
+	//	, (int)(CamRect.vLT.y * 264.f / 4098.f)
+	//	, (int)(CamRect.vRB.x * 264.f / 8192.f)
+	//	, (int)(CamRect.vRB.y * 264.f / 4098.f));
 
 	SelectObject(m_hMinmapDC, hOld);
 
