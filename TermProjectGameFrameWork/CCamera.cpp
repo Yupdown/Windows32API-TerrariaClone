@@ -305,7 +305,7 @@ CoRoutine CCamera::ZoomInBoss(const Vec2 _vBossPos)
 	}
 	m_fCamZoom = 1.f;
 	m_fDestSpeed = m_fOriginSpeed;
-	m_bMoveFlag = true;
+	m_bMoveFlag = false;
 	co_return;
 }
 
@@ -358,9 +358,6 @@ void CCamera::CalDiff()
 	//m_vCurLookAt.x = m_vCurLookAt.x * m_dCamZoom + (FLOAT)(vCurLookLT.x) * 2.f * (1.f - m_dCamZoom);
 	//m_vCurLookAt.y = m_vCurLookAt.y * m_dCamZoom + (FLOAT)(vCurLookLT.y) * 2.f * (1.f - m_dCamZoom);
 	
-	
-	m_vDiff = m_vCurLookAt - vCenter; 
-
-	
+	m_vDiff = m_vCurLookAt - vCenter;
 	m_vPrevLookAt = m_vCurLookAt;
 }
