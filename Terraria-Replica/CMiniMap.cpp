@@ -121,8 +121,7 @@ void CMiniMap::render(HDC _dc) const
 
 	SelectObject(m_hMinmapDC, hOld);
 
-
-	BitBlt(_dc
+	TransparentBlt(_dc
 		, 1125
 		, 100
 		, 264
@@ -130,7 +129,19 @@ void CMiniMap::render(HDC _dc) const
 		, m_hMinmapDC
 		, 0
 		, 0
-		, SRCCOPY);
+		, 264
+		, 264
+		, RGB(255, 0, 255));
+
+	/*BitBlt(_dc
+		, 1125
+		, 100
+		, 264
+		, 264
+		, m_hMinmapDC
+		, 0
+		, 0
+		, SRCCOPY);*/
 }
 
 void CMiniMap::CreateMiniMap()
