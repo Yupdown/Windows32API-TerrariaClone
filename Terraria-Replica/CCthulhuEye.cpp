@@ -12,6 +12,8 @@
 #include "CSoundMgr.h"
 #include "CBossHealthBar.h"
 
+extern HDC g_particleDC;
+
 CCthulhuEye::CCthulhuEye(TRWorld* const _trWorld, wstring_view _wstrMonName, wstring_view _wstrMonImgName) : CMonster(_trWorld, _wstrMonName, _wstrMonImgName)
 {
 	auto pAnim = GetComp<CAnimator>();
@@ -36,7 +38,8 @@ CCthulhuEye::CCthulhuEye(TRWorld* const _trWorld, wstring_view _wstrMonName, wst
 
 CCthulhuEye::~CCthulhuEye()
 {
-	DeleteObj(m_pHpBar);
+	auto& uiVec = Mgr(CSceneMgr)->GetCurScene()->GetUIGroup();
+	std::erase_if(uiVec, [this](const auto& p) {return p.get() == m_pHpBar; });
 	m_pHpBar = nullptr;
 }
 

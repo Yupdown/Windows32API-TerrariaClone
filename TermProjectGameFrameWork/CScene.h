@@ -53,5 +53,4 @@ public:
 	void SetName(wstring_view _strName) { m_strName = _strName; }
 	const wstring& GetName() { return m_strName; }
 	void AddTileLayer(CTileLayer* const _pTileLayer);
-
 };

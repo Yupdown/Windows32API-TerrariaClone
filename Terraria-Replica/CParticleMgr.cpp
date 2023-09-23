@@ -2,20 +2,41 @@
 #include "CParticleMgr.h"
 #include "CCore.h"
 
-std::future<void> g_ParticleRenderer;
+std::jthread g_ParticleRenderer;
+bool g_bParticleStop = false;
 HDC g_particleDC;
 vector<function<void(void)>> g_renderVec;
+std::atomic<bool> g_particleWait;
+std::mutex g_particleMutex;
+std::condition_variable g_particleCv;
 
 CParticleMgr::CParticleMgr()
 {
 	CreateDCBITMAP(m_particeDC, m_particleBit, Mgr(CCore)->GetResolutionV());
 	g_particleDC = m_particeDC;
 	g_renderVec.reserve(1000);
+	g_particleWait.store(true);
+	g_ParticleRenderer = std::jthread{ []()noexcept {
+		while (!g_bParticleStop)
+		{
+			std::unique_lock<std::mutex> lock{ g_particleMutex };
+			g_particleCv.wait(lock,[]() {return !g_particleWait.load(); });
+			static const auto c = g_renderVec.data();
+			const unsigned short n = (unsigned short)(g_renderVec.size());
+			for (unsigned short i = 0; i < n; ++i)c[i]();
+			g_renderVec.clear();
+
+			g_particleWait.store(true);
+		}
+		} };
 }
 
 CParticleMgr::~CParticleMgr()
 {
 	DeleteDCBITMAP(m_particeDC, m_particleBit);
+	g_particleWait.store(false);
+	g_bParticleStop = true;
+	g_particleCv.notify_one();
 }
 
 void CParticleMgr::Init()
@@ -62,10 +83,14 @@ void CParticleMgr::Update()
 				});
 		}
 	}
-	g_ParticleRenderer = std::async(std::launch::async, []()noexcept {
+
+	g_particleWait.store(false);
+	g_particleCv.notify_one();
+
+	/*g_ParticleRenderer = std::async(std::launch::async, []()noexcept {
 		static const auto c = g_renderVec.data();
 		const unsigned short n = (unsigned short)(g_renderVec.size());
 		for (unsigned short i = 0; i < n; ++i)c[i]();
 		g_renderVec.clear();
-		});
+		});*/
 }

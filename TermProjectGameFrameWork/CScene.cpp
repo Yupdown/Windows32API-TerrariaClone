@@ -12,7 +12,7 @@
 #include "CThreadMgr.h"
 
 extern bool g_bDoMultiThread;
-extern std::future<void> g_ParticleRenderer;
+extern std::atomic<bool> g_particleWait;
 extern HDC g_particleDC;
 
 CScene::CScene()
@@ -138,9 +138,8 @@ void CScene::render(HDC _dc)
 		const Vec2 vCamShadingPos = Mgr(CCamera)->GetCamShadingPos();
 		m_pPlayer->SetPos(vCamShadingPos);
 
-		if (g_ParticleRenderer.valid())
-		{
-			g_ParticleRenderer.get();
+		while (!g_particleWait.load(std::memory_order_seq_cst)) {
+
 		}
 
 		for (int vecObj=0;vecObj<etoi(GROUP_TYPE::UI);++vecObj)

@@ -28,7 +28,6 @@ CBossHealthBar::CBossHealthBar(CCthulhuEye* const _pBoss, wstring_view _fileName
 
 CBossHealthBar::~CBossHealthBar()
 {
-	
 }
 
 void CBossHealthBar::update()
