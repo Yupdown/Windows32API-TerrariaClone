@@ -5,7 +5,7 @@
 std::jthread g_ParticleRenderer;
 bool g_bParticleStop = false;
 HDC g_particleDC;
-vector<function<void(void)>> g_renderVec;
+vector<std::future<void>> g_renderVec;
 std::atomic<bool> g_particleWait;
 std::mutex g_particleMutex;
 std::condition_variable g_particleCv;
@@ -20,10 +20,10 @@ CParticleMgr::CParticleMgr()
 		while (!g_bParticleStop)
 		{
 			std::unique_lock<std::mutex> lock{ g_particleMutex };
-			g_particleCv.wait(lock,[]() {return !g_particleWait.load(); });
+			g_particleCv.wait(lock,[]() {return !g_particleWait.load() || g_bParticleStop; });
 			static const auto c = g_renderVec.data();
 			const unsigned short n = (unsigned short)(g_renderVec.size());
-			for (unsigned short i = 0; i < n; ++i)c[i]();
+			for (unsigned short i = 0; i < n; ++i)c[i].get();
 			g_renderVec.clear();
 
 			g_particleWait.store(true);
@@ -37,6 +37,7 @@ CParticleMgr::~CParticleMgr()
 	g_particleWait.store(false);
 	g_bParticleStop = true;
 	g_particleCv.notify_one();
+	g_ParticleRenderer.join();
 }
 
 void CParticleMgr::Init()
@@ -78,9 +79,9 @@ void CParticleMgr::Update()
 	{
 		if (cache[i].IsActivate())
 		{
-			g_renderVec.emplace_back([=]()noexcept {
+			g_renderVec.emplace_back(std::async(std::launch::deferred,[=]()noexcept {
 				cache[i].Render(g_particleDC);
-				});
+				}));
 		}
 	}
 

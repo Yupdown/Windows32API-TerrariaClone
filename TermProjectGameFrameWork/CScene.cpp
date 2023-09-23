@@ -14,10 +14,11 @@
 extern bool g_bDoMultiThread;
 extern std::atomic<bool> g_particleWait;
 extern HDC g_particleDC;
+static vector<std::future<void>> g_vecDrawCall;
 
 CScene::CScene()
 {
-	
+	g_vecDrawCall.reserve(1000);
 	for (int i = 0; i < THREAD::END + 1; ++i)
 	{
 		CreateDCBITMAP(m_hSceneThreadDC[i], m_hSceneThreadBit[i], Mgr(CCore)->GetResolutionV());
@@ -138,10 +139,6 @@ void CScene::render(HDC _dc)
 		const Vec2 vCamShadingPos = Mgr(CCamera)->GetCamShadingPos();
 		m_pPlayer->SetPos(vCamShadingPos);
 
-		while (!g_particleWait.load(std::memory_order_seq_cst)) {
-
-		}
-
 		for (int vecObj=0;vecObj<etoi(GROUP_TYPE::UI);++vecObj)
 		{
 			const auto vecPtr = m_vecObj[vecObj].data();
@@ -155,11 +152,22 @@ void CScene::render(HDC _dc)
 				}
 				else
 				{
-					vecPtr[i]->render(m_hSceneThreadDC[THREAD::END]);
+					//vecPtr[i]->render(m_hSceneThreadDC[THREAD::END]);
+					g_vecDrawCall.emplace_back(std::async(std::launch::deferred, &CObject::render, vecPtr[i].get(), m_hSceneThreadDC[THREAD::END]));
 					++i;
 				}
 			}
 		};
+
+		while (!g_particleWait.load(std::memory_order_seq_cst)) {
+
+		}
+	
+
+		const auto cache = g_vecDrawCall.data();
+		const unsigned short num = (unsigned short)g_vecDrawCall.size();
+		for (unsigned short i = 0; i < num; ++i)cache[i].get();
+		g_vecDrawCall.clear();
 
 		m_pPlayer->SetPos(vPlayerOriginPos);
 
@@ -346,6 +354,7 @@ void CScene::Reset()
 	{
 		i.clear();
 	}
+	g_vecDrawCall.clear();
 	m_vecLayer.clear();
 	m_vecTileLayer.clear();
 	m_pPlayer = nullptr;
