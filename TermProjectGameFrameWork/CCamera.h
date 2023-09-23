@@ -36,6 +36,7 @@ class CTexture;
 class CCamera
 	:public Singleton<CCamera>
 {
+	static CObject* g_camTarget;
 	friend class Singleton;
 	CCamera();
 	~CCamera();
@@ -106,7 +107,7 @@ public:
 		m_fAccel = m_fSpeed / m_fTime;
 		SetMoveFlag(true);
 	}
-	constexpr void SetTarget(CObject* const _pTarget) { m_pTargetObj = _pTarget;}
+	constexpr void SetTarget(CObject* const _pTarget) { g_camTarget = m_pTargetObj = _pTarget;}
 	constexpr Vec2 GetRenderPos(Vec2 _vObjPos)const { return _vObjPos - m_vDiff; }
 	constexpr Vec2 GetRealPos(Vec2 _vRenderPos)const { return _vRenderPos + m_vDiff; }
 	constexpr Vec2 GetCurDiff()const { return m_vDiff; }

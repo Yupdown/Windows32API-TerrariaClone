@@ -203,7 +203,7 @@ void CPlayer::updateMove()
 		pRigid->AddVelocity(Vec2{ 20.0f, 0.0f });
 	}
 
-	if (KEY_HOLD(KEY::W))
+	/*if (KEY_HOLD(KEY::W))
 	{
 		SetPos({ GetPos().x,GetPos().y - 5.f });
 		pRigid->AddVelocity(Vec2{ 0,-300 });
@@ -214,7 +214,7 @@ void CPlayer::updateMove()
 		SetPos({ GetPos().x,GetPos().y + 5.f });
 		pRigid->AddVelocity(Vec2{ 0,300 });
 		pRigid->AddForce(Vec2{ 0,300 });
-	}
+	}*/
 }
 
 void CPlayer::updateAnimation()

@@ -7,6 +7,7 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 
+CObject* CCamera::g_camTarget;
 
 CCamera::CCamera()
 {
@@ -264,7 +265,6 @@ void CCamera::update()
 
 CoRoutine CCamera::CamMoveCoRoutine(Vec2 _vDest)
 {
-	auto pTarget = m_pTargetObj;
 	m_pTargetObj = nullptr;
 	
 	while (m_bMoveFlag)
@@ -272,7 +272,7 @@ CoRoutine CCamera::CamMoveCoRoutine(Vec2 _vDest)
 		SetLookAt(_vDest);
 		co_await std::suspend_always{};
 	}
-	m_pTargetObj = pTarget;
+	m_pTargetObj = g_camTarget;
 	co_return;
 }
 
@@ -280,7 +280,7 @@ CoRoutine CCamera::ZoomInBoss(const Vec2 _vBossPos)
 {
 	float fAccTime = 0.f;
 	m_fDestSpeed = 1000.f;
-	const auto vReturnPos = m_vCurLookAt;
+	const auto vReturnPos = m_pTargetObj->GetPos();
 	m_bMoveFlag = true;
 	StartCoEvent(CamMoveCoRoutine(_vBossPos));
 	while (m_bMoveFlag)
@@ -305,7 +305,17 @@ CoRoutine CCamera::ZoomInBoss(const Vec2 _vBossPos)
 	}
 	m_fCamZoom = 1.f;
 	m_fDestSpeed = m_fOriginSpeed;
+	m_bMoveFlag = true;
+	float acc = 0.f;
+	while (acc <= 1.f)
+	{
+		acc += DT;
+		co_await std::suspend_always{};
+	}
+	m_pTargetObj = g_camTarget;
 	m_bMoveFlag = false;
+	co_await std::suspend_always{};
+	g_camTarget->SetPos(vReturnPos);
 	co_return;
 }
 
