@@ -81,7 +81,7 @@ void CParticleMgr::Update()
 	{
 		if (cache[i].IsActivate())
 		{
-			g_renderVec.emplace_back(std::async(std::launch::deferred,[=]()noexcept {
+			g_renderVec.emplace_back(std::async(std::launch::deferred,[i]()noexcept {
 				cache[i].Render(g_particleDC);
 				}));
 		}
