@@ -7,8 +7,7 @@ bool g_bParticleStop = false;
 HDC g_particleDC;
 vector<std::future<void>> g_renderVec;
 std::atomic<bool> g_particleWait;
-std::mutex g_particleMutex;
-std::condition_variable g_particleCv;
+
 
 CParticleMgr::CParticleMgr()
 {
@@ -19,14 +18,15 @@ CParticleMgr::CParticleMgr()
 	g_ParticleRenderer = std::jthread{ []()noexcept {
 		while (!g_bParticleStop)
 		{
-			std::unique_lock<std::mutex> lock{ g_particleMutex };
-			g_particleCv.wait(lock,[]() {return !g_particleWait.load() || g_bParticleStop; });
+			g_particleWait.wait(true);
+
 			static const auto c = g_renderVec.data();
 			const unsigned short n = (unsigned short)(g_renderVec.size());
 			for (unsigned short i = 0; i < n; ++i)c[i].get();
-			g_renderVec.clear();
-
+			
 			g_particleWait.store(true);
+
+			g_renderVec.clear();
 		}
 		} };
 }
@@ -36,7 +36,9 @@ CParticleMgr::~CParticleMgr()
 	DeleteDCBITMAP(m_particeDC, m_particleBit);
 	g_particleWait.store(false);
 	g_bParticleStop = true;
-	g_particleCv.notify_one();
+	
+	g_particleWait.notify_one();
+
 	g_ParticleRenderer.join();
 }
 
@@ -86,7 +88,7 @@ void CParticleMgr::Update()
 	}
 
 	g_particleWait.store(false);
-	g_particleCv.notify_one();
+	g_particleWait.notify_one();
 
 	/*g_ParticleRenderer = std::async(std::launch::async, []()noexcept {
 		static const auto c = g_renderVec.data();
