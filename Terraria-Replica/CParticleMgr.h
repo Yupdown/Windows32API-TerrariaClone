@@ -14,7 +14,7 @@ private:
 	HBITMAP m_particleBit;
 public:
 	void Init();
-	void SetParticles(const Vec2 vPos_,CAtlasElement* const pImg_);
-	void Update();
+	void SetParticles(const Vec2 vPos_,CAtlasElement* const pImg_)noexcept;
+	void Update()noexcept;
 };
 

@@ -16,14 +16,14 @@ CParticle::~CParticle()
 {
 }
 
-void CParticle::Update()
+void CParticle::Update()noexcept
 {
 	m_fLife -= DT;
 	m_vVelocity += Vec2::up * 480.0f * DT;
 	m_vMidPos += m_vVelocity * DT;
 }
 
-void CParticle::Render(HDC dc_)
+void CParticle::Render(HDC dc_)noexcept
 {
 	const Vec2 vLT = m_vMidPos - g_particleSize / 2.f;
 	m_pAtlasForRender->render(dc_, Mgr(CCamera)->GetRenderPos(vLT), g_particleSize * m_fLife * 2.0f);
@@ -33,7 +33,7 @@ void CParticle::Render(HDC dc_)
 	}
 }
 
-void CParticle::ActivateParticle(Vec2 vMidPos_, CAtlasElement* const pImg_)
+void CParticle::ActivateParticle(Vec2 vMidPos_, CAtlasElement* const pImg_)noexcept
 {
 	if (!pImg_)
 	{

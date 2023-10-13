@@ -33,7 +33,7 @@ void TRMonGenerator::GenerateMonster()
 
 	int randNum = uid(rng);
 	int randMon = randNum % 2; // randNum % 3;
-	Vec2 vSpawnPos = Vec2(randNum % 2 ? 10 : TRWorld::WORLD_WIDTH - 10, TRWorld::WORLD_HEIGHT);
+	const Vec2 vSpawnPos = Vec2(randNum % 2 ? 10 : (float)(TRWorld::WORLD_WIDTH - 10), (float)(TRWorld::WORLD_HEIGHT));
 	switch (randMon)
 	{
 	case 0:

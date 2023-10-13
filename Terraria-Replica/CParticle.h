@@ -19,9 +19,9 @@ public:
 	~CParticle();
 	CParticle(const CParticle&) = delete;
 	CParticle operator = (const CParticle&) = delete;
-	void ActivateParticle(Vec2 vMidPos_,CAtlasElement* const _pImg_);
-	bool IsActivate()const { return m_bIsActivate; }
-	void Update();
-	void Render(HDC dc_);
+	void ActivateParticle(Vec2 vMidPos_,CAtlasElement* const _pImg_)noexcept;
+	bool IsActivate()const noexcept { return m_bIsActivate; }
+	void Update()noexcept;
+	void Render(HDC dc_)noexcept;
 };
 

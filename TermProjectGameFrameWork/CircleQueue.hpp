@@ -3,7 +3,7 @@
 template<typename T>
 class CircleQueue
 {
-	static constexpr unsigned short MAX_SIZE = 1024;
+	static constexpr unsigned short MAX_SIZE = 256;
 private:
 	T arr[MAX_SIZE] = {};
 	unsigned short m_front = 0;
@@ -21,5 +21,5 @@ public:
 		--m_count;
 		m_front = ((m_front + 1) % MAX_SIZE);
 	}
-	bool empty()const noexcept { return 0 == m_count; }
+	const bool empty()const noexcept { return 0 == m_count; }
 };

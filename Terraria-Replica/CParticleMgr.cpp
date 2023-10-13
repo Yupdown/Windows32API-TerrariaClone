@@ -46,7 +46,7 @@ void CParticleMgr::Init()
 {
 }
 
-void CParticleMgr::SetParticles(const Vec2 vPos_, CAtlasElement* const pImg_)
+void CParticleMgr::SetParticles(const Vec2 vPos_, CAtlasElement* const pImg_)noexcept
 {
 	const unsigned short end_particles = m_iCurParticleNum + 20;
 	static const auto cache = m_arrParticles.data();
@@ -57,7 +57,7 @@ void CParticleMgr::SetParticles(const Vec2 vPos_, CAtlasElement* const pImg_)
 	m_iCurParticleNum = (m_iCurParticleNum + 20) % 1000;
 }
 
-void CParticleMgr::Update()
+void CParticleMgr::Update()noexcept
 {
 	static const auto cache = m_arrParticles.data();
 	for (unsigned short i = 0; i < 1000; ++i)
