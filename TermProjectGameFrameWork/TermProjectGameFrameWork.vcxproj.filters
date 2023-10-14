@@ -261,6 +261,9 @@
     <ClInclude Include="CircleQueue.hpp">
       <Filter>Default</Filter>
     </ClInclude>
+    <ClInclude Include="DoubleLockQueue.hpp">
+      <Filter>Default</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

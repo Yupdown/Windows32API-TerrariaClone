@@ -181,6 +181,7 @@
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTileLayer.h" />
     <ClInclude Include="CTimeMgr.h" />
+    <ClInclude Include="DoubleLockQueue.hpp" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SimpleMath.hpp" />

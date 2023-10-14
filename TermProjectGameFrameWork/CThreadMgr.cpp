@@ -34,9 +34,20 @@ void CThreadMgr::init()
         m_arrDone[i].store(true, std::memory_order_seq_cst);
         m_vecThread[i] = std::jthread([this] {
             while (true) {
-                std::function<void(void)> task;
-                size_t idx;
+                //std::function<void(void)> task;
+                //size_t idx;
+                std::pair<std::function<void(void)>, size_t> task;
                 {
+                    std::unique_lock<SpinLock> lock{ m_spinLockRender };
+                    m_cvQRender.wait(lock, [this, &task] {
+                        return m_jobQueue.try_pop(task) || m_bStopRequest;
+                        });
+                }
+                if (m_bStopRequest)
+                {
+                    return;
+                }
+               /* {
                     std::unique_lock<SpinLock> lock{ m_spinLockRender };
                     m_cvQRender.wait(lock, [this] {
                         return !m_jobQueue.empty() || m_bStopRequest;
@@ -48,13 +59,13 @@ void CThreadMgr::init()
 
                     std::tie(task,idx) = std::move(m_jobQueue.front());
                     m_jobQueue.pop();
-                }
+                }*/
 
-                task();
+                task.first();
 
                 std::atomic_thread_fence(std::memory_order_seq_cst);
 
-                m_arrDone[idx].store(true,std::memory_order_relaxed);
+                m_arrDone[task.second].store(true,std::memory_order_relaxed);
             }
             });
     }
@@ -63,6 +74,16 @@ void CThreadMgr::init()
             while (true) {
                 std::function<void(void)> task;
                 {
+                    std::unique_lock<SpinLock> lock{ m_spinLockUpdate };
+                    m_cvQUpdate.wait(lock, [this, &task] {
+                        return m_jobUpdateQ.try_pop(task) || m_bStopRequest;
+                        });
+                }
+                if (m_bStopRequest)
+                {
+                    return;
+                }
+               /* {
                     std::unique_lock<SpinLock> lock{ m_spinLockUpdate };
                     m_cvQUpdate.wait(lock, [this] {
                         return !m_jobUpdateQ.empty() || m_bStopRequest;
@@ -74,7 +95,7 @@ void CThreadMgr::init()
 
                     task = std::move(m_jobUpdateQ.front());
                     m_jobUpdateQ.pop();
-                }
+                }*/
 
                 task();
 
