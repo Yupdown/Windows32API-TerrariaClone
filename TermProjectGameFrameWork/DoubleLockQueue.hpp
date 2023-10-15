@@ -14,17 +14,24 @@ private:
 	Node* tail;
 	SpinLock headLock, tailLock;
 public:
-	DoubleLockQueue() { head = tail = new Node; }
+	DoubleLockQueue()noexcept { head = tail = new Node; }
+	~DoubleLockQueue()noexcept {
+		while (head != nullptr) {
+			const Node* const tmp = head;
+			head = head->next;
+			delete tmp;
+		}
+	}
 	template <typename... Args>
 	void emplace(Args&&... args) noexcept{
-		Node* value = new Node{ T{std::forward<Args>(args)...} };
+		Node* const value = new Node{ T{std::forward<Args>(args)...} };
 		tail->next = value;
 		tail = value;
 	}
 	const bool try_pop(T& _target)noexcept {
-		std::lock_guard<SpinLock> lock{ tailLock };
-		Node* oldHead = head;
-		Node* newHead = head->next;
+		std::lock_guard<SpinLock> lock{ headLock };
+		const Node* const oldHead = head;
+		Node* const newHead = head->next;
 		if (newHead)
 		{
 			_target = std::move(newHead->data);

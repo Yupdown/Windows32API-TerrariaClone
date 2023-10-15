@@ -4,21 +4,18 @@
 class SpinLock
 {
 private:
-	std::atomic<bool> m_bIsLocked = false;
+    std::atomic_flag lockFlag = ATOMIC_FLAG_INIT;
 public:
-	SpinLock() = default;
-	~SpinLock() { unlock(); }
-	void lock() {
-		bool expected = false;
-		bool desired = true;
-		while (!m_bIsLocked.compare_exchange_weak(expected, desired)) {
-			expected = false;
-		}
-	}
-	void unlock() { m_bIsLocked.store(false); }
-	bool try_lock() {
-		bool expected = false;
-		bool desired = true;
-		return m_bIsLocked.compare_exchange_strong(expected, desired);
-	}
+    SpinLock() noexcept = default;
+    ~SpinLock() noexcept = default;
+    void lock() noexcept {
+        while (lockFlag.test_and_set(std::memory_order_acquire)) {
+        }
+    }
+    void unlock() noexcept {
+        lockFlag.clear(std::memory_order_release);
+    }
+    const bool try_lock() noexcept {
+        return !lockFlag.test_and_set(std::memory_order_acquire);
+    }
 };
